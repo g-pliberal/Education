@@ -1362,12 +1362,14 @@ def chiffrage() -> str:
         "diplômés, mais rejoindre la position relative moyenne de "
         "l'OCDE — demande une hausse d'environ 12 % de la rémunération "
         "enseignante.</p>"
-        "<p>Appliquée à une masse salariale enseignante que nous supposons "
-        f"de l'ordre de 50 Md€ — la mission Enseignement scolaire pèse "
-        f"{v('budget_mission')} hors pensions, dont l'essentiel en "
-        "salaires —, cette hausse coûte <strong>environ 6 Md€ par "
-        "an</strong>. Les 50 Md€ sont une hypothèse de notre part, pas un "
-        "chiffre publié.</p>"
+        "<p>La masse salariale se déduit du budget, et n'a donc pas à être "
+        f"supposée. La mission pèse {v('budget_mission')} hors pensions, "
+        f"dont {v('budget_hors_titre2')} hors dépenses de personnel : il "
+        "reste environ <strong>59,3 Md€</strong> de rémunérations. En "
+        f"retirant les {v('inclusion_aesh')} des accompagnants et la part "
+        "des personnels non enseignants, on arrive à un ordre de grandeur "
+        "de 50 Md€ pour les seuls enseignants. Une hausse de 12 % appliquée "
+        "à cette assiette coûte <strong>environ 6 Md€ par an</strong>.</p>"
     )
 
     corps += "<h2 id=\"ressources\">Ce qui le finance</h2>"
@@ -1385,21 +1387,36 @@ def chiffrage() -> str:
         "effectifs.</p>"
         "<p>Seule la part variable — pour l'essentiel les postes "
         "d'enseignant — se libère réellement. Nous retenons l'hypothèse "
-        "qu'elle représente environ 60 % de la dépense par élève.</p>"
+        "qu'elle représente environ 60 % de la dépense par élève. C'est la "
+        "seconde et dernière hypothèse de cette page.</p>"
     )
     corps += g.tableau(
         "Ce que la démographie libère réellement d'ici 2035",
         ("Ligne", "Calcul", "Ordre de grandeur"),
         (
-            ("Élèves en moins d'ici 2035", "projection DEPP",
-             v("demographie")),
-            ("Dépense par élève, premier degré", "chiffre DEPP",
-             v("die_premier_degre")),
-            ("Part variable retenue", "hypothèse : 60 %", "≈ 5 450 €"),
-            ("Ressource annuelle à l'horizon 2035",
-             "1,7 million × 5 450 €", "≈ 9 Md€"),
+            ("Premier degré : élèves en moins",
+             "projection DEPP, scénario intermédiaire",
+             v("demographie_premier_degre")),
+            ("Part variable de la dépense par écolier",
+             f"{v('die_premier_degre')} × 60 % (hypothèse)", "≈ 5 450 €"),
+            ("Ressource, premier degré", "933 000 × 5 450 €", "≈ 5,1 Md€"),
+            ("Second degré : élèves en moins",
+             "projection DEPP, scénario intermédiaire",
+             v("demographie_second_degre")),
+            ("Part variable de la dépense par collégien",
+             f"{v('die_college')} × 60 % (hypothèse)", "≈ 6 270 €"),
+            ("Ressource, second degré", "743 800 × 6 270 €", "≈ 4,7 Md€"),
+            ("Ressource annuelle à l'horizon 2035", "", "≈ 10 Md€"),
         ),
         ("long", "long", "nombre"),
+    )
+    corps += g.note(
+        "<p>Nous appliquons au second degré le coût du collégien, alors que "
+        "la baisse touchera aussi des lycéens, plus coûteux. "
+        "<strong>L'estimation est donc prudente</strong> : la ressource "
+        "réelle est probablement un peu supérieure. Nous préférons cette "
+        "erreur-là à l'autre.</p>",
+        "resume",
     )
     corps += g.note(
         "<p>Cette ressource <strong>n'existe pas encore</strong>. Elle "
@@ -1454,9 +1471,9 @@ def chiffrage() -> str:
             ("Financement à parité", "3 à 4", "—"),
             ("Pondération sociale", "0 (redéploiement interne)", "—"),
             ("Rémunération des enseignants", "≈ 6", "—"),
-            ("Baisse démographique (part variable)", "—", "≈ 9"),
+            ("Baisse démographique (part variable)", "—", "≈ 10"),
             ("Réalignement du lycée", "—", "non chiffré, positif"),
-            ("Total", "9 à 10", "9 et plus"),
+            ("Total", "9 à 10", "10 et plus"),
         ),
         ("long", "nombre", "nombre"),
     )
@@ -1480,10 +1497,13 @@ def chiffrage() -> str:
     corps += g.note(
         "<p>Il ne prouve pas que la réforme est finançable. Il établit "
         "qu'elle est <em>plausiblement</em> finançable à l'horizon d'une "
-        "décennie, sous trois hypothèses que nous avons écrites en toutes "
-        "lettres : l'écart de financement au second degré, la part variable "
-        "de la dépense, et la masse salariale enseignante. Aucune n'est "
-        "publiée telle quelle ; chacune peut être fausse.</p>"
+        "décennie, sous <strong>deux</strong> hypothèses que nous avons "
+        "écrites en toutes lettres : l'écart de financement au second degré, "
+        "déduit des parts de budget publiées par la Cour des comptes, et la "
+        "part variable de la dépense, fixée à 60 % sans que nous puissions "
+        "l'étayer. Ni l'une ni l'autre n'est publiée telle quelle ; l'une "
+        "et l'autre peuvent être fausses. La seconde est la plus fragile, "
+        "et c'est par elle qu'il faut nous attaquer.</p>"
         "<p>Il ne dit rien non plus des coûts de transition — systèmes "
         "d'information, double régime statutaire pendant vingt ans, "
         "accompagnement des établissements qui perdent des élèves. Ces "

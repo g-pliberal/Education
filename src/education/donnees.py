@@ -94,9 +94,13 @@ INSPECTIE_NL = ("https://english.onderwijsinspectie.nl/inspection/"
 COUR_PRIVE = ("https://www.ccomptes.fr/sites/default/files/2023-10/"
               "20230601-enseignement-prive-sous-contrat.pdf")
 CAE_EDUCATION = "https://cae-eco.fr/static/pdf/cae084-education-250514.pdf"
-DEPP_DEMOGRAPHIE = ("https://www.education.gouv.fr/"
-                    "demographie-scolaire-le-ministere-publie-pour-la-premiere-fois-des-"
-                    "projections-d-effectifs-d-eleves-504392")
+DEPP_DEMOGRAPHIE = ("https://www.education.gouv.fr/sites/default/files/"
+                    "document/projections-d-effectifs-d-l-ves-dans-les-"
+                    "premier-et-second-degr-s-horizon-2035-515387.pdf")
+OCDE_CLASSES = ("https://www.oecd.org/en/publications/2025/09/"
+                "education-at-a-glance-2025_c58fc9ae/full-report/"
+                "how-do-student-teacher-ratios-and-class-sizes-vary-across-"
+                "education-levels-up-to-upper-secondary-education_76b87b21.html")
 COUR_PRIORITAIRE = "https://www.ccomptes.fr/fr/publications/leducation-prioritaire"
 IFAU_SUEDE = ("https://www.ifau.se/globalassets/pdf/se/2015/"
               "wp2015-08-School-choice-and-segregation.pdf")
@@ -168,6 +172,12 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
     _c("budget_mission", "64,5 Md€",
        "Crédits de la mission « Enseignement scolaire » hors pensions.",
+       "2026", "Sénat, rapport sur le PLF 2026, mission "
+       "« Enseignement scolaire »", SENAT_PLF2026, "", ("depense",)),
+    _c("budget_hors_titre2", "5,19 Md€",
+       "Crédits de la mission « Enseignement scolaire » hors dépenses de "
+       "personnel. Le reste des 64,5 Md€ — soit environ 59,3 Md€ — est de "
+       "la masse salariale, enseignants et non-enseignants confondus.",
        "2026", "Sénat, rapport sur le PLF 2026, mission "
        "« Enseignement scolaire »", SENAT_PLF2026, "", ("depense",)),
     _c("budget_mission_pensions", "89,6 Md€",
@@ -419,13 +429,27 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "2026", "DEPP, L'éducation nationale en chiffres", DEPP_CHIFFRES,
        "", ("moyens",)),
     _c("demographie", "1,7 million d'élèves en moins",
-       "Baisse attendue des effectifs scolaires d'ici 2035.",
-       "2026", "DEPP, projections démographiques", DEPP_DEMOGRAPHIE,
-       "À dépense constante, c'est un desserrement massif — ou une économie "
+       "Baisse attendue des effectifs scolaires d'ici 2035, scénario "
+       "intermédiaire.",
+       "2026", "DEPP, note d'information n° 26.09, projections d'effectifs "
+       "à horizon 2035", DEPP_DEMOGRAPHIE,
+       "Les naissances ont reculé de 24 % entre 2010 et 2025. À dépense "
+       "constante, c'est un desserrement massif — ou une économie "
        "silencieuse.", ("moyens",)),
+    _c("demographie_premier_degre", "933 000",
+       "Élèves en moins dans le premier degré d'ici 2035, soit une baisse "
+       "de 15,2 %.",
+       "2026", "DEPP, note d'information n° 26.09, projections d'effectifs "
+       "à horizon 2035", DEPP_DEMOGRAPHIE, "", ("moyens",)),
+    _c("demographie_second_degre", "743 800",
+       "Élèves en moins dans le second degré d'ici 2035, soit une baisse "
+       "de 13,2 %.",
+       "2026", "DEPP, note d'information n° 26.09, projections d'effectifs "
+       "à horizon 2035", DEPP_DEMOGRAPHIE, "", ("moyens",)),
     _c("salaire_ecart_elementaire", "26 %",
        "Écart entre le salaire effectif d'un professeur des écoles français et "
-       "celui d'un actif diplômé du supérieur travaillant à temps plein.",
+       "celui d'un actif diplômé du supérieur travaillant à temps plein "
+       "toute l'année.",
        "2024", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
        "Moyenne OCDE : 17 %.", ("moyens", "enseignants")),
     _c("salaire_ecart_college", "18 %",
@@ -443,9 +467,11 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "Moyenne OCDE : 909 heures.", ("moyens",)),
     _c("taille_classe", "21,6 élèves",
        "Taille moyenne d'une classe élémentaire en France.",
-       "2025", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
+       "2025", "OCDE, Regards sur l'éducation 2025, indicateur D2",
+       OCDE_CLASSES,
        "Moyenne OCDE : 21 élèves. En baisse de près de deux élèves depuis "
-       "2013.", ("moyens",)),
+       "2013. Ce chiffre ne figure pas dans la note par pays, mais dans le "
+       "rapport : il a donc sa propre adresse.", ("moyens",)),
 
     _c("salaire_ecart_elementaire_ocde", "17 %",
        "Écart moyen, dans l'OCDE, entre le salaire d'un enseignant du "
