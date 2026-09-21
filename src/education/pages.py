@@ -220,7 +220,10 @@ def resultats() -> str:
         "Ce que les élèves savent, et ce qu'ils ne savent plus.",
         "Quatre enquêtes indépendantes, trois internationales et une "
         "française, mesurent la même chose depuis vingt ans : le niveau des "
-        "élèves français baisse, et il baisse d'abord chez les plus faibles.",
+        "élèves français baisse, et il baisse d'abord chez les plus faibles. "
+        "PISA 2025, publié en septembre 2026, confirme la tendance — et "
+        "oblige à une honnêteté désagréable, puisque la baisse touche aussi "
+        "nos voisins.",
     )
 
     corps += g.plan((
@@ -235,42 +238,56 @@ def resultats() -> str:
     corps += g.reperes((
         g.Repere("Mathématiques à 15 ans", v("pisa_maths"),
                  f"Moyenne OCDE : {v('pisa_maths_ocde')}. "
-                 f"Recul de {v('pisa_maths_chute')} depuis 2018."),
+                 f"Soit {v('pisa_maths_chute')} depuis 2022."),
         g.Repere("Élèves en difficulté", v("pisa_faibles"),
                  "sous le niveau 2 en mathématiques, contre "
-                 f"{v('pisa_faibles_2018')} en 2018."),
+                 f"{v('pisa_faibles_2022')} en 2022."),
         g.Repere("Écart social", v("pisa_ecart_social"),
                  "entre les élèves les plus favorisés et les plus "
-                 "défavorisés."),
+                 f"défavorisés, contre {v('pisa_ecart_social_ocde')} dans "
+                 "l'OCDE."),
     ))
 
-    corps += "<h2 id=\"pisa\">PISA : la chute de 2022</h2>"
+    corps += "<h2 id=\"pisa\">PISA : la deuxième chute</h2>"
     corps += (
         "<p>PISA mesure tous les trois ans ce que les élèves de quinze ans "
         "savent faire d'un savoir dans une situation qu'on ne leur a pas "
-        "apprise. En 2022, la France obtient "
-        f"{v('pisa_maths')} en mathématiques — techniquement au-dessus de la "
-        f"moyenne de l'OCDE ({v('pisa_maths_ocde')}), et en recul de "
-        f"{v('pisa_maths_chute')} par rapport à 2018. C'est la plus forte "
-        "baisse jamais enregistrée par la France dans cette enquête.</p>"
-        "<p>La moyenne rassure à tort. Ce qui a bougé, ce n'est pas le "
-        f"sommet : c'est le bas. {v('pisa_faibles')} des élèves français sont "
-        "désormais sous le niveau 2 en mathématiques, contre "
-        f"{v('pisa_faibles_2018')} quatre ans "
-        "plus tôt. Le niveau 2 n'est pas l'excellence : c'est le seuil en "
-        "deçà duquel un adulte ne peut pas vérifier une facture, comparer "
-        "deux offres de crédit ou lire un graphique de journal.</p>"
+        "apprise. Les résultats du cycle 2025 ont été publiés en "
+        "septembre 2026, et ils prolongent la chute de 2022 au lieu de la "
+        f"corriger : la France obtient {v('pisa_maths')} en culture "
+        f"mathématique, soit {v('pisa_maths_chute')} par rapport à 2022, "
+        "après un recul de 21 points entre 2018 et 2022. En compréhension "
+        f"de l'écrit, {v('pisa_lecture')}, soit "
+        f"{v('pisa_lecture_chute')} — <strong class=\"cle-texte\">deux "
+        "cycles de baisse consécutifs et de même ampleur</strong>.</p>"
+        "<p>Il faut aussitôt dire ce qui atténue ce constat, parce que c'est "
+        "l'objection la plus sérieuse qu'on puisse nous faire : <strong>la "
+        "baisse est générale</strong>. La moyenne de l'OCDE recule elle "
+        "aussi, de 9 points en mathématiques et de 14 en compréhension de "
+        "l'écrit, et hors Turquie aucun pays de l'OCDE ne progresse sur ce "
+        "cycle. La France ne décroche pas du peloton : le peloton descend, "
+        "et elle descend avec lui. La DEPP situe d'ailleurs ses scores "
+        "« dans la moyenne de l'OCDE », l'écart de cinq points n'étant pas "
+        "significatif.</p>"
+        "<p>Ce qui reste propre à la France, c'est le bas de la "
+        f"distribution. {v('pisa_faibles')} des élèves français sont sous le "
+        f"niveau 2 en mathématiques, contre {v('pisa_faibles_2022')} en 2022 "
+        "et 21 % en 2018. Le niveau 2 n'est pas l'excellence : c'est le "
+        "seuil en deçà duquel un adulte ne peut pas vérifier une facture, "
+        "comparer deux offres de crédit ou lire un graphique de journal. "
+        f"Plus d'un élève sur trois. La moyenne de l'OCDE, "
+        f"{v('pisa_faibles_ocde')}, est à peine meilleure.</p>"
     )
     corps += g.tableau(
-        "PISA 2022 : les scores français et la moyenne de l'OCDE",
-        ("Domaine", "France", "Moyenne OCDE", "Depuis 2018"),
+        "PISA 2025 : les scores français et la moyenne de l'OCDE",
+        ("Domaine", "France", "Moyenne OCDE", "Depuis 2022"),
         (
-            ("Mathématiques", v("pisa_maths"), v("pisa_maths_ocde"),
+            ("Culture mathématique", v("pisa_maths"), v("pisa_maths_ocde"),
              v("pisa_maths_chute")),
             ("Compréhension de l'écrit", v("pisa_lecture"),
              v("pisa_lecture_ocde"), v("pisa_lecture_chute")),
             ("Culture scientifique", v("pisa_sciences"),
-             v("pisa_sciences_ocde"), "stable"),
+             "dans la moyenne", "en baisse depuis 2015"),
         ),
     )
 
@@ -343,10 +360,21 @@ def resultats() -> str:
     corps += "<h2 id=\"inegalites\">L'école la plus inégalitaire d'Europe</h2>"
     corps += (
         f"<p>{v('pisa_ecart_social')} séparent en mathématiques les élèves "
-        "français les plus favorisés des plus défavorisés. La France figure "
-        "parmi les pays de l'OCDE où l'origine sociale prédit le mieux les "
-        "résultats scolaires — c'est-à-dire parmi ceux où l'école corrige le "
-        "moins ce qu'elle reçoit.</p>"
+        "français les plus favorisés des plus défavorisés, contre "
+        f"{v('pisa_ecart_social_ocde')} en moyenne dans l'OCDE. La France "
+        "figure parmi les pays où l'origine sociale prédit le mieux les "
+        "résultats — c'est-à-dire parmi ceux où l'école corrige le moins ce "
+        "qu'elle reçoit.</p>"
+        "<p>Cet écart s'est resserré depuis 2022, où il atteignait "
+        "113 points. <strong class=\"cle-texte\">Nous refusons de le "
+        "présenter comme une bonne nouvelle, parce que ce n'en est "
+        "pas.</strong> Le score des élèves favorisés a reculé de "
+        f"{v('pisa_chute_favorises')} en trois ans ; celui des défavorisés, "
+        f"de {v('pisa_chute_defavorises')}. L'écart diminue parce que le "
+        "haut "
+        "s'effondre plus vite que le bas, non parce que le bas remonte. "
+        "C'est la seule façon dont ce système ait réduit une inégalité "
+        "depuis vingt ans, et elle ne vaut rien.</p>"
         "<p>Ce constat est le plus embarrassant pour tout le monde. Il l'est "
         "pour ceux qui défendent le système tel quel, puisque l'égalité est "
         "sa justification première. Il l'est aussi pour nous : une réforme "
@@ -1386,9 +1414,28 @@ def chiffrage() -> str:
         "chauffage, la direction et l'entretien ne suivent pas les "
         "effectifs.</p>"
         "<p>Seule la part variable — pour l'essentiel les postes "
-        "d'enseignant — se libère réellement. Nous retenons l'hypothèse "
-        "qu'elle représente environ 60 % de la dépense par élève. C'est la "
-        "seconde et dernière hypothèse de cette page.</p>"
+        "d'enseignant — se libère réellement. Nous retenons 60 % de la "
+        "dépense par élève, et cette fois nous pouvons dire d'où vient le "
+        "chiffre.</p>"
+        "<p>La DEPP publie la structure du financement par niveau. Les "
+        f"collectivités territoriales portent {v('die_collectivites_premier_degre')} "
+        "de la dépense du premier degré et "
+        f"{v('die_collectivites_second_degre')} de celle du second — et "
+        "cette part va, dit la note, « pour l'essentiel aux frais "
+        "d'investissement (bâti scolaire, équipement), de fonctionnement et "
+        "à la rémunération des agents territoriaux ». <strong>Ce sont "
+        "exactement les dépenses qui ne baissent pas quand les effectifs "
+        "baissent</strong> : un bâtiment à demi vide coûte ce qu'il "
+        "coûtait.</p>"
+        "<p>La part variable est donc bornée par le complément : de l'ordre "
+        "de 62 % au premier degré, 80 % au second. <strong "
+        "class=\"cle-texte\">Nous retenons 60 % pour les deux</strong>, "
+        "c'est-à-dire le bas de la fourchette, parce qu'une partie de ce que "
+        "finance l'État ne varie pas davantage avec les effectifs — "
+        "administration, inspection, services centraux. L'hypothèse reste "
+        "une hypothèse, mais elle n'est plus une invention : elle est "
+        "encadrée par une décomposition publiée, et choisie du côté "
+        "prudent.</p>"
     )
     corps += g.tableau(
         "Ce que la démographie libère réellement d'ici 2035",
@@ -1497,13 +1544,14 @@ def chiffrage() -> str:
     corps += g.note(
         "<p>Il ne prouve pas que la réforme est finançable. Il établit "
         "qu'elle est <em>plausiblement</em> finançable à l'horizon d'une "
-        "décennie, sous <strong>deux</strong> hypothèses que nous avons "
-        "écrites en toutes lettres : l'écart de financement au second degré, "
-        "déduit des parts de budget publiées par la Cour des comptes, et la "
-        "part variable de la dépense, fixée à 60 % sans que nous puissions "
-        "l'étayer. Ni l'une ni l'autre n'est publiée telle quelle ; l'une "
-        "et l'autre peuvent être fausses. La seconde est la plus fragile, "
-        "et c'est par elle qu'il faut nous attaquer.</p>"
+        "décennie, sous deux hypothèses que nous avons écrites en toutes "
+        "lettres, et qui sont désormais l'une et l'autre encadrées par des "
+        "chiffres publiés : l'écart de financement au second degré, déduit "
+        "des parts de budget de la Cour des comptes, et la part variable de "
+        "la dépense, bornée par la décomposition du financement par niveau "
+        "de la DEPP. Encadrées n'est pas démontrées. Aucune des deux n'est "
+        "publiée telle quelle, et l'une comme l'autre peut être fausse : "
+        "ce sont les deux endroits par où nous attaquer.</p>"
         "<p>Il ne dit rien non plus des coûts de transition — systèmes "
         "d'information, double régime statutaire pendant vingt ans, "
         "accompagnement des établissements qui perdent des élèves. Ces "
@@ -1548,8 +1596,8 @@ def comparaisons() -> str:
              + v("danemark_financement"), "Encadrée",
              "Au-dessus de la moyenne OCDE"),
             ("Estonie", "Écoles publiques très autonomes",
-             "Interdite", v("estonie_pisa") + " en mathématiques, premier "
-             "rang européen"),
+             "Interdite",
+             v("estonie_pisa") + " en mathématiques, avec la Suisse"),
             ("Suède", "Intégral depuis " + v("suede_reforme") + ", y compris "
              "à but lucratif", "Files d'attente, de fait sélectives",
              "Ségrégation en hausse, notes gonflées, résultats en recul"),
@@ -1591,17 +1639,16 @@ def comparaisons() -> str:
 
     corps += "<h2 id=\"estonie\">Estonie : l'autonomie sans le marché</h2>"
     corps += (
-        f"<p>L'Estonie obtient {v('estonie_pisa')} en mathématiques aux "
-        "épreuves PISA 2022 : le premier rang européen, et le troisième rang "
-        "des pays de l'OCDE derrière le Japon et la Corée — avec une dépense "
-        "par élève inférieure à la française. Son école est pourtant très "
-        "majoritairement publique.</p>"
-        "<p>Un mot sur ce « premier rang européen », parce que nous nous "
-        "sommes imposé une règle et qu'elle vaut aussi contre nous : "
-        "l'Estonie devance la Suisse de deux points, <strong>un écart "
-        "inférieur à la marge d'erreur de l'enquête</strong>. Les deux pays "
-        "ne sont pas départagés, et c'est le niveau estonien qui nous "
-        "intéresse ici, non sa place sur un podium.</p>"
+        "<p>Au cycle PISA 2025, la DEPP relève qu'en Europe l'Estonie et "
+        "la Suisse obtiennent "
+        f"{v('estonie_pisa')} en culture mathématique — l'Estonie avec une "
+        "dépense par élève inférieure à la française. Son école est "
+        "pourtant très majoritairement publique.</p>"
+        "<p>Nous citons les deux pays ensemble, comme la DEPP, et nous ne "
+        "les départageons pas : au cycle précédent, deux points seulement "
+        "les séparaient, <strong>moins que la marge d'erreur de "
+        "l'enquête</strong>. C'est le niveau estonien qui nous intéresse "
+        "ici, non une place sur un podium.</p>"
         f"<p>Ce qu'elle a, et que nous n'avons pas : {v('estonie_recrutement')} "
         "des élèves sont dans un établissement dont le directeur recrute "
         "lui-même son équipe et répartit lui-même son enveloppe. Le cadre "
