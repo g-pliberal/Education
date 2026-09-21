@@ -21,7 +21,7 @@ RACINE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RACINE / "src"))
 
 from education import gabarit  # noqa: E402
-from education.donnees import CHIFFRES  # noqa: E402
+from education.donnees import CHIFFRES, FAITS  # noqa: E402
 from education.pages import PAGES  # noqa: E402
 
 # Les balises qui n'ont pas de fermeture : les compter comme ouvertes ferait
@@ -156,6 +156,37 @@ class TestChiffres(unittest.TestCase):
                 self.assertIn(
                     gabarit.typographie(gabarit.echapper(chiffre.source)), page)
                 self.assertIn(chiffre.annee, page)
+
+    def test_aucun_fait_inutilise(self) -> None:
+        """Un fait au registre qu'aucune page ne cite est un fait mort.
+
+        Même raison que pour les chiffres : il aurait l'air sourcé sur la
+        page « Sources » sans rien étayer nulle part.
+        """
+        for cle, f in FAITS.items():
+            with self.subTest(fait=cle):
+                self.assertIn(
+                    gabarit.typographie(gabarit.echapper(f.source)),
+                    gabarit.typographie(self.hors_sources))
+
+    def test_page_sources_porte_les_faits(self) -> None:
+        """Chaque fait figure sur la page « Sources », daté et attribué."""
+        page = self.pages["sources"]
+        for cle, f in FAITS.items():
+            with self.subTest(fait=cle):
+                self.assertIn(
+                    gabarit.typographie(gabarit.echapper(f.enonce))[:60], page)
+                self.assertIn(
+                    gabarit.typographie(gabarit.echapper(f.source)), page)
+                self.assertIn(f.annee, page)
+
+    def test_chaque_fait_a_une_source_datee(self) -> None:
+        for cle, f in FAITS.items():
+            with self.subTest(fait=cle):
+                self.assertTrue(f.enonce.strip())
+                self.assertTrue(f.source.strip())
+                self.assertRegex(f.annee, r"^\d{4}$")
+                self.assertTrue(f.url.startswith("https://"))
 
     def test_chaque_chiffre_a_une_source_datee(self) -> None:
         for cle, chiffre in CHIFFRES.items():

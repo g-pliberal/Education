@@ -51,7 +51,7 @@ dépôt dès qu'ils diffèrent de ce que le code produit
 ## Où vivent les choses
 
 ```
-src/education/donnees.py   les chiffres : valeur, année, source, adresse
+src/education/donnees.py   les chiffres et les faits, avec leur source
 src/education/gabarit.py   la feuille de style et les fragments HTML
 src/education/pages.py     le texte des huit pages
 scripts/construire_site.py écrit le site
@@ -71,6 +71,24 @@ document. Trois conséquences, et c'est pour elles que la règle existe :
    qui est construite à partir du même registre ;
 3. un chiffre que plus aucune page ne cite **fait échouer les tests** — sans
    quoi le site accumulerait des chiffres sourcés qui n'étayent plus rien.
+
+### La règle des faits
+
+La règle des chiffres ne protégeait que les nombres. Or une page peut citer
+tous ses chiffres et affirmer dans la même phrase qu'un rapport conclut ceci,
+ou qu'un décret a fait cela — affirmations qu'un lecteur ne peut pas vérifier,
+et que l'on défend mal après coup.
+
+Ces affirmations vivent donc au même endroit, dans `FAITS` : un énoncé, son
+année, son émetteur, l'adresse du document. Une page les cite par
+`_source("cle")`, qui rend le lien. Les mêmes contraintes que pour les
+chiffres s'appliquent : une clé inconnue casse la construction, un fait
+inutilisé fait échouer les tests, et chacun figure sur la page « Sources ».
+
+L'énoncé enregistré est ce que le document établit, **non ce qui arrangerait
+la page**. C'est la seule contrainte qui vaille : elle a déjà obligé à retirer
+une phrase qui faisait dire à une note du Conseil d'analyse économique
+l'inverse de son propre périmètre.
 
 ### La typographie
 
