@@ -38,7 +38,8 @@ def index() -> str:
                  v("timss_cm1_maths"),
                  "En mathématiques en CM1, contre "
                  f"{v('timss_cm1_maths_ue')} dans l'Union européenne : la "
-                 "France est dernière de l'Union."),
+                 "France est au dernier rang des pays de l'Union ayant "
+                 "participé."),
         g.Repere("Ce qu'il en reste à vingt ans",
                  v("jdc_difficultes"),
                  "des jeunes sont en difficulté de lecture à la Journée "
@@ -48,10 +49,12 @@ def index() -> str:
 
     corps += g.note(
         "<p><strong>Ce site en deux minutes.</strong> La France consacre à "
-        "son école un effort supérieur à la moyenne européenne et obtient des "
-        "résultats inférieurs à cette même moyenne. Ce n'est donc pas d'abord "
-        "une question d'argent : c'est une question de qui décide, de qui "
-        "rend des comptes, et de qui peut partir quand rien ne change.</p>"
+        "son école un effort comparable à celui de ses voisins, et le "
+        "répartit à contretemps : moins que la moyenne de l'OCDE par "
+        "écolier, un quart de plus par lycéen. Ses résultats, eux, sont "
+        "inférieurs à cette moyenne. Ce n'est donc pas d'abord une question "
+        "de montant : c'est une question de qui décide, de qui rend des "
+        "comptes, et de qui peut partir quand rien ne change.</p>"
         f'<p class="actions"><a class="bouton" href="{g.lien("proposition")}">'
         "Lire la proposition</a>"
         f'<a class="bouton second" href="{g.lien("resultats")}">Voir d\'abord '
@@ -61,13 +64,14 @@ def index() -> str:
 
     corps += "<h2>Le diagnostic en trois points</h2>"
     corps += g.points((
-        ("L'argent n'est pas le problème",
-         f"Avec {v('die_pib')} du produit intérieur brut, la France dépense "
-         "pour son école davantage que la moyenne des pays riches. Elle le "
-         "dépense mal : l'écolier reçoit "
-         f"{v('die_premier_degre')} quand l'élève de classe préparatoire en "
-         f"reçoit {v('die_cpge')} — un à deux, au profit de ceux qui "
-         "réussissent déjà."),
+        ("Le problème n'est pas le montant, c'est la répartition",
+         "Sur le périmètre comparable de l'OCDE, l'effort français est "
+         f"ordinaire : {v('ocde_pib_comparable')}. Mais la France dépense "
+         f"{v('ocde_elementaire_fr')} par écolier quand la moyenne de l'OCDE "
+         f"est de {v('ocde_elementaire_ocde')}, et {v('ocde_lycee_fr')} par "
+         f"lycéen quand cette moyenne est de {v('ocde_lycee_ocde')}. Nous "
+         "dépensons peu là où tout se joue, et beaucoup là où il est déjà "
+         "tard."),
         ("Le pilotage est le problème",
          f"{v('decisions_central')} des décisions d'un collège public se "
          f"prennent au niveau de l'État central, contre "
@@ -254,7 +258,8 @@ def resultats() -> str:
         ),
     )
 
-    corps += "<h2 id=\"timss\">TIMSS : dernière de l'Union européenne</h2>"
+    corps += ("<h2 id=\"timss\">TIMSS : au dernier rang des pays de "
+              "l'Union européenne évalués</h2>")
     corps += (
         "<p>PISA interroge des jeunes de quinze ans sur des compétences "
         "transversales. TIMSS fait l'inverse : elle évalue, en CM1 puis en "
@@ -264,7 +269,8 @@ def resultats() -> str:
         f"<p>En CM1, la France obtient {v('timss_cm1_maths')} en "
         f"mathématiques, contre {v('timss_cm1_maths_ue')} en moyenne dans "
         "l'Union européenne. <strong class=\"cle-texte\">C'est le dernier "
-        "rang de l'Union.</strong> "
+        "rang des pays de l'Union ayant participé à l'enquête</strong> — une "
+        "quinzaine d'États membres, les autres n'y participant pas. "
         f"{v('timss_cm1_seuil')} des élèves français de CM1 n'atteignent pas "
         "le niveau élémentaire : ils sortiront de l'école primaire sans les "
         "opérations. En sciences, "
@@ -352,9 +358,11 @@ def depense() -> str:
     corps = g.affiche(
         "Le constat · 2",
         "Où va l'argent de l'école.",
-        f"{v('die_montant')}, soit {v('die_pib')} de la richesse nationale, "
-        "et le premier budget de l'État. La question n'est pas de savoir si "
-        "c'est trop : c'est de savoir pourquoi cela produit si peu.",
+        f"{v('die_montant')} tous financeurs confondus, soit "
+        f"{v('die_pib')}. L'enseignement scolaire "
+        f"est, avec {v('budget_mission_pensions')}, le premier budget de "
+        "l'État. La question n'est pas de savoir si c'est trop : c'est de "
+        "savoir où cela va.",
     )
 
     corps += g.plan((
@@ -376,18 +384,45 @@ def depense() -> str:
                  "le premier budget de l'État."),
     ))
 
-    corps += "<h2 id=\"combien\">La France dépense plus que ses voisins</h2>"
+    corps += "<h2 id=\"combien\">Un effort ordinaire, réparti à contretemps</h2>"
     corps += (
         f"<p>La dépense intérieure d'éducation atteint {v('die_montant')} en "
-        f"2024, soit {v('die_pib')}. Ce niveau place la France au-dessus de "
-        "la moyenne des pays de l'OCDE. Le contraste avec les résultats de la "
-        f'page <a href="{g.lien("resultats")}">Résultats</a> est le fait '
-        "central de ce site : <strong class=\"cle-texte\">nous ne sommes pas "
-        "un pays qui dépense peu et obtient peu, mais un pays qui dépense "
-        "beaucoup et obtient peu</strong>.</p>"
-        "<p>Cela disqualifie la réponse habituelle — « il faut des moyens » — "
-        "comme réponse unique. Cela ne signifie pas que tout est bien "
-        "réparti. C'est même l'inverse.</p>"
+        f"2024, soit {v('die_pib')}. Ce chiffre est un agrégat français : il "
+        "compte tout ce que la nation consacre à l'éducation, cantines, "
+        "transports scolaires et formation continue compris. <strong>Il ne "
+        "se compare donc pas aux moyennes internationales, et nous ne le "
+        "comparons pas.</strong> Sur le périmètre retenu par l'OCDE — les "
+        "seuls établissements d'enseignement —, la France consacre "
+        f"{v('ocde_pib_comparable')} à son école et à son supérieur, ce qui "
+        "la situe dans la moyenne des pays comparables.</p>"
+        "<p>Rapportée à l'élève, cette dépense dit quelque chose de plus "
+        "précis, et de plus embarrassant, qu'un total.</p>"
+    )
+    corps += g.tableau(
+        "Dépense annuelle par élève, France et moyenne OCDE, en 2022 "
+        "(équivalents USD, à parité de pouvoir d'achat)",
+        ("Niveau", "France", "Moyenne OCDE", "Écart"),
+        (
+            ("Élémentaire", v("ocde_elementaire_fr"),
+             v("ocde_elementaire_ocde"), "−13 %"),
+            ("Collège", v("ocde_college_fr"), v("ocde_college_ocde"), "−5 %"),
+            ("Lycée", v("ocde_lycee_fr"), v("ocde_lycee_ocde"), "+24 %"),
+        ),
+        ("texte", "nombre", "nombre", "nombre"),
+    )
+    corps += (
+        "<p>Le fait central de ce site est là, et il est plus précis que le "
+        "slogan qu'on entend des deux côtés. <strong class=\"cle-texte\">La "
+        "France n'est pas un pays qui dépense trop pour son école : c'est un "
+        "pays qui dépense à contretemps</strong> — en dessous de la moyenne "
+        "de l'OCDE à l'école élémentaire, où tout se joue, et d'un quart "
+        "au-dessus au lycée, où il est déjà tard.</p>"
+        "<p>Cela retire sa force à la réponse habituelle — « il faut des "
+        "moyens » — prise comme réponse unique, sans la rendre absurde : au "
+        "primaire, le niveau de dépense est réellement bas, et nous "
+        "l'écrivons. Ce que ces chiffres désignent, c'est où prendre et où "
+        "mettre — ce qu'aucune enveloppe supplémentaire ne fait toute "
+        "seule.</p>"
     )
 
     corps += "<h2 id=\"repartition\">Un euro qui va d'abord aux grands</h2>"
@@ -969,7 +1004,8 @@ def comparaisons() -> str:
              "environ 75 %", "Encadrée",
              "Au-dessus de la moyenne OCDE"),
             ("Estonie", "Écoles publiques très autonomes",
-             "Interdite", v("estonie_pisa") + " en mathématiques"),
+             "Interdite", v("estonie_pisa") + " en mathématiques, premier "
+             "rang européen"),
             ("Suède", "Intégral depuis " + v("suede_reforme") + ", y compris "
              "à but lucratif", "Files d'attente, de fait sélectives",
              "Ségrégation en hausse, notes gonflées, résultats en recul"),
@@ -1011,10 +1047,17 @@ def comparaisons() -> str:
 
     corps += "<h2 id=\"estonie\">Estonie : l'autonomie sans le marché</h2>"
     corps += (
-        f"<p>L'Estonie est {v('estonie_pisa')} en mathématiques aux épreuves "
-        "PISA 2022, et troisième au niveau mondial — avec une dépense par "
-        "élève inférieure à la française. Son école est pourtant très "
+        f"<p>L'Estonie obtient {v('estonie_pisa')} en mathématiques aux "
+        "épreuves PISA 2022 : le premier rang européen, et le troisième rang "
+        "des pays de l'OCDE derrière le Japon et la Corée — avec une dépense "
+        "par élève inférieure à la française. Son école est pourtant très "
         "majoritairement publique.</p>"
+        "<p>Un mot sur ce « premier rang européen », parce que nous nous "
+        "sommes imposé une règle et qu'elle vaut aussi contre nous : "
+        "l'Estonie devance la Suisse de deux points, <strong>un écart "
+        "inférieur à la marge d'erreur de l'enquête</strong>. Les deux pays "
+        "ne sont pas départagés, et c'est le niveau estonien qui nous "
+        "intéresse ici, non sa place sur un podium.</p>"
         f"<p>Ce qu'elle a, et que nous n'avons pas : {v('estonie_recrutement')} "
         "des élèves sont dans un établissement dont le directeur recrute "
         "lui-même son équipe et répartit lui-même son enveloppe. Le cadre "
@@ -1172,13 +1215,21 @@ def objections() -> str:
     corps += g.section_cle(
         "moyens",
         "Il faudrait surtout donner plus de moyens.",
-        f"La France consacre {v('die_pib')} de son produit intérieur brut à "
-        "son école, au-dessus de la moyenne des pays riches, et obtient "
-        f"{v('timss_cm1_maths')} en mathématiques en CM1 quand l'Union "
-        f"européenne obtient {v('timss_cm1_maths_ue')}. Le dédoublement des "
-        f"classes, qui coûte {v('dedoublement_cout')}, a produit des effets "
-        "réels mais non persistants. Les moyens comptent ; ils ne "
-        "compensent pas une organisation qui empêche quiconque d'agir.",
+        "<strong>Objection partiellement fondée — et nous avons corrigé "
+        "notre propre argument sur ce point.</strong> Nous écrivions que la "
+        "France dépense plus que ses voisins. C'est faux là où cela compte "
+        f"le plus : par écolier, elle dépense {v('ocde_elementaire_fr')} "
+        f"contre {v('ocde_elementaire_ocde')} en moyenne dans l'OCDE. À ce "
+        "niveau, la demande de moyens est fondée — et c'est précisément là "
+        "que notre proposition redirige l'argent. Ce qui ne tient pas, c'est "
+        "la demande de moyens <em>en général</em> : au lycée, la France "
+        f"dépense {v('ocde_lycee_fr')} par élève contre "
+        f"{v('ocde_lycee_ocde')} dans l'OCDE, un quart de plus, pour des "
+        "résultats qui ne le sont pas. Et le dédoublement des classes, qui "
+        f"coûte {v('dedoublement_cout')}, a produit des effets réels mais "
+        "qui ne persistent pas. Les moyens comptent, et ils manquent au "
+        "primaire ; ailleurs, ils ne compensent pas une organisation qui "
+        "empêche quiconque d'agir.",
         "Voir la page « Dépense ».",
     )
 

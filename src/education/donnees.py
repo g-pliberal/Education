@@ -135,6 +135,42 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "2026", "Projet de loi de finances pour 2026",
        "https://www.budget.gouv.fr/",
        "Premier budget de l'État par le montant.", ("depense",)),
+    _c("ocde_pib_comparable", "5,4 % du PIB",
+       "Part du PIB consacrée aux établissements d'enseignement, de "
+       "l'élémentaire au supérieur, sur le périmètre retenu par l'OCDE — "
+       "plus étroit que la dépense intérieure d'éducation française.",
+       "2022", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
+       "La DIE française y ajoute notamment les cantines, les transports "
+       "scolaires et la formation continue : les deux chiffres ne se "
+       "comparent pas.", ("depense",)),
+    _c("ocde_elementaire_fr", "11 135 USD",
+       "Dépense annuelle par élève dans l'enseignement élémentaire en "
+       "France, en équivalents USD à parité de pouvoir d'achat.",
+       "2022", "OCDE, Regards sur l'éducation 2025, tableau C3.1", OCDE_RSE,
+       "Soit 13 % de moins que la moyenne de l'OCDE.", ("depense",)),
+    _c("ocde_elementaire_ocde", "12 730 USD",
+       "La même dépense, en moyenne dans l'OCDE.",
+       "2022", "OCDE, Regards sur l'éducation 2025, tableau C3.1", OCDE_RSE,
+       "", ("depense",)),
+    _c("ocde_college_fr", "13 622 USD",
+       "Dépense annuelle par élève dans le premier cycle du secondaire "
+       "(collège) en France.",
+       "2022", "OCDE, Regards sur l'éducation 2025, tableau C4.1", OCDE_RSE,
+       "Soit 5 % de moins que la moyenne de l'OCDE.", ("depense",)),
+    _c("ocde_college_ocde", "14 315 USD",
+       "La même dépense, en moyenne dans l'OCDE.",
+       "2022", "OCDE, Regards sur l'éducation 2025, tableau C4.1", OCDE_RSE,
+       "", ("depense",)),
+    _c("ocde_lycee_fr", "18 127 USD",
+       "Dépense annuelle par élève dans le second cycle du secondaire "
+       "(lycée) en France.",
+       "2022", "OCDE, Regards sur l'éducation 2025, tableau C4.1", OCDE_RSE,
+       "Soit 24 % de plus que la moyenne de l'OCDE : c'est le seul niveau où "
+       "la France dépense nettement plus que ses voisins.", ("depense",)),
+    _c("ocde_lycee_ocde", "14 562 USD",
+       "La même dépense, en moyenne dans l'OCDE.",
+       "2022", "OCDE, Regards sur l'éducation 2025, tableau C4.1", OCDE_RSE,
+       "", ("depense",)),
     _c("dedoublement_cout", "800 M€ par an",
        "Coût annuel du dédoublement des classes de CP et CE1 en éducation "
        "prioritaire, pour 16 000 équivalents temps plein.",
@@ -180,8 +216,9 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
     _c("timss_cm1_maths", "484 points",
        "Score moyen des élèves français de CM1 en mathématiques (TIMSS).",
        "2023", "IEA / DEPP", DEPP_TIMSS,
-       "Moyenne de l'Union européenne : 524 points. La France est dernière "
-       "de l'Union.", ("resultats",)),
+       "Moyenne de l'Union européenne : 524 points. La France est au dernier "
+       "rang des pays de l'Union européenne ayant participé à l'enquête — "
+       "une quinzaine d'États membres y participent.", ("resultats",)),
     _c("timss_cm1_maths_ue", "524 points",
        "Moyenne de l'Union européenne en mathématiques en CM1 (TIMSS).",
        "2023", "IEA / DEPP", DEPP_TIMSS, "", ("resultats",)),
@@ -317,12 +354,16 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "1917", "Constitution néerlandaise, article 23", GRONDWET,
        "Plus d'un siècle de liberté scolaire financée, dans un pays qui n'a "
        "pas cessé d'être un État social.", ("comparaisons",)),
-    _c("estonie_pisa", "1re d'Europe",
-       "Place de l'Estonie en mathématiques parmi les pays européens (PISA "
-       "2022), 3e au niveau mondial.",
+    _c("estonie_pisa", "510 points",
+       "Score de l'Estonie en mathématiques (PISA 2022) : premier rang "
+       "européen, et troisième rang des pays de l'OCDE derrière le Japon et "
+       "la Corée.",
        "2022", "OCDE, PISA 2022",
        "https://www.oecd.org/en/about/programmes/pisa.html",
-       "Avec une dépense par élève inférieure à celle de la France.",
+       "Deux points devant la Suisse (508) : l'écart est inférieur à la "
+       "marge d'erreur de l'enquête, et nous ne le présentons donc pas "
+       "comme un classement. La dépense estonienne par élève est inférieure "
+       "à la française.",
        ("comparaisons",)),
     _c("estonie_recrutement", "94 %",
        "Part des élèves estoniens dont le chef d'établissement recrute "
