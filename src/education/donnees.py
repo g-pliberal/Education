@@ -1,0 +1,402 @@
+"""Les chiffres du site, et d'où ils viennent.
+
+Un seul endroit. Une page qui cite « 197,1 Md€ » ne l'écrit pas : elle
+demande `CHIFFRES["die_montant"]`, qui porte la valeur, l'année, la source et
+son adresse. La page « Sources » est construite à partir de ce même registre,
+si bien qu'aucun chiffre du site ne peut y manquer — et qu'un chiffre retiré
+d'une page reste visible ici tant qu'on ne l'a pas retiré du registre.
+
+Deux tests tiennent la promesse (`tests/test_site.py`) : aucun chiffre du
+registre ne peut rester inutilisé, et chacun doit apparaître sur la page
+« Sources » avec son année et son émetteur. Une promesse de méthode qui n'est
+pas vérifiée n'est qu'un paragraphe.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+
+
+@dataclass(frozen=True)
+class Chiffre:
+    """Un chiffre publiable : sa valeur, ce qu'elle mesure, et sa provenance.
+
+    `texte` est la forme telle qu'elle s'écrit dans une phrase — espaces
+    insécables comprises. Le site n'en calcule aucune : les sources publient
+    des agrégats, pas des séries, et reformater à la volée un nombre qu'on n'a
+    pas recalculé soi-même donne l'illusion d'un modèle là où il n'y a qu'une
+    citation.
+    """
+
+    cle: str
+    texte: str
+    libelle: str
+    annee: str
+    source: str
+    url: str
+    precision: str = ""
+    themes: tuple[str, ...] = field(default_factory=tuple)
+
+
+def _c(cle: str, texte: str, libelle: str, annee: str, source: str, url: str,
+       precision: str = "", themes: tuple[str, ...] = ()) -> Chiffre:
+    return Chiffre(cle, texte, libelle, annee, source, url, precision, themes)
+
+
+# Les adresses des sources, nommées une fois : une source citée par douze
+# chiffres ne doit pas pouvoir pourrir en douze endroits.
+DEPP_DIE = ("https://www.education.gouv.fr/sites/default/files/2025-09/"
+            "depp-ni-2025-52-442155.pdf")
+DEPP_CHIFFRES = ("https://www.education.gouv.fr/depp/"
+                 "l-education-nationale-en-chiffres-edition-2026-505326")
+DEPP_PISA = ("https://www.education.gouv.fr/depp/"
+             "pisa-2022-culture-scientifique-comprehension-de-l-ecrit-et-vie-de-l-eleve-380208")
+DEPP_TIMSS = ("https://www.education.gouv.fr/"
+              "timss-2023-en-cm1-les-resultats-en-mathematiques-et-en-sciences-restent-"
+              "stables-en-france-sous-la-415946")
+DEPP_PIRLS = ("https://www.education.gouv.fr/depp/"
+              "pirls-2021-la-france-stabilise-ses-resultats-contrairement-aux-autres-"
+              "pays-europeens-majoritairement-452301")
+DEPP_JDC = ("https://www.education.gouv.fr/depp/"
+            "journee-defense-et-citoyennete-2024-un-jeune-francais-sur-vingt-en-"
+            "situation-d-illettrisme-469313")
+OCDE_RSE = ("https://www.oecd.org/content/dam/oecd/fr/publications/reports/2025/09/"
+            "education-at-a-glance-2025-country-notes_9749f4ff/france_0639c7fb/"
+            "aca6dceb-fr.pdf")
+OCDE_AUTONOMIE = "https://www.oecd.org/en/topics/sub-issues/school-autonomy.html"
+COUR_PRIVE = ("https://www.ccomptes.fr/sites/default/files/2023-10/"
+              "20230601-enseignement-prive-sous-contrat.pdf")
+CAE_EDUCATION = "https://cae-eco.fr/static/pdf/cae084-education-250514.pdf"
+DEPP_DEMOGRAPHIE = ("https://www.education.gouv.fr/"
+                    "demographie-scolaire-le-ministere-publie-pour-la-premiere-fois-des-"
+                    "projections-d-effectifs-d-eleves-504392")
+VIE_IDEES_DEDOUBLEMENT = "https://laviedesidees.fr/Le-dedoublement-des-classes-de-CP-et-CE1-quel-bilan"
+IFAU_SUEDE = ("https://www.ifau.se/globalassets/pdf/se/2015/"
+              "wp2015-08-School-choice-and-segregation.pdf")
+GRONDWET = "https://wetten.overheid.nl/BWBR0001840/"
+
+
+CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
+
+    # -- ce que l'école coûte -------------------------------------------------
+    _c("die_montant", "197,1 Md€",
+       "Dépense intérieure d'éducation : tout ce que la France consacre à son "
+       "système éducatif, du préélémentaire au supérieur, tous financeurs "
+       "confondus.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE,
+       "En hausse de 2,8 Md€ en euros constants sur un an (+1,4 %).",
+       ("depense",)),
+    _c("die_pib", "6,8 % du PIB",
+       "Part de la richesse nationale consacrée à l'éducation.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE,
+       "", ("depense",)),
+    _c("die_par_eleve", "10 920 €",
+       "Dépense moyenne par élève ou étudiant, apprentissage compris.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
+    _c("die_premier_degre", "9 080 €",
+       "Dépense moyenne par écolier (premier degré).",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
+    _c("die_college", "10 450 €",
+       "Dépense moyenne par collégien.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
+    _c("die_lycee_general", "13 020 €",
+       "Dépense moyenne par lycéen de l'enseignement général et technologique.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
+    _c("die_lycee_pro", "14 700 €",
+       "Dépense moyenne par lycéen de l'enseignement professionnel.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
+    _c("die_universite", "12 460 €",
+       "Dépense moyenne par étudiant à l'université.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
+    _c("die_cpge", "19 070 €",
+       "Dépense moyenne par élève de classe préparatoire aux grandes écoles.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE,
+       "À comparer aux 9 080 € de l'écolier : l'écart est de un à deux.",
+       ("depense",)),
+    _c("die_etat", "55 %",
+       "Part de l'État dans le financement de la dépense d'éducation.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE,
+       "Devant les collectivités (23 %), les entreprises (10 %) et les "
+       "ménages (8 %).",
+       ("depense",)),
+    _c("die_collectivites", "23 %",
+       "Part des collectivités territoriales dans le financement.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
+    _c("die_menages", "8 %",
+       "Part des ménages dans le financement de la dépense d'éducation.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
+    _c("budget_mission", "64,5 Md€",
+       "Crédits de la mission « Enseignement scolaire » hors pensions.",
+       "2026", "Projet de loi de finances pour 2026",
+       "https://www.budget.gouv.fr/", "", ("depense",)),
+    _c("budget_mission_pensions", "89,6 Md€",
+       "Crédits de la mission « Enseignement scolaire », compte d'affectation "
+       "spéciale « Pensions » compris.",
+       "2026", "Projet de loi de finances pour 2026",
+       "https://www.budget.gouv.fr/",
+       "Premier budget de l'État par le montant.", ("depense",)),
+    _c("dedoublement_cout", "800 M€ par an",
+       "Coût annuel du dédoublement des classes de CP et CE1 en éducation "
+       "prioritaire, pour 16 000 équivalents temps plein.",
+       "2023", "Cour des comptes, cité par La Vie des idées",
+       VIE_IDEES_DEDOUBLEMENT,
+       "Effets positifs mesurés à court terme, qui ne persistent pas au-delà "
+       "du CP.", ("depense", "reformes")),
+
+    # -- ce que l'école produit -----------------------------------------------
+    _c("pisa_maths", "474 points",
+       "Score moyen des élèves français de 15 ans en mathématiques (PISA).",
+       "2022", "OCDE / DEPP", DEPP_PISA,
+       "Moyenne OCDE : 472 points.", ("resultats",)),
+    _c("pisa_maths_ocde", "472 points",
+       "Moyenne OCDE en mathématiques (PISA).",
+       "2022", "OCDE / DEPP", DEPP_PISA, "", ("resultats",)),
+    _c("pisa_maths_chute", "−21 points",
+       "Recul du score français en mathématiques entre PISA 2018 et PISA 2022.",
+       "2022", "OCDE / DEPP", DEPP_PISA,
+       "La plus forte baisse jamais enregistrée par la France dans cette "
+       "enquête.", ("resultats",)),
+    _c("pisa_lecture", "474 points",
+       "Score moyen en compréhension de l'écrit (PISA).",
+       "2022", "OCDE / DEPP", DEPP_PISA,
+       "Moyenne OCDE : 476 points. Recul de 19 points depuis 2018.",
+       ("resultats",)),
+    _c("pisa_sciences", "487 points",
+       "Score moyen en culture scientifique (PISA).",
+       "2022", "OCDE / DEPP", DEPP_PISA,
+       "Moyenne OCDE : 485 points. Stable depuis 2018.", ("resultats",)),
+    _c("pisa_faibles", "29 %",
+       "Part des élèves français de 15 ans sous le niveau 2 en mathématiques, "
+       "c'est-à-dire incapables d'appliquer une procédure simple à une "
+       "situation qui n'a pas été apprise telle quelle.",
+       "2022", "OCDE / DEPP", DEPP_PISA,
+       "Ils étaient 21 % en 2018.", ("resultats",)),
+    _c("pisa_ecart_social", "113 points",
+       "Écart de score en mathématiques entre les élèves français les plus "
+       "favorisés et les plus défavorisés.",
+       "2022", "OCDE / DEPP", DEPP_PISA,
+       "La France reste l'un des pays de l'OCDE où l'origine sociale pèse le "
+       "plus lourd sur les résultats.", ("resultats", "inegalites")),
+    _c("timss_cm1_maths", "484 points",
+       "Score moyen des élèves français de CM1 en mathématiques (TIMSS).",
+       "2023", "IEA / DEPP", DEPP_TIMSS,
+       "Moyenne de l'Union européenne : 524 points. La France est dernière "
+       "de l'Union.", ("resultats",)),
+    _c("timss_cm1_maths_ue", "524 points",
+       "Moyenne de l'Union européenne en mathématiques en CM1 (TIMSS).",
+       "2023", "IEA / DEPP", DEPP_TIMSS, "", ("resultats",)),
+    _c("timss_cm1_sciences", "488 points",
+       "Score moyen des élèves français de CM1 en sciences (TIMSS).",
+       "2023", "IEA / DEPP", DEPP_TIMSS,
+       "Moyenne de l'Union européenne : 518 points.", ("resultats",)),
+    _c("timss_quatrieme_maths", "479 points",
+       "Score moyen des élèves français de quatrième en mathématiques (TIMSS).",
+       "2023", "IEA / DEPP", DEPP_TIMSS,
+       "Moyenne des pays de l'Union européenne et de l'OCDE participants : "
+       "507 points.", ("resultats",)),
+    _c("timss_cm1_seuil", "15 %",
+       "Part des élèves français de CM1 qui n'atteignent pas le niveau "
+       "élémentaire en mathématiques (TIMSS).",
+       "2023", "IEA / DEPP", DEPP_TIMSS, "", ("resultats",)),
+    _c("pirls", "514 points",
+       "Score moyen des élèves français de CM1 en compréhension de l'écrit "
+       "(PIRLS).",
+       "2021", "IEA / DEPP", DEPP_PIRLS,
+       "Moyenne européenne : 527 points. Le score français est stable après "
+       "quinze ans de baisse.", ("resultats",)),
+    _c("jdc_difficultes", "13 %",
+       "Part des jeunes Français de 16 à 25 ans en difficulté de lecture, "
+       "mesurée à la Journée défense et citoyenneté.",
+       "2024", "DEPP, Journée défense et citoyenneté", DEPP_JDC,
+       "Sur 843 500 jeunes testés.", ("resultats",)),
+    _c("jdc_illettrisme", "6 %",
+       "Part des jeunes considérés en situation d'illettrisme à la Journée "
+       "défense et citoyenneté.",
+       "2024", "DEPP, Journée défense et citoyenneté", DEPP_JDC,
+       "Un jeune sur vingt, après au moins dix ans d'école obligatoire.",
+       ("resultats",)),
+
+    # -- ce que l'école emploie -----------------------------------------------
+    _c("eleves_premier_degre", "6,15 millions",
+       "Élèves du premier degré, public et privé sous contrat.",
+       "2026", "DEPP, L'éducation nationale en chiffres", DEPP_CHIFFRES,
+       "Dont 86,4 % dans le secteur public.", ("moyens",)),
+    _c("eleves_second_degre", "5,62 millions",
+       "Élèves du second degré, public et privé sous contrat.",
+       "2026", "DEPP, L'éducation nationale en chiffres", DEPP_CHIFFRES,
+       "Dont 78,8 % dans le secteur public.", ("moyens",)),
+    _c("enseignants_public", "711 600",
+       "Enseignants du secteur public.",
+       "2026", "DEPP, L'éducation nationale en chiffres", DEPP_CHIFFRES,
+       "", ("moyens",)),
+    _c("enseignants_prive", "139 900",
+       "Enseignants du privé sous contrat, rémunérés par l'État.",
+       "2026", "DEPP, L'éducation nationale en chiffres", DEPP_CHIFFRES,
+       "", ("moyens",)),
+    _c("demographie", "1,7 million d'élèves en moins",
+       "Baisse attendue des effectifs scolaires d'ici 2035.",
+       "2026", "DEPP, projections démographiques", DEPP_DEMOGRAPHIE,
+       "À dépense constante, c'est un desserrement massif — ou une économie "
+       "silencieuse.", ("moyens",)),
+    _c("salaire_ecart_elementaire", "26 %",
+       "Écart entre le salaire effectif d'un professeur des écoles français et "
+       "celui d'un actif diplômé du supérieur travaillant à temps plein.",
+       "2024", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
+       "Moyenne OCDE : 17 %.", ("moyens", "enseignants")),
+    _c("salaire_ecart_college", "18 %",
+       "Le même écart pour un enseignant de collège.",
+       "2024", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
+       "Moyenne OCDE : 13 %.", ("moyens", "enseignants")),
+    _c("heures_elementaire", "864 heures",
+       "Heures d'enseignement obligatoire par an dans l'élémentaire en France.",
+       "2025", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
+       "Moyenne OCDE : 804 heures. La France enseigne plus longtemps, sur "
+       "moins de jours.", ("moyens",)),
+    _c("heures_college", "973 heures",
+       "Heures d'enseignement obligatoire par an au collège en France.",
+       "2025", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
+       "Moyenne OCDE : 909 heures.", ("moyens",)),
+    _c("taille_classe", "21,6 élèves",
+       "Taille moyenne d'une classe élémentaire en France.",
+       "2025", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
+       "Moyenne OCDE : 21 élèves. En baisse de près de deux élèves depuis "
+       "2013.", ("moyens",)),
+
+    # -- qui décide -----------------------------------------------------------
+    _c("decisions_central", "55 %",
+       "Part des décisions prises au niveau de l'État central dans le premier "
+       "cycle du secondaire public français.",
+       "2018", "OCDE, autonomie des établissements", OCDE_AUTONOMIE,
+       "Moyenne OCDE : 24 %.", ("gouvernance",)),
+    _c("decisions_central_ocde", "24 %",
+       "La même part, en moyenne dans l'OCDE.",
+       "2018", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "", ("gouvernance",)),
+    _c("decisions_etablissement", "10 %",
+       "Part des décisions prises au niveau de l'établissement en France.",
+       "2018", "OCDE, autonomie des établissements", OCDE_AUTONOMIE,
+       "Dont 2 % seulement en pleine autonomie ; le reste s'exerce dans un "
+       "cadre fixé plus haut.", ("gouvernance",)),
+    _c("recrutement_france", "10 %",
+       "Part des élèves français dont le chef d'établissement a la "
+       "responsabilité principale du recrutement des enseignants.",
+       "2022", "OCDE, autonomie des établissements", OCDE_AUTONOMIE,
+       "Moyenne OCDE : 60 %. Estonie : 94 %. Royaume-Uni : 81 %. "
+       "Pays-Bas : 64 %.", ("gouvernance",)),
+    _c("recrutement_ocde", "60 %",
+       "La même part, en moyenne dans l'OCDE.",
+       "2022", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "", ("gouvernance",)),
+    _c("prive_premier_degre", "13,6 %",
+       "Part des élèves du premier degré scolarisés dans le privé sous "
+       "contrat.",
+       "2026", "DEPP, L'éducation nationale en chiffres", DEPP_CHIFFRES,
+       "", ("gouvernance", "liberte")),
+    _c("prive_second_degre", "21,2 %",
+       "Part des élèves du second degré scolarisés dans le privé sous contrat.",
+       "2026", "DEPP, L'éducation nationale en chiffres", DEPP_CHIFFRES,
+       "", ("gouvernance", "liberte")),
+    _c("prive_catholique", "97 %",
+       "Part des établissements privés sous contrat relevant de "
+       "l'enseignement catholique.",
+       "2023", "Cour des comptes", COUR_PRIVE,
+       "La « liberté de choix » française est donc, en pratique, le choix "
+       "entre l'école publique de son quartier et une école confessionnelle.",
+       ("gouvernance", "liberte")),
+
+    # -- ailleurs -------------------------------------------------------------
+    _c("danemark_prive", "15 à 16 %",
+       "Part des élèves danois scolarisés dans une école libre (friskole) ou "
+       "privée.",
+       "2024", "Réseau Canopé, fiche Danemark",
+       "https://www.reseau-canope.fr/fileadmin/user_upload/Projets/"
+       "Ecoles-deurope/Focus8_Danemark.pdf",
+       "L'État finance environ 75 % du coût ; le reste est à la charge des "
+       "familles, avec des barèmes sociaux.", ("comparaisons",)),
+    _c("paysbas_article23", "1917",
+       "Année où les Pays-Bas ont inscrit dans leur Constitution le "
+       "financement égal des écoles publiques et privées (article 23).",
+       "1917", "Constitution néerlandaise, article 23", GRONDWET,
+       "Plus d'un siècle de liberté scolaire financée, dans un pays qui n'a "
+       "pas cessé d'être un État social.", ("comparaisons",)),
+    _c("estonie_pisa", "1re d'Europe",
+       "Place de l'Estonie en mathématiques parmi les pays européens (PISA "
+       "2022), 3e au niveau mondial.",
+       "2022", "OCDE, PISA 2022",
+       "https://www.oecd.org/en/about/programmes/pisa.html",
+       "Avec une dépense par élève inférieure à celle de la France.",
+       ("comparaisons",)),
+    _c("estonie_recrutement", "94 %",
+       "Part des élèves estoniens dont le chef d'établissement recrute "
+       "lui-même les enseignants.",
+       "2022", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "", ("comparaisons",)),
+    _c("suede_reforme", "1992",
+       "Année de la réforme suédoise des friskolor : financement public à "
+       "l'élève, ouvert aux établissements privés à but lucratif.",
+       "1992", "IFAU, School choice and segregation (2015)", IFAU_SUEDE,
+       "Le contre-exemple dont ce programme tire ses garde-fous. La "
+       "ségrégation scolaire suédoise a augmenté ; la part qu'en explique le "
+       "libre choix est, selon l'IFAU, modeste au regard de la ségrégation "
+       "résidentielle.", ("comparaisons",)),
+)}
+
+
+# Les thèmes, dans l'ordre où la page « Sources » les présente. Un chiffre
+# porte parfois deux thèmes — le premier de cette liste qu'il porte décide de
+# l'endroit où il est rangé, pour qu'aucun ne figure deux fois.
+THEMES: tuple[tuple[str, str], ...] = (
+    ("resultats", "Ce que l'école produit"),
+    ("depense", "Ce que l'école coûte"),
+    ("moyens", "Les moyens et les effectifs"),
+    ("gouvernance", "Qui décide"),
+    ("comparaisons", "Les autres pays"),
+)
+
+
+def par_theme() -> list[tuple[str, tuple[Chiffre, ...]]]:
+    """Les chiffres rangés par thème, chacun dans un seul.
+
+    Le rangement suit l'ordre de `THEMES` : c'est l'ordre de la page, et il
+    sert aussi d'arbitre quand un chiffre en porte plusieurs.
+    """
+    restants = dict(CHIFFRES)
+    groupes: list[tuple[str, tuple[Chiffre, ...]]] = []
+    for cle_theme, intitule in THEMES:
+        retenus = tuple(c for c in restants.values() if cle_theme in c.themes)
+        for chiffre in retenus:
+            del restants[chiffre.cle]
+        if retenus:
+            groupes.append((intitule, retenus))
+    if restants:  # un thème oublié ne doit pas faire disparaître un chiffre
+        groupes.append(("Autres", tuple(restants.values())))
+    return groupes
+
+
+@dataclass(frozen=True)
+class Source:
+    """Une source, telle qu'elle s'affiche sur la page « Sources »."""
+
+    nom: str
+    url: str
+    chiffres: tuple[Chiffre, ...]
+
+
+def sources() -> list[Source]:
+    """Les sources du site, groupées, dans l'ordre de leur premier usage."""
+    ordre: list[str] = []
+    par_nom: dict[str, list[Chiffre]] = {}
+    urls: dict[str, str] = {}
+    for chiffre in CHIFFRES.values():
+        if chiffre.source not in par_nom:
+            ordre.append(chiffre.source)
+            par_nom[chiffre.source] = []
+            urls[chiffre.source] = chiffre.url
+        par_nom[chiffre.source].append(chiffre)
+    return [Source(nom, urls[nom], tuple(par_nom[nom])) for nom in ordre]
+
+
+def valeur(cle: str) -> str:
+    """Le texte d'un chiffre, pour l'insérer dans une phrase.
+
+    Lève `KeyError` sur une clé inconnue : une faute de frappe dans un nom de
+    chiffre doit casser la construction, et non écrire une phrase trouée.
+    """
+    return CHIFFRES[cle].texte

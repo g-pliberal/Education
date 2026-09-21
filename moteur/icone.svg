@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img"
+     aria-label="École : le programme libéral">
+  <!-- Le carré de la charte, et un livre ouvert posé sur la même grille de 24
+       au même trait de 2 que l'icône du simulateur de retraite du parti. Un
+       fichier, et non un emoji : un emoji n'a ni la même forme ni la même
+       taille d'un système à l'autre, et se brouille en petit. -->
+  <rect width="32" height="32" rx="7" fill="#0b3d3a"/>
+  <g transform="translate(4 4)" fill="none" stroke="#e9c53d" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 6.5C10.5 5 8.5 4.5 6 4.5H3v13h3c2.5 0 4.5 0.5 6 2" />
+    <path d="M12 6.5C13.5 5 15.5 4.5 18 4.5h3v13h-3c-2.5 0-4.5 0.5-6 2" />
+    <path d="M12 6.5v13" />
+  </g>
+</svg>

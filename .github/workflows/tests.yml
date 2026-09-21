@@ -1,0 +1,23 @@
+# Ce que la machine vérifie à chaque poussée : que le site publié est bien
+# celui que le code produit, et que les promesses du dépôt tiennent encore.
+# Sans cela, une correction apportée au code et non reconstruite laisserait en
+# ligne une page périmée — et le HTML publié est précisément ce qu'on ne relit
+# pas.
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Les pages publiées sont à jour
+        run: python3 scripts/construire_site.py --verifier
+      - name: Les tests
+        run: python3 -m unittest discover -s tests -v
