@@ -74,6 +74,9 @@ VIE_IDEES_DEDOUBLEMENT = "https://laviedesidees.fr/Le-dedoublement-des-classes-d
 IFAU_SUEDE = ("https://www.ifau.se/globalassets/pdf/se/2015/"
               "wp2015-08-School-choice-and-segregation.pdf")
 GRONDWET = "https://wetten.overheid.nl/BWBR0001840/"
+IGESR_GROUPES = ("https://www.ih2ef.gouv.fr/mise-en-place-des-groupes-de-"
+                 "besoins-en-francais-et-mathematiques-rapport-de-ligesr")
+DECRET_GROUPES = "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053652587"
 
 
 CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
@@ -179,6 +182,37 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "Effets positifs mesurés à court terme, qui ne persistent pas au-delà "
        "du CP.", ("depense", "reformes")),
 
+    _c("die_hausse", "+1,4 %",
+       "Hausse de la dépense intérieure d'éducation sur un an, en euros "
+       "constants.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE,
+       "Soit 2,8 Md€.", ("depense",)),
+    _c("die_entreprises", "10 %",
+       "Part des entreprises dans le financement de la dépense d'éducation.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
+    _c("die_autres_apu", "4 %",
+       "Part des autres administrations publiques dans le financement.",
+       "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
+    _c("ocde_ecart_elementaire", "13 % de moins",
+       "Écart entre la dépense française par élève de l'élémentaire et la "
+       "moyenne de l'OCDE.",
+       "2022", "OCDE, Regards sur l'éducation 2025, tableau C3.1", OCDE_RSE,
+       "", ("depense",)),
+    _c("ocde_ecart_college", "5 % de moins",
+       "Le même écart pour le premier cycle du secondaire.",
+       "2022", "OCDE, Regards sur l'éducation 2025, tableau C4.1", OCDE_RSE,
+       "", ("depense",)),
+    _c("ocde_ecart_lycee", "24 % de plus",
+       "Le même écart pour le second cycle du secondaire.",
+       "2022", "OCDE, Regards sur l'éducation 2025, tableau C4.1", OCDE_RSE,
+       "Seul niveau où la France dépense nettement plus que la moyenne.",
+       ("depense",)),
+    _c("dedoublement_etp", "16 000",
+       "Équivalents temps plein mobilisés par le dédoublement des classes de "
+       "CP et CE1 en éducation prioritaire.",
+       "2023", "Cour des comptes, cité par La Vie des idées",
+       VIE_IDEES_DEDOUBLEMENT, "", ("depense",)),
+
     # -- ce que l'école produit -----------------------------------------------
     _c("pisa_maths", "474 points",
        "Score moyen des élèves français de 15 ans en mathématiques (PISA).",
@@ -253,6 +287,38 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "Un jeune sur vingt, après au moins dix ans d'école obligatoire.",
        ("resultats",)),
 
+    _c("pisa_faibles_2018", "21 %",
+       "Part des élèves français de 15 ans sous le niveau 2 en mathématiques "
+       "lors de l'enquête précédente.",
+       "2018", "OCDE / DEPP", DEPP_PISA,
+       "Ils sont 29 % en 2022 : huit points de plus en quatre ans.",
+       ("resultats",)),
+    _c("pisa_lecture_ocde", "476 points",
+       "Moyenne OCDE en compréhension de l'écrit (PISA).",
+       "2022", "OCDE / DEPP", DEPP_PISA, "", ("resultats",)),
+    _c("pisa_lecture_chute", "−19 points",
+       "Recul du score français en compréhension de l'écrit entre PISA 2018 "
+       "et PISA 2022.",
+       "2022", "OCDE / DEPP", DEPP_PISA, "", ("resultats",)),
+    _c("pisa_sciences_ocde", "485 points",
+       "Moyenne OCDE en culture scientifique (PISA).",
+       "2022", "OCDE / DEPP", DEPP_PISA, "", ("resultats",)),
+    _c("timss_cm1_sciences_ue", "518 points",
+       "Moyenne de l'Union européenne en sciences en CM1 (TIMSS).",
+       "2023", "IEA / DEPP", DEPP_TIMSS, "", ("resultats",)),
+    _c("timss_quatrieme_maths_ue", "507 points",
+       "Moyenne des pays de l'Union européenne et de l'OCDE participants, en "
+       "mathématiques en quatrième (TIMSS).",
+       "2023", "IEA / DEPP", DEPP_TIMSS, "", ("resultats",)),
+    _c("pirls_ue", "527 points",
+       "Moyenne européenne en compréhension de l'écrit en CM1 (PIRLS).",
+       "2021", "IEA / DEPP", DEPP_PIRLS, "", ("resultats",)),
+    _c("jdc_testes", "843 500",
+       "Jeunes testés à la Journée défense et citoyenneté, soit presque une "
+       "classe d'âge entière.",
+       "2024", "DEPP, Journée défense et citoyenneté", DEPP_JDC, "",
+       ("resultats",)),
+
     # -- ce que l'école emploie -----------------------------------------------
     _c("eleves_premier_degre", "6,15 millions",
        "Élèves du premier degré, public et privé sous contrat.",
@@ -299,6 +365,24 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "Moyenne OCDE : 21 élèves. En baisse de près de deux élèves depuis "
        "2013.", ("moyens",)),
 
+    _c("salaire_ecart_elementaire_ocde", "17 %",
+       "Écart moyen, dans l'OCDE, entre le salaire d'un enseignant du "
+       "primaire et celui des autres diplômés du supérieur.",
+       "2024", "OCDE, Regards sur l'éducation 2025", OCDE_RSE, "",
+       ("moyens", "enseignants")),
+    _c("salaire_ecart_college_ocde", "13 %",
+       "Le même écart moyen dans l'OCDE, au collège.",
+       "2024", "OCDE, Regards sur l'éducation 2025", OCDE_RSE, "",
+       ("moyens", "enseignants")),
+    _c("heures_elementaire_ocde", "804 heures",
+       "Heures d'enseignement obligatoire par an dans l'élémentaire, en "
+       "moyenne dans l'OCDE.",
+       "2025", "OCDE, Regards sur l'éducation 2025", OCDE_RSE, "", ("moyens",)),
+    _c("heures_college_ocde", "909 heures",
+       "Heures d'enseignement obligatoire par an au collège, en moyenne dans "
+       "l'OCDE.",
+       "2025", "OCDE, Regards sur l'éducation 2025", OCDE_RSE, "", ("moyens",)),
+
     # -- qui décide -----------------------------------------------------------
     _c("decisions_central", "55 %",
        "Part des décisions prises au niveau de l'État central dans le premier "
@@ -339,7 +423,29 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "entre l'école publique de son quartier et une école confessionnelle.",
        ("gouvernance", "liberte")),
 
+    _c("decisions_pleine_autonomie", "2 %",
+       "Part des décisions prises en pleine autonomie par l'établissement en "
+       "France ; le reste des décisions locales s'exerce dans un cadre fixé "
+       "plus haut.",
+       "2018", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "",
+       ("gouvernance",)),
+    _c("recrutement_paysbas", "64 %",
+       "Part des élèves néerlandais dont le chef d'établissement recrute "
+       "les enseignants.",
+       "2022", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "",
+       ("gouvernance",)),
+    _c("recrutement_royaume_uni", "81 %",
+       "La même part au Royaume-Uni.",
+       "2022", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "",
+       ("gouvernance",)),
+
     # -- ailleurs -------------------------------------------------------------
+    _c("danemark_financement", "environ 75 %",
+       "Part du coût d'une école libre danoise prise en charge par l'État ; "
+       "le reste est à la charge des familles, avec des barèmes sociaux.",
+       "2024", "Réseau Canopé, fiche Danemark",
+       "https://www.reseau-canope.fr/fileadmin/user_upload/Projets/"
+       "Ecoles-deurope/Focus8_Danemark.pdf", "", ("comparaisons",)),
     _c("danemark_prive", "15 à 16 %",
        "Part des élèves danois scolarisés dans une école libre (friskole) ou "
        "privée.",
@@ -378,6 +484,65 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "libre choix est, selon l'IFAU, modeste au regard de la ségrégation "
        "résidentielle.", ("comparaisons",)),
 )}
+
+
+@dataclass(frozen=True)
+class Fait:
+    """Une affirmation datée, et le document qui l'établit.
+
+    Le registre des chiffres discipline les nombres ; il ne disciplinait pas
+    les faits. Or une page peut parfaitement citer tous ses chiffres et
+    affirmer dans la même phrase qu'un rapport conclut ceci ou qu'un décret
+    a fait cela, sans que le lecteur puisse le vérifier. Ces affirmations-là
+    sont les plus faciles à contester, et les plus coûteuses à défendre après
+    coup.
+
+    `enonce` est ce que le site affirme, en une phrase, telle qu'elle est
+    vérifiable dans le document cité — pas telle qu'elle arrange la page.
+    """
+
+    cle: str
+    enonce: str
+    annee: str
+    source: str
+    url: str
+
+
+FAITS: dict[str, Fait] = {f.cle: f for f in (
+    Fait("igesr_groupes",
+         "L'inspection générale conclut que les groupes de besoins n'ont pas "
+         "bénéficié aux élèves les plus fragiles, que la mobilité entre "
+         "groupes est restée faible, et que le dispositif risque de creuser "
+         "les écarts en isolant les élèves en difficulté ; elle recommande "
+         "d'abandonner son caractère systématique et de rendre aux "
+         "établissements une autonomie réelle.",
+         "2025", "IGÉSR, rapport n° 24-25-007C, juin 2025", IGESR_GROUPES),
+    Fait("decret_groupes",
+         "Le décret n° 2026-172 du 10 mars 2026 met fin au caractère "
+         "obligatoire des groupes en sixième et cinquième et le remplace par "
+         "un « accompagnement pédagogique renforcé » en français et en "
+         "mathématiques, applicable à la rentrée 2026.",
+         "2026", "Décret n° 2026-172 du 10 mars 2026", DECRET_GROUPES),
+    Fait("cae_rendement",
+         "Le Conseil d'analyse économique propose de lire la dépense "
+         "scolaire à travers le rendement social net de chaque euro investi. "
+         "Son périmètre est limité au premier et au second degré : les "
+         "interventions relevant de la petite enfance et de l'enseignement "
+         "supérieur en sont explicitement exclues.",
+         "2025",
+         "Grenet et Landais, « Éducation : comment mieux orienter la "
+         "dépense », notes du CAE n° 84, mai 2025",
+         CAE_EDUCATION),
+)}
+
+
+def fait(cle: str) -> Fait:
+    """Un fait du registre.
+
+    Lève `KeyError` sur une clé inconnue, comme `valeur()` : une affirmation
+    dont la source a disparu doit casser la construction.
+    """
+    return FAITS[cle]
 
 
 # Les thèmes, dans l'ordre où la page « Sources » les présente. Un chiffre

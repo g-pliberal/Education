@@ -12,7 +12,14 @@ d'un coup, page « Sources » comprise.
 from __future__ import annotations
 
 from . import gabarit as g
-from .donnees import CHIFFRES, par_theme, sources, valeur as v
+from .donnees import (CHIFFRES, FAITS, fait, par_theme, sources,
+                      valeur as v)
+
+
+def _source(cle: str) -> str:
+    """La citation d'un fait, en lien vers le document qui l'établit."""
+    f = fait(cle)
+    return f'<a href="{f.url}">{g.echapper(f.source)}</a>' 
 
 # -- l'accueil ---------------------------------------------------------------
 
@@ -223,7 +230,8 @@ def resultats() -> str:
                  f"Moyenne OCDE : {v('pisa_maths_ocde')}. "
                  f"Recul de {v('pisa_maths_chute')} depuis 2018."),
         g.Repere("Élèves en difficulté", v("pisa_faibles"),
-                 "sous le niveau 2 en mathématiques, contre 21 % en 2018."),
+                 "sous le niveau 2 en mathématiques, contre "
+                 f"{v('pisa_faibles_2018')} en 2018."),
         g.Repere("Écart social", v("pisa_ecart_social"),
                  "entre les élèves les plus favorisés et les plus "
                  "défavorisés."),
@@ -240,7 +248,8 @@ def resultats() -> str:
         "baisse jamais enregistrée par la France dans cette enquête.</p>"
         "<p>La moyenne rassure à tort. Ce qui a bougé, ce n'est pas le "
         f"sommet : c'est le bas. {v('pisa_faibles')} des élèves français sont "
-        "désormais sous le niveau 2 en mathématiques, contre 21 % quatre ans "
+        "désormais sous le niveau 2 en mathématiques, contre "
+        f"{v('pisa_faibles_2018')} quatre ans "
         "plus tôt. Le niveau 2 n'est pas l'excellence : c'est le seuil en "
         "deçà duquel un adulte ne peut pas vérifier une facture, comparer "
         "deux offres de crédit ou lire un graphique de journal.</p>"
@@ -251,10 +260,10 @@ def resultats() -> str:
         (
             ("Mathématiques", v("pisa_maths"), v("pisa_maths_ocde"),
              v("pisa_maths_chute")),
-            ("Compréhension de l'écrit", v("pisa_lecture"), "476 points",
-             "−19 points"),
-            ("Culture scientifique", v("pisa_sciences"), "485 points",
-             "stable"),
+            ("Compréhension de l'écrit", v("pisa_lecture"),
+             v("pisa_lecture_ocde"), v("pisa_lecture_chute")),
+            ("Culture scientifique", v("pisa_sciences"),
+             v("pisa_sciences_ocde"), "stable"),
         ),
     )
 
@@ -274,8 +283,9 @@ def resultats() -> str:
         f"{v('timss_cm1_seuil')} des élèves français de CM1 n'atteignent pas "
         "le niveau élémentaire : ils sortiront de l'école primaire sans les "
         "opérations. En sciences, "
-        f"{v('timss_cm1_sciences')} contre 518 dans l'Union. En quatrième, "
-        f"{v('timss_quatrieme_maths')} contre 507.</p>"
+        f"{v('timss_cm1_sciences')} contre {v('timss_cm1_sciences_ue')} "
+        f"dans l'Union. En quatrième, {v('timss_quatrieme_maths')} contre "
+        f"{v('timss_quatrieme_maths_ue')}.</p>"
         "<p>Ces scores sont <em>stables</em> depuis 2019. C'est la phrase la "
         "plus grave du rapport : le décrochage français n'est plus une chute, "
         "c'est un palier. Nous nous sommes installés en bas.</p>"
@@ -284,7 +294,8 @@ def resultats() -> str:
     corps += "<h2 id=\"pirls\">PIRLS : lire en CM1</h2>"
     corps += (
         f"<p>PIRLS mesure la compréhension de l'écrit en CM1. La France y "
-        f"obtient {v('pirls')}, contre 527 en moyenne européenne. C'est la "
+        f"obtient {v('pirls')}, contre {v('pirls_ue')} en moyenne "
+        "européenne. C'est la "
         "seule bonne nouvelle de cette page : le score est stable, après "
         "quinze années de baisse continue, et l'écart avec l'Europe s'est "
         "réduit — les autres pays ayant reculé davantage.</p>"
@@ -298,7 +309,8 @@ def resultats() -> str:
     corps += (
         "<p>Les enquêtes internationales portent sur des élèves. La Journée "
         "défense et citoyenneté, elle, teste presque toute une classe d'âge — "
-        "843 500 jeunes en 2024 — au moment où l'école les a quittés. Le "
+        f"{v('jdc_testes')} jeunes en 2024 — au moment où l'école les a "
+        "quittés. Le "
         "résultat est le bilan le plus brutal du système :</p>"
     )
     corps += g.leviers((
@@ -311,13 +323,14 @@ def resultats() -> str:
         "les écarts entre territoires sont considérables.",
     ))
     corps += g.encadre(
-        "<h3 class=\"serif\">Un sur vingt, ce n'est pas une statistique</h3>"
-        "<p>Un jeune sur vingt en situation d'illettrisme, sur une classe "
-        "d'âge d'environ 800 000 personnes, cela fait <strong "
-        "class=\"cle-texte\">quarante mille jeunes par an</strong> qui "
-        "sortent de treize années de scolarité obligatoire sans savoir lire "
-        "un mode d'emploi. À l'échelle d'un quinquennat, deux cent mille. "
-        "Aucun chiffre de dépense ne pèse contre celui-là.</p>"
+        "<h3 class=\"serif\">Cinquante mille par an, ce n'est pas une "
+        "statistique</h3>"
+        f"<p>{v('jdc_illettrisme')} des {v('jdc_testes')} jeunes testés en "
+        "2024, cela fait <strong class=\"cle-texte\">plus de cinquante "
+        "mille jeunes par an</strong> qui sortent de treize années de "
+        "scolarité obligatoire sans savoir lire un mode d'emploi. À "
+        "l'échelle d'un quinquennat, un quart de million. Aucun chiffre de "
+        "dépense ne pèse contre celui-là.</p>"
     )
 
     corps += "<h2 id=\"inegalites\">L'école la plus inégalitaire d'Europe</h2>"
@@ -375,8 +388,8 @@ def depense() -> str:
 
     corps += g.reperes((
         g.Repere("Dépense d'éducation", v("die_montant"),
-                 f"{v('die_pib')}, en hausse de 1,4 % en euros constants sur "
-                 "un an."),
+                 f"{v('die_pib')}, en hausse de {v('die_hausse')} en euros "
+                 "constants sur un an."),
         g.Repere("Par élève ou étudiant", v("die_par_eleve"),
                  "tous niveaux confondus, apprentissage compris."),
         g.Repere("Mission Enseignement scolaire", v("budget_mission_pensions"),
@@ -404,9 +417,11 @@ def depense() -> str:
         ("Niveau", "France", "Moyenne OCDE", "Écart"),
         (
             ("Élémentaire", v("ocde_elementaire_fr"),
-             v("ocde_elementaire_ocde"), "−13 %"),
-            ("Collège", v("ocde_college_fr"), v("ocde_college_ocde"), "−5 %"),
-            ("Lycée", v("ocde_lycee_fr"), v("ocde_lycee_ocde"), "+24 %"),
+             v("ocde_elementaire_ocde"), v("ocde_ecart_elementaire")),
+            ("Collège", v("ocde_college_fr"), v("ocde_college_ocde"),
+             v("ocde_ecart_college")),
+            ("Lycée", v("ocde_lycee_fr"), v("ocde_lycee_ocde"),
+             v("ocde_ecart_lycee")),
         ),
         ("texte", "nombre", "nombre", "nombre"),
     )
@@ -446,12 +461,22 @@ def depense() -> str:
         "deux, au bénéfice de ceux qui ont déjà réussi.</strong> La France "
         "est, parmi les grands pays européens, l'un de ceux où la dépense "
         "penche le plus vers le second degré et le supérieur.</p>"
-        "<p>Or tout ce que l'on sait de l'efficacité de la dépense éducative "
-        "va dans l'autre sens : c'est dans les premières années que l'euro "
-        "investi rapporte le plus, parce qu'un enfant qui ne lit pas en CE1 "
-        "ne rattrape presque jamais. Le Conseil d'analyse économique, en "
-        "2025, classe précisément les dépenses éducatives par leur rendement "
-        "social net, et place les premières années en tête.</p>"
+        "<p>Cette pente est l'inverse de celle que suggère la comparaison "
+        "internationale du haut de cette page, où la France est en dessous "
+        "de la moyenne de l'OCDE à l'élémentaire et très au-dessus au "
+        "lycée.</p>"
+        "<p>Un mot sur ce que nous ne tirons pas de la littérature. Le "
+        "Conseil d'analyse économique a proposé en 2025 de lire la dépense "
+        "scolaire à travers le <strong>rendement social net</strong> de "
+        "chaque euro investi — l'outil dont ce débat manquait. Nous ne lui "
+        "faisons pas dire que les premières années viennent en tête du "
+        "classement : <strong class=\"cle-texte\">son périmètre exclut "
+        "explicitement la petite enfance et l'enseignement supérieur</strong>, "
+        "et porte sur les leviers du premier et du second degré. Ce qu'il "
+        "établit, et qui suffit ici, c'est que des dépenses de coût "
+        "comparable produisent des résultats très inégaux — ce qui est un "
+        "argument sur la répartition, non sur l'âge des élèves ("
+        + _source("cae_rendement") + ").</p>"
     )
 
     corps += "<h2 id=\"qui-paie\">Qui paie, et pour qui</h2>"
@@ -461,9 +486,9 @@ def depense() -> str:
         (
             ("État", v("die_etat")),
             ("Collectivités territoriales", v("die_collectivites")),
-            ("Entreprises", "10 %"),
+            ("Entreprises", v("die_entreprises")),
             ("Ménages", v("die_menages")),
-            ("Autres administrations publiques", "4 %"),
+            ("Autres administrations publiques", v("die_autres_apu")),
         ),
     )
     corps += (
@@ -492,7 +517,7 @@ def depense() -> str:
          "<p>Engagé en 2017, le dédoublement a ramené les classes de CP puis "
          "de CE1 en REP et REP+ à une douzaine d'élèves. Son coût annuel est "
          f"estimé à {v('dedoublement_cout')} par la Cour des comptes, pour "
-         "16 000 équivalents temps plein.</p>"
+         f"{v('dedoublement_etp')} équivalents temps plein.</p>"
          "<p>Les évaluations de la DEPP montrent des effets positifs "
          "mesurables à la fin du CP, <strong>qui ne persistent pas</strong> : "
          "au-delà de la première année, l'effet supplémentaire n'est plus "
@@ -505,14 +530,26 @@ def depense() -> str:
          "place à la rentrée 2024 en sixième et cinquième, les groupes de "
          "besoins en français et en mathématiques devaient relever le niveau "
          "par un enseignement différencié.</p>"
-         "<p>Le rapport de l'inspection générale de juin 2025 conclut que les "
-         "effets sur les apprentissages ne sont pas significatifs et que les "
-         "écarts entre élèves se creusent. L'obligation a été levée par "
-         "décret en mars 2026, après dix-huit mois de réorganisation des "
-         "emplois du temps de tous les collèges de France.</p>"
+         "<p>L'inspection générale a évalué le dispositif dans trente-neuf "
+         "collèges de huit académies. Son rapport de juin 2025 conclut que "
+         "la mesure n'a pas bénéficié aux élèves les plus fragiles, que la "
+         "mobilité entre groupes est restée faible, et qu'elle risque de "
+         "<strong>creuser les écarts</strong> en isolant les élèves en "
+         "difficulté dans des groupes peu adaptés. Il relève aussi un gain "
+         "réel, et qu'il faut citer parce qu'il gêne une partie de notre "
+         "argumentation : la baisse du nombre d'élèves par groupe. Sa "
+         "recommandation est d'abandonner le caractère systématique du "
+         "dispositif et de rendre aux établissements une autonomie réelle ("
+         + _source("igesr_groupes") + ").</p>"
+         "<p>L'obligation a été levée par le "
+         + _source("decret_groupes")
+         + ", qui lui substitue un « accompagnement pédagogique renforcé » "
+         "applicable à la rentrée 2026 — après deux années de réorganisation "
+         "des emplois du temps de tous les collèges de France.</p>"
          "<p>La leçon n'est pas que la mesure était mauvaise. C'est qu'un "
-         "dispositif uniforme, décidé au centre et imposé à onze mille "
-         "collèges qui n'ont ni les mêmes élèves ni les mêmes équipes, ne "
+         "dispositif uniforme, décidé au centre et imposé à tous les "
+         "collèges de France, qui n'ont ni les mêmes élèves ni les mêmes "
+         "équipes, ne "
          "peut pas produire autre chose qu'une moyenne nulle.</p>"),
     ))
 
@@ -563,7 +600,8 @@ def gouvernance() -> str:
                  f"dans un collège public français, contre "
                  f"{v('decisions_central_ocde')} en moyenne dans l'OCDE."),
         g.Repere("Décisions prises à l'école", v("decisions_etablissement"),
-                 "dont 2 % seulement en pleine autonomie."),
+                 f"dont {v('decisions_pleine_autonomie')} seulement en "
+                 "pleine autonomie."),
         g.Repere("Chefs qui recrutent", v("recrutement_france"),
                  f"des élèves, contre {v('recrutement_ocde')} dans l'OCDE et "
                  f"{v('estonie_recrutement')} en Estonie."),
@@ -613,8 +651,8 @@ def gouvernance() -> str:
         (
             ("France", v("recrutement_france")),
             ("Moyenne OCDE", v("recrutement_ocde")),
-            ("Pays-Bas", "64 %"),
-            ("Royaume-Uni", "81 %"),
+            ("Pays-Bas", v("recrutement_paysbas")),
+            ("Royaume-Uni", v("recrutement_royaume_uni")),
             ("Estonie", v("estonie_recrutement")),
         ),
     )
@@ -662,11 +700,13 @@ def gouvernance() -> str:
         f"salaire effectif est inférieur de {v('salaire_ecart_elementaire')} "
         "à celui des autres diplômés dans l'élémentaire et de "
         f"{v('salaire_ecart_college')} au collège, contre respectivement "
-        "17 % et 13 % en moyenne dans l'OCDE.</p>"
+        f"{v('salaire_ecart_elementaire_ocde')} et "
+        f"{v('salaire_ecart_college_ocde')} en moyenne dans l'OCDE.</p>"
         "<p>Dans le même temps, ils enseignent davantage d'heures que leurs "
         f"collègues : {v('heures_elementaire')} d'enseignement obligatoire "
-        f"par an dans l'élémentaire contre 804 en moyenne, "
-        f"{v('heures_college')} au collège contre 909. Et la taille moyenne "
+        f"par an dans l'élémentaire contre {v('heures_elementaire_ocde')} "
+        f"en moyenne, {v('heures_college')} au collège contre "
+        f"{v('heures_college_ocde')}. Et la taille moyenne "
         f"d'une classe élémentaire française, {v('taille_classe')}, est "
         "au-dessus de la moyenne de l'OCDE.</p>"
         "<p>Plus d'heures, des classes un peu plus chargées, un salaire "
@@ -867,8 +907,8 @@ def proposition() -> str:
         "<p>Rien de ce qui précède ne fonctionne si l'on ne peut pas recruter "
         "d'enseignants. Or leur salaire effectif est inférieur de "
         f"{v('salaire_ecart_elementaire')} à celui des autres diplômés du "
-        "supérieur dans l'élémentaire, contre 17 % en moyenne dans "
-        "l'OCDE.</p>"
+        "supérieur dans l'élémentaire, contre "
+        f"{v('salaire_ecart_elementaire_ocde')} en moyenne dans l'OCDE.</p>"
     )
     corps += g.leviers((
         "<strong>Une revalorisation financée par la démographie.</strong> Le "
@@ -893,9 +933,10 @@ def proposition() -> str:
         "nationale par barème. Les enseignants déjà en poste conservent leur "
         "statut, leur ancienneté et leur garantie d'emploi ; le nouveau "
         "régime s'applique aux recrutements à venir et, sur option, à ceux "
-        "qui le demandent. Une réforme qui prétendrait changer le statut de "
-        "850 000 agents du jour au lendemain n'est pas une réforme : c'est "
-        "un slogan.</p>",
+        "qui le demandent. Une réforme qui prétendrait changer du jour au "
+        f"lendemain le statut des {v('enseignants_public')} enseignants du "
+        f"public et des {v('enseignants_prive')} du privé sous contrat n'est "
+        "pas une réforme : c'est un slogan.</p>",
         "vigilance",
     )
 
@@ -908,8 +949,8 @@ def proposition() -> str:
         "niveau attendu défini année par année et vérifié par les "
         "évaluations nationales.</p>"
         f"<p>Ce n'est pas une question d'heures : la France enseigne déjà "
-        f"{v('heures_elementaire')} par an dans l'élémentaire, contre 804 en "
-        "moyenne dans l'OCDE. Nous enseignons plus longtemps, sur un "
+        f"{v('heures_elementaire')} par an dans l'élémentaire, contre "
+        f"{v('heures_elementaire_ocde')} en moyenne dans l'OCDE. Nous enseignons plus longtemps, sur un "
         "programme plus large, et nous obtenons "
         f"{v('timss_cm1_maths')} en mathématiques en CM1. La contrainte n'est "
         "pas le temps disponible : c'est ce qu'on y met.</p>"
@@ -1001,7 +1042,7 @@ def comparaisons() -> str:
              + v("paysbas_article23"), "Interdite pour les écoles financées",
              "Au-dessus de la moyenne OCDE, stable"),
             ("Danemark", v("danemark_prive") + " des élèves, financés à "
-             "environ 75 %", "Encadrée",
+             + v("danemark_financement"), "Encadrée",
              "Au-dessus de la moyenne OCDE"),
             ("Estonie", "Écoles publiques très autonomes",
              "Interdite", v("estonie_pisa") + " en mathématiques, premier "
@@ -1018,8 +1059,8 @@ def comparaisons() -> str:
         f"<p>Depuis {v('paysbas_article23')}, l'article 23 de la Constitution "
         "néerlandaise garantit que toute association peut ouvrir une école et "
         "qu'elle sera financée aux mêmes conditions que l'école publique. "
-        "Environ deux tiers des élèves néerlandais fréquentent une école "
-        "non publique — confessionnelle, Montessori, Dalton, Jenaplan — "
+        "La majorité des élèves néerlandais fréquentent une école non "
+        "publique — confessionnelle, Montessori, Dalton, Jenaplan — "
         "entièrement financée par l'impôt.</p>"
         "<p>Ce système n'a pas produit d'école à deux vitesses : les écoles "
         "financées ne peuvent pas sélectionner, l'inspection publie ses "
@@ -1032,9 +1073,9 @@ def comparaisons() -> str:
     corps += "<h2 id=\"danemark\">Danemark : l'école qu'on fonde soi-même</h2>"
     corps += (
         f"<p>{v('danemark_prive')} des élèves danois fréquentent une "
-        "<em>friskole</em> ou une école privée. L'État en finance environ "
-        "75 % ; le reste est à la charge des familles, avec des barèmes "
-        "sociaux. Un groupe de parents peut fonder une école et obtenir ce "
+        "<em>friskole</em> ou une école privée. L'État en finance "
+        f"{v('danemark_financement')} ; le reste est à la charge des "
+        "familles, avec des barèmes sociaux. Un groupe de parents peut fonder une école et obtenir ce "
         "financement dès lors qu'il atteint un effectif minimal et se soumet "
         "au contrôle.</p>"
         "<p>Ce que le Danemark montre, c'est qu'une école n'a pas besoin "
@@ -1356,6 +1397,30 @@ def sources_page() -> str:
             lignes,
             ("long", "nombre", "nombre", "texte"),
         )
+
+    corps += "<h2>Les faits cités</h2>"
+    corps += g.note(
+        "<p>Un site peut citer tous ses chiffres et affirmer dans la même "
+        "phrase qu'un rapport conclut ceci, ou qu'un décret a fait cela, sans "
+        "que le lecteur puisse le vérifier. Ces affirmations-là obéissent "
+        "désormais à la même règle que les chiffres : elles vivent au même "
+        "endroit du code, avec leur source, et une page ne peut pas en "
+        "invoquer une qui n'y figure pas.</p>",
+        "resume",
+    )
+    corps += g.tableau(
+        "Les affirmations datées du site, et le document qui les établit",
+        ("Ce que le site affirme", "Année", "Source"),
+        tuple(
+            (
+                g.echapper(f.enonce),
+                g.echapper(f.annee),
+                f'<a href="{f.url}">{g.echapper(f.source)}</a>',
+            )
+            for f in FAITS.values()
+        ),
+        ("long", "nombre", "texte"),
+    )
 
     corps += "<h2>Les documents cités</h2>"
     corps += g.leviers(tuple(
