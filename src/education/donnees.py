@@ -63,14 +63,41 @@ DEPP_JDC = ("https://www.education.gouv.fr/depp/"
 OCDE_RSE = ("https://www.oecd.org/content/dam/oecd/fr/publications/reports/2025/09/"
             "education-at-a-glance-2025-country-notes_9749f4ff/france_0639c7fb/"
             "aca6dceb-fr.pdf")
-OCDE_AUTONOMIE = "https://www.oecd.org/en/topics/sub-issues/school-autonomy.html"
+# Les décisions et le recrutement viennent de deux enquêtes différentes, et
+# c'est pourquoi ils ont deux adresses : une page d'accueil thématique qui ne
+# montre aucun des deux chiffres est la plus facile des réfutations.
+OCDE_DECISIONS = ("https://www.oecd.org/content/dam/oecd/en/publications/"
+                  "reports/2018/11/how-decentralised-are-education-systems-"
+                  "and-what-does-it-mean-for-schools_7c1806fc/e14575d5-en.pdf")
+PISA_FRANCE = ("https://www.oecd.org/en/publications/"
+               "pisa-2022-results-volume-i-and-ii-country-notes_ed6fbcc5-en/"
+               "france_8008535b-en.html")
+PISA_ESTONIE = ("https://www.oecd.org/en/publications/"
+                "pisa-2022-results-volume-i-and-ii-country-notes_ed6fbcc5-en/"
+                "estonia_dafed886-en.html")
+PISA_PAYSBAS = ("https://www.oecd.org/en/publications/"
+                "pisa-2022-results-volume-i-and-ii-country-notes_ed6fbcc5-en/"
+                "netherlands_0941b029-en.html")
+PISA_RESULTATS = ("https://www.oecd.org/en/publications/"
+                  "pisa-2022-results-volume-i_53f23881-en/full-report/"
+                  "how-did-countries-perform-in-pisa_dc514907.html")
+OCDE_RSE_RAPPORT = ("https://www.oecd.org/content/dam/oecd/en/publications/"
+                    "reports/2025/09/education-at-a-glance-2025_c58fc9ae/"
+                    "1c0d9c79-en.pdf")
+SENAT_PLF2026 = "https://www.senat.fr/rap/l25-139-313/l25-139-31310.html"
+CC_FALLOUX_1994 = ("https://www.conseil-constitutionnel.fr/decision/1994/"
+                   "93329DC.htm")
+LOI_2021 = "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000043964778"
+INSPECTIE_NL = ("https://english.onderwijsinspectie.nl/inspection/"
+                "inspection-of-schools-by-the-dutch-inspectorate-of-education/"
+                "the-inspectorate%E2%80%99s-judgements")
 COUR_PRIVE = ("https://www.ccomptes.fr/sites/default/files/2023-10/"
               "20230601-enseignement-prive-sous-contrat.pdf")
 CAE_EDUCATION = "https://cae-eco.fr/static/pdf/cae084-education-250514.pdf"
 DEPP_DEMOGRAPHIE = ("https://www.education.gouv.fr/"
                     "demographie-scolaire-le-ministere-publie-pour-la-premiere-fois-des-"
                     "projections-d-effectifs-d-eleves-504392")
-VIE_IDEES_DEDOUBLEMENT = "https://laviedesidees.fr/Le-dedoublement-des-classes-de-CP-et-CE1-quel-bilan"
+COUR_PRIORITAIRE = "https://www.ccomptes.fr/fr/publications/leducation-prioritaire"
 IFAU_SUEDE = ("https://www.ifau.se/globalassets/pdf/se/2015/"
               "wp2015-08-School-choice-and-segregation.pdf")
 GRONDWET = "https://wetten.overheid.nl/BWBR0001840/"
@@ -141,13 +168,13 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "2024", "DEPP, note d'information n° 25.52", DEPP_DIE, "", ("depense",)),
     _c("budget_mission", "64,5 Md€",
        "Crédits de la mission « Enseignement scolaire » hors pensions.",
-       "2026", "Projet de loi de finances pour 2026",
-       "https://www.budget.gouv.fr/", "", ("depense",)),
+       "2026", "Sénat, rapport sur le PLF 2026, mission "
+       "« Enseignement scolaire »", SENAT_PLF2026, "", ("depense",)),
     _c("budget_mission_pensions", "89,6 Md€",
        "Crédits de la mission « Enseignement scolaire », compte d'affectation "
        "spéciale « Pensions » compris.",
-       "2026", "Projet de loi de finances pour 2026",
-       "https://www.budget.gouv.fr/",
+       "2026", "Sénat, rapport sur le PLF 2026, mission "
+       "« Enseignement scolaire »", SENAT_PLF2026,
        "Premier budget de l'État par le montant.", ("depense",)),
     _c("ocde_pib_comparable", "5,4 % du PIB",
        "Part du PIB consacrée aux établissements d'enseignement, de "
@@ -157,6 +184,32 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "La DIE française y ajoute notamment les cantines, les transports "
        "scolaires et la formation continue : les deux chiffres ne se "
        "comparent pas.", ("depense",)),
+    _c("ocde_pib_moyenne", "4,7 % du PIB",
+       "Part du PIB consacrée aux établissements d'enseignement, de "
+       "l'élémentaire au supérieur, en moyenne dans l'OCDE.",
+       "2022", "OCDE, Regards sur l'éducation 2025", OCDE_RSE_RAPPORT,
+       "La France est à 5,4 % : au-dessus, mais de 0,7 point — et non des "
+       "deux points que laissait croire la comparaison de la dépense "
+       "intérieure d'éducation avec cette moyenne.", ("depense",)),
+    _c("prive_budget_etat_primaire", "55 %",
+       "Part de l'État dans le budget des écoles privées sous contrat, "
+       "contre 59 % dans le public.",
+       "2022", "Cour des comptes", COUR_PRIVE, "", ("depense", "liberte")),
+    _c("prive_budget_etat_secondaire", "68 %",
+       "Part de l'État dans le budget des établissements privés sous "
+       "contrat du second degré, contre 74 % dans le public.",
+       "2022", "Cour des comptes", COUR_PRIVE,
+       "C'est cet écart de six points, et non un chiffre publié en euros, "
+       "qui sert à estimer le coût du financement à parité au second "
+       "degré.", ("depense", "liberte")),
+    _c("public_budget_etat_secondaire", "74 %",
+       "Part de l'État dans le budget des établissements publics du second "
+       "degré, à comparer aux 68 % du privé sous contrat.",
+       "2022", "Cour des comptes", COUR_PRIVE, "", ("depense", "liberte")),
+    _c("prive_eleves_part", "17,6 %",
+       "Part de l'ensemble des élèves scolarisés dans le privé sous "
+       "contrat, soit plus de deux millions d'élèves.",
+       "2022", "Cour des comptes", COUR_PRIVE, "", ("gouvernance", "liberte")),
     _c("ocde_elementaire_fr", "11 135 USD",
        "Dépense annuelle par élève dans l'enseignement élémentaire en "
        "France, en équivalents USD à parité de pouvoir d'achat.",
@@ -186,12 +239,11 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "2022", "OCDE, Regards sur l'éducation 2025, tableau C4.1", OCDE_RSE,
        "", ("depense",)),
     _c("dedoublement_cout", "800 M€ par an",
-       "Coût annuel du dédoublement des classes de CP et CE1 en éducation "
-       "prioritaire, pour 16 000 équivalents temps plein.",
-       "2023", "Cour des comptes, cité par La Vie des idées",
-       VIE_IDEES_DEDOUBLEMENT,
-       "Effets positifs mesurés à court terme, qui ne persistent pas au-delà "
-       "du CP.", ("depense", "reformes")),
+       "Coût annuel du dédoublement des classes en éducation prioritaire.",
+       "2025", "Cour des comptes, L'éducation prioritaire", COUR_PRIORITAIRE,
+       "Le coût total de l'éducation prioritaire a été multiplié par 2,5 "
+       "entre 2014 et 2023, passant de 1,1 à 2,6 Md€.",
+       ("depense", "reformes")),
 
     _c("die_hausse", "+1,4 %",
        "Hausse de la dépense intérieure d'éducation sur un an, en euros "
@@ -218,11 +270,11 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "2022", "OCDE, Regards sur l'éducation 2025, tableau C4.1", OCDE_RSE,
        "Seul niveau où la France dépense nettement plus que la moyenne.",
        ("depense",)),
-    _c("dedoublement_etp", "16 000",
-       "Équivalents temps plein mobilisés par le dédoublement des classes de "
-       "CP et CE1 en éducation prioritaire.",
-       "2023", "Cour des comptes, cité par La Vie des idées",
-       VIE_IDEES_DEDOUBLEMENT, "", ("depense",)),
+    _c("dedoublement_etp", "15 987",
+       "Emplois mobilisés par le dédoublement des classes, de la grande "
+       "section au CE1, en éducation prioritaire.",
+       "2025", "Cour des comptes, L'éducation prioritaire", COUR_PRIORITAIRE,
+       "", ("depense",)),
 
     # -- ce que l'école produit -----------------------------------------------
     _c("pisa_maths", "474 points",
@@ -298,6 +350,25 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "Un jeune sur vingt, après au moins dix ans d'école obligatoire.",
        ("resultats",)),
 
+    _c("eleves_handicap", "520 000",
+       "Élèves en situation de handicap scolarisés en milieu ordinaire.",
+       "2026", "Sénat, rapport sur le PLF 2026, mission "
+       "« Enseignement scolaire »", SENAT_PLF2026, "", ("moyens",)),
+    _c("aesh_nombre", "140 000",
+       "Accompagnants d'élèves en situation de handicap.",
+       "2026", "Sénat, rapport sur le PLF 2026, mission "
+       "« Enseignement scolaire »", SENAT_PLF2026,
+       "En hausse de deux tiers depuis 2017.", ("moyens",)),
+    _c("inclusion_budget", "4,74 Md€",
+       "Crédits consacrés à l'école inclusive.",
+       "2026", "Sénat, rapport sur le PLF 2026, mission "
+       "« Enseignement scolaire »", SENAT_PLF2026,
+       "Dont 3,16 Md€ pour la seule rémunération des accompagnants.",
+       ("moyens",)),
+    _c("inclusion_aesh", "3,16 Md€",
+       "Part de ces crédits consacrée à la rémunération des accompagnants.",
+       "2026", "Sénat, rapport sur le PLF 2026, mission "
+       "« Enseignement scolaire »", SENAT_PLF2026, "", ("moyens",)),
     _c("pisa_faibles_2018", "21 %",
        "Part des élèves français de 15 ans sous le niveau 2 en mathématiques "
        "lors de l'enquête précédente.",
@@ -398,25 +469,28 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
     _c("decisions_central", "55 %",
        "Part des décisions prises au niveau de l'État central dans le premier "
        "cycle du secondaire public français.",
-       "2018", "OCDE, autonomie des établissements", OCDE_AUTONOMIE,
+       "2017", "OCDE, Education Indicators in Focus (2018), d'après "
+       "Regards sur l'éducation 2018, tableau D6.1", OCDE_DECISIONS,
        "Moyenne OCDE : 24 %.", ("gouvernance",)),
     _c("decisions_central_ocde", "24 %",
        "La même part, en moyenne dans l'OCDE.",
-       "2018", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "", ("gouvernance",)),
+       "2017", "OCDE, Education Indicators in Focus (2018), d'après "
+       "Regards sur l'éducation 2018, tableau D6.1", OCDE_DECISIONS, "", ("gouvernance",)),
     _c("decisions_etablissement", "10 %",
        "Part des décisions prises au niveau de l'établissement en France.",
-       "2018", "OCDE, autonomie des établissements", OCDE_AUTONOMIE,
+       "2017", "OCDE, Education Indicators in Focus (2018), d'après "
+       "Regards sur l'éducation 2018, tableau D6.1", OCDE_DECISIONS,
        "Dont 2 % seulement en pleine autonomie ; le reste s'exerce dans un "
        "cadre fixé plus haut.", ("gouvernance",)),
     _c("recrutement_france", "10 %",
        "Part des élèves français dont le chef d'établissement a la "
        "responsabilité principale du recrutement des enseignants.",
-       "2022", "OCDE, autonomie des établissements", OCDE_AUTONOMIE,
-       "Moyenne OCDE : 60 %. Estonie : 94 %. Royaume-Uni : 81 %. "
-       "Pays-Bas : 64 %.", ("gouvernance",)),
+       "2022", "OCDE, PISA 2022, note France", PISA_FRANCE,
+       "Moyenne OCDE : 60 %. Estonie : 94 %. Pays-Bas : 64 %.",
+       ("gouvernance",)),
     _c("recrutement_ocde", "60 %",
        "La même part, en moyenne dans l'OCDE.",
-       "2022", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "", ("gouvernance",)),
+       "2022", "OCDE, PISA 2022, note France", PISA_FRANCE, "", ("gouvernance",)),
     _c("prive_premier_degre", "13,6 %",
        "Part des élèves du premier degré scolarisés dans le privé sous "
        "contrat.",
@@ -426,10 +500,10 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "Part des élèves du second degré scolarisés dans le privé sous contrat.",
        "2026", "DEPP, L'éducation nationale en chiffres", DEPP_CHIFFRES,
        "", ("gouvernance", "liberte")),
-    _c("prive_catholique", "97 %",
-       "Part des établissements privés sous contrat relevant de "
-       "l'enseignement catholique.",
-       "2023", "Cour des comptes", COUR_PRIVE,
+    _c("prive_catholique", "96 %",
+       "Part des élèves du privé sous contrat scolarisés dans un "
+       "établissement de l'enseignement catholique.",
+       "2022", "Cour des comptes", COUR_PRIVE,
        "La « liberté de choix » française est donc, en pratique, le choix "
        "entre l'école publique de son quartier et une école confessionnelle.",
        ("gouvernance", "liberte")),
@@ -438,18 +512,14 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "Part des décisions prises en pleine autonomie par l'établissement en "
        "France ; le reste des décisions locales s'exerce dans un cadre fixé "
        "plus haut.",
-       "2018", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "",
+       "2017", "OCDE, Education Indicators in Focus (2018), d'après "
+       "Regards sur l'éducation 2018, tableau D6.1", OCDE_DECISIONS, "",
        ("gouvernance",)),
     _c("recrutement_paysbas", "64 %",
        "Part des élèves néerlandais dont le chef d'établissement recrute "
        "les enseignants.",
-       "2022", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "",
+       "2022", "OCDE, PISA 2022, note Pays-Bas", PISA_PAYSBAS, "",
        ("gouvernance",)),
-    _c("recrutement_royaume_uni", "81 %",
-       "La même part au Royaume-Uni.",
-       "2022", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "",
-       ("gouvernance",)),
-
     # -- ailleurs -------------------------------------------------------------
     _c("prive_fonds_etat", "8 Md€",
        "Fonds versés par l'État à l'enseignement privé sous contrat, "
@@ -493,8 +563,7 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "Score de l'Estonie en mathématiques (PISA 2022) : premier rang "
        "européen, et troisième rang des pays de l'OCDE derrière le Japon et "
        "la Corée.",
-       "2022", "OCDE, PISA 2022",
-       "https://www.oecd.org/en/about/programmes/pisa.html",
+       "2022", "OCDE, PISA 2022, résultats volume I", PISA_RESULTATS,
        "Deux points devant la Suisse (508) : l'écart est inférieur à la "
        "marge d'erreur de l'enquête, et nous ne le présentons donc pas "
        "comme un classement. La dépense estonienne par élève est inférieure "
@@ -503,7 +572,8 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
     _c("estonie_recrutement", "94 %",
        "Part des élèves estoniens dont le chef d'établissement recrute "
        "lui-même les enseignants.",
-       "2022", "OCDE, autonomie des établissements", OCDE_AUTONOMIE, "", ("comparaisons",)),
+       "2022", "OCDE, PISA 2022, note Estonie", PISA_ESTONIE, "",
+       ("comparaisons",)),
     _c("suede_reforme", "1992",
        "Année de la réforme suédoise des friskolor : financement public à "
        "l'élève, ouvert aux établissements privés à but lucratif.",
@@ -588,6 +658,39 @@ FAITS: dict[str, Fait] = {f.cle: f for f in (
          "l'école élémentaire.",
          "2023", "DEPP, évaluation de l'impact de la réduction de la taille "
          "des classes en REP+", DEPP_DEDOUBLEMENT),
+    Fait("falloux_1994",
+         "La dernière tentative de révision de la loi Falloux, en 1994, a "
+         "été partiellement censurée par le Conseil constitutionnel : la loi "
+         "laissait les collectivités libres de subventionner les "
+         "investissements des établissements privés sans encadrement, et ne "
+         "comportait donc pas les garanties nécessaires au respect du "
+         "principe d'égalité — entre établissements privés, et au détriment "
+         "des établissements publics.",
+         "1994", "Conseil constitutionnel, décision n° 93-329 DC du "
+         "13 janvier 1994", CC_FALLOUX_1994),
+    Fait("loi_2021",
+         "La loi du 24 août 2021 confortant le respect des principes de la "
+         "République a soumis l'instruction en famille à autorisation "
+         "préalable et renforcé le contrôle des établissements privés hors "
+         "contrat.",
+         "2021", "Loi n° 2021-1109 du 24 août 2021", LOI_2021),
+    Fait("inspection_nl",
+         "L'inspection néerlandaise de l'enseignement juge « très faible » "
+         "un établissement dont les résultats et la qualité "
+         "d'enseignement passent sous la norme légale, publie la liste de "
+         "ces établissements, procède à une inspection complète dans "
+         "l'année puis à une contre-visite au bout d'un an au plus, et peut "
+         "recommander au ministre la fermeture de l'établissement qui ne se "
+         "redresse pas.",
+         "2024", "Inspection néerlandaise de l'enseignement", INSPECTIE_NL),
+    Fait("cour_prioritaire",
+         "La Cour des comptes juge que les écarts de résultats entre "
+         "l'éducation prioritaire et le reste du système tardent à se "
+         "réduire alors que le coût de cette politique n'a cessé de "
+         "croître, et que les progrès de court terme obtenus par le "
+         "dédoublement s'estompent à l'entrée au collège.",
+         "2025", "Cour des comptes, L'éducation prioritaire",
+         COUR_PRIORITAIRE),
     Fait("cae_rendement",
          "Le Conseil d'analyse économique propose de lire la dépense "
          "scolaire à travers le rendement social net de chaque euro investi. "

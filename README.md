@@ -104,6 +104,25 @@ servent.
 Cette page nomme aussi trois perdants. C'était la condition pour qu'elle
 existe : un chiffrage sans perdant n'est pas un chiffrage.
 
+### Une source par chiffre, et la bonne
+
+Une adresse qui ne montre pas le chiffre qu'elle est censée établir est la
+plus facile des réfutations : le contradicteur clique, ne trouve rien, et
+n'a plus besoin de discuter le fond. Le dépôt a porté ce défaut un temps —
+dix chiffres de gouvernance pendaient à une page d'accueil thématique de
+l'OCDE, et deux chiffres de budget à l'accueil de `budget.gouv.fr`.
+
+La règle est donc : **l'adresse enregistrée est celle du document où le
+chiffre se lit**, au tableau près quand le tableau est nommé. Deux chiffres
+qui viennent de deux enquêtes différentes ont deux adresses différentes,
+même s'ils parlent du même sujet — les parts de décision viennent du
+tableau D6.1 de *Regards sur l'éducation 2018*, les parts de recrutement
+des notes-pays de PISA 2022, et les confondre sous une même adresse serait
+déjà une faute.
+
+Corollaire appliqué : un chiffre qu'on ne parvient pas à rattacher à un
+document est retiré, pas conservé avec une source approximative.
+
 ### La date du pied de page
 
 `gabarit.DERNIERE_MISE_A_JOUR` se met à jour **à la main**, et c'est voulu.

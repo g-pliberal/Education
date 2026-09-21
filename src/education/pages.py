@@ -56,8 +56,9 @@ def index() -> str:
 
     corps += g.note(
         "<p><strong>Ce site en deux minutes.</strong> La France consacre à "
-        "son école un effort comparable à celui de ses voisins, et le "
-        "répartit à contretemps : moins que la moyenne de l'OCDE par "
+        "son école un effort légèrement supérieur à celui de ses voisins — "
+        f"{v('ocde_pib_comparable')} contre {v('ocde_pib_moyenne')} dans "
+        "l'OCDE —, et le répartit à contretemps : moins que la moyenne par "
         "écolier, un quart de plus par lycéen. Ses résultats, eux, sont "
         "inférieurs à cette moyenne. Ce n'est donc pas d'abord une question "
         "de montant : c'est une question de qui décide, de qui rend des "
@@ -73,7 +74,8 @@ def index() -> str:
     corps += g.points((
         ("Le problème n'est pas le montant, c'est la répartition",
          "Sur le périmètre comparable de l'OCDE, l'effort français est "
-         f"ordinaire : {v('ocde_pib_comparable')}. Mais la France dépense "
+         f"un peu supérieur à la moyenne : {v('ocde_pib_comparable')} "
+         f"contre {v('ocde_pib_moyenne')}. Mais la France dépense "
          f"{v('ocde_elementaire_fr')} par écolier quand la moyenne de l'OCDE "
          f"est de {v('ocde_elementaire_ocde')}, et {v('ocde_lycee_fr')} par "
          f"lycéen quand cette moyenne est de {v('ocde_lycee_ocde')}. Nous "
@@ -402,7 +404,8 @@ def depense() -> str:
                  "le premier budget de l'État."),
     ))
 
-    corps += "<h2 id=\"combien\">Un effort ordinaire, réparti à contretemps</h2>"
+    corps += ("<h2 id=\"combien\">Un effort un peu supérieur, réparti à "
+              "contretemps</h2>")
     corps += (
         f"<p>La dépense intérieure d'éducation atteint {v('die_montant')} en "
         f"2024, soit {v('die_pib')}. Ce chiffre est un agrégat français : il "
@@ -411,8 +414,11 @@ def depense() -> str:
         "se compare donc pas aux moyennes internationales, et nous ne le "
         "comparons pas.</strong> Sur le périmètre retenu par l'OCDE — les "
         "seuls établissements d'enseignement —, la France consacre "
-        f"{v('ocde_pib_comparable')} à son école et à son supérieur, ce qui "
-        "la situe dans la moyenne des pays comparables.</p>"
+        f"{v('ocde_pib_comparable')} à son école et à son supérieur, contre "
+        f"{v('ocde_pib_moyenne')} en moyenne dans l'OCDE. Elle est donc bien "
+        "au-dessus de la moyenne, mais de <strong>0,7 point</strong>, et non "
+        "des deux points que laissait croire la comparaison d'un agrégat "
+        "français avec une moyenne internationale.</p>"
         "<p>Rapportée à l'élève, cette dépense dit quelque chose de plus "
         "précis, et de plus embarrassant, qu'un total.</p>"
     )
@@ -519,10 +525,10 @@ def depense() -> str:
     )
     corps += g.sections_depliables((
         ("Le dédoublement des classes de CP et CE1 en éducation prioritaire",
-         "<p>Engagé en 2017, le dédoublement a ramené les classes de CP puis "
-         "de CE1 en REP et REP+ à une douzaine d'élèves. Son coût annuel est "
-         f"estimé à {v('dedoublement_cout')} par la Cour des comptes, pour "
-         f"{v('dedoublement_etp')} équivalents temps plein.</p>"
+         "<p>Engagé en 2017, le dédoublement a ramené les classes de CP "
+         "puis de CE1 en REP et REP+ à une douzaine d'élèves. Son coût "
+         f"annuel est estimé à {v('dedoublement_cout')} par la Cour des "
+         f"comptes, pour {v('dedoublement_etp')} emplois.</p>"
          "<p>L'évaluation est plus nuancée que ce que nous en disions, et "
          "il faut la citer exactement. La DEPP mesure un effet réel sur la "
          "progression des élèves en français et en mathématiques "
@@ -538,7 +544,13 @@ def depense() -> str:
          "trop étroit pour déplacer la moyenne nationale. C'est un argument "
          "contre l'usage <em>uniforme</em> d'un levier coûteux, non contre "
          "le levier lui-même — et c'est bien pourquoi nous proposons que "
-         "l'établissement décide lui-même où le mettre.</p>"),
+         "l'établissement décide lui-même où le mettre.</p>"
+         "<p>La Cour des comptes va plus loin, et son verdict est le plus "
+         "dur : les écarts entre l'éducation prioritaire et le reste du "
+         "système tardent à se réduire alors que le coût de cette politique "
+         "n'a cessé de croître, et les progrès de court terme obtenus par "
+         "le dédoublement s'estompent à l'entrée au collège ("
+         + _source("cour_prioritaire") + ").</p>"),
         ("Les groupes de niveau puis de besoins au collège",
          "<p>Annoncés en 2023 sous le nom de « choc des savoirs », mis en "
          "place à la rentrée 2024 en sixième et cinquième, les groupes de "
@@ -673,7 +685,6 @@ def gouvernance() -> str:
             ("France", v("recrutement_france")),
             ("Moyenne OCDE", v("recrutement_ocde")),
             ("Pays-Bas", v("recrutement_paysbas")),
-            ("Royaume-Uni", v("recrutement_royaume_uni")),
             ("Estonie", v("estonie_recrutement")),
         ),
     )
@@ -697,10 +708,12 @@ def gouvernance() -> str:
     corps += (
         f"<p>Le privé sous contrat scolarise {v('prive_premier_degre')} des "
         f"élèves du premier degré et {v('prive_second_degre')} de ceux du "
-        "second degré. Ses enseignants sont rémunérés par l'État ; ses "
-        "établissements suivent les programmes nationaux.</p>"
-        f"<p>Mais {v('prive_catholique')} des établissements privés sous "
-        "contrat relèvent de l'enseignement catholique. Ce n'est pas un "
+        f"second degré — {v('prive_eleves_part')} de l'ensemble, soit plus "
+        "de deux millions d'élèves. Ses enseignants sont rémunérés par "
+        "l'État ; ses établissements suivent les programmes nationaux.</p>"
+        f"<p>Mais {v('prive_catholique')} des élèves du privé sous contrat "
+        "sont scolarisés dans un établissement de l'enseignement "
+        "catholique. Ce n'est pas un "
         "reproche fait à ces établissements : c'est le constat que <strong "
         "class=\"cle-texte\">la liberté scolaire française se réduit, en "
         "pratique, au choix entre l'école publique de son quartier et une "
@@ -832,9 +845,12 @@ def proposition() -> str:
         "établissement par établissement (" + _source("ips") + "). C'est "
         "lui qui sert d'assiette, et il a l'avantage d'être déjà contesté, "
         "discuté et corrigé publiquement depuis des années.</p>"
-        "<p>Le taux de 40 %, lui, est un choix politique et non un résultat "
-        "d'étude : il est de l'ordre de grandeur des pondérations "
-        "néerlandaises, et il doit être révisable au vu de ce qu'il produit. "
+        "<p>Le taux de 40 %, lui, est un choix politique et non un "
+        "résultat d'étude, et nous ne lui inventons pas de caution "
+        "savante : il doit être révisable au vu de ce qu'il produit. Ce qui "
+        "est établi, en revanche, c'est le principe — la Cour des comptes "
+        "recommande elle-même de moduler les moyens selon la composition "
+        "sociale des établissements. "
         f'Ce qu\'il coûte est calculé page <a href="{g.lien("chiffrage")}">'
         "Le chiffrage</a> — et il y a un perdant.</p>"
         "<p>Sans cette pondération, la liberté de choix organise le tri. "
@@ -900,8 +916,9 @@ def proposition() -> str:
     ))
     corps += (
         f"<p>Qui tient ce contrat est financé. Aujourd'hui, "
-        f"{v('prive_catholique')} des établissements privés sous contrat sont "
-        "catholiques, non parce que les familles n'en voudraient pas "
+        f"{v('prive_catholique')} des élèves du privé sous contrat sont dans "
+        "un établissement catholique, non parce que les familles n'en "
+        "voudraient pas "
         "d'autres, mais parce qu'eux seuls étaient là quand les contrats ont "
         "été distribués. <strong class=\"cle-texte\">Nous ouvrons le contrat "
         "à qui remplit les conditions, sans plafond de nombre et sans "
@@ -1004,9 +1021,12 @@ def proposition() -> str:
         "recours</strong>. Une promesse de responsabilité sans autorité qui "
         "la prononce n'engage personne.</p>"
         "<p>Les Pays-Bas, que nous citons en modèle, ne tiennent pas par "
-        "leur liberté scolaire : ils tiennent par leur inspection, qui "
-        "classe les établissements, publie ses rapports, suit les écoles "
-        "faibles et peut faire cesser le financement. Nous avions retenu le "
+        "leur liberté scolaire : ils tiennent par leur inspection. Elle "
+        "juge « très faible » l'établissement qui passe sous la norme "
+        "légale, publie la liste de ces établissements, y retourne dans "
+        "l'année puis contre-visite au bout d'un an au plus, et peut "
+        "recommander au ministre la fermeture de celui qui ne se redresse "
+        "pas (" + _source("inspection_nl") + "). Nous avions retenu le "
         "résultat néerlandais en omettant la machine qui le produit.</p>"
         "<p>Nous proposons donc une <strong class=\"cle-texte\">autorité "
         "indépendante d'évaluation des établissements</strong>, distincte du "
@@ -1086,22 +1106,33 @@ def proposition() -> str:
          "une dotation consolidée « murs compris ». C'est une collision "
          "frontale : en l'état du droit, le financement à parité du second "
          "degré privé est illégal.</p>"
-         "<p><strong>Ce que nous répondons.</strong> Rien, sinon qu'il faut "
-         "abroger cet article, par une loi ordinaire. Nous rappelons que la "
-         "dernière tentative, en 1994, a mis six cent mille personnes dans "
-         "la rue et a été censurée par le Conseil constitutionnel pour "
-         "rupture d'égalité — dans une rédaction qui laissait les "
-         "collectivités libres de subventionner sans critères. Une abrogation "
-         "assortie d'une règle uniforme et opposable à tous les "
-         "établissements financés ne présente pas le même défaut. C'est une "
-         "difficulté politique majeure, pas un verrou juridique "
-         "infranchissable.</p>"),
+         "<p><strong>Ce que nous répondons.</strong> Rien, sinon qu'il "
+         "faut abroger cet article par une loi ordinaire — et regarder "
+         "précisément pourquoi la dernière tentative a échoué. En 1994, le "
+         "Conseil constitutionnel a partiellement censuré la révision : la "
+         "loi laissait les collectivités libres de subventionner sans "
+         "encadrement, et ne comportait donc pas les garanties nécessaires "
+         "au respect de l'égalité, entre établissements privés comme au "
+         "détriment des établissements publics ("
+         + _source("falloux_1994") + "). Elle a aussi provoqué l'une des "
+         "plus grandes manifestations de l'après-guerre.</p>"
+         "<p>Ce précédent ne nous condamne pas : il nous dicte la "
+         "rédaction. Ce qui a été censuré, c'est la <em>liberté laissée aux "
+         "collectivités</em> de financer qui elles voulaient, comme elles "
+         "voulaient. Notre proposition est l'inverse : une règle nationale "
+         "uniforme, un même montant par élève, les mêmes obligations "
+         "opposables à tout établissement financé, public compris. "
+         "<strong>C'est une difficulté politique majeure, pas un verrou "
+         "juridique infranchissable</strong> — et la nuance tient "
+         "entièrement à ce que l'égalité soit garantie par la loi elle-même "
+         "plutôt que laissée à l'appréciation locale.</p>"),
         ("La loi de 1905 et le financement des écoles confessionnelles",
          "<p>La République ne reconnaît, ne salarie ni ne subventionne "
          "aucun culte (" + _source("laicite_1905") + ").</p>"
          "<p><strong>Ce que cela nous oppose.</strong> "
-         f"{v('prive_catholique')} des établissements privés sous contrat "
-         "relèvent de l'enseignement catholique. Porter leur financement à "
+         f"{v('prive_catholique')} des élèves du privé sous contrat sont "
+         "scolarisés dans un établissement catholique. Porter leur "
+         "financement à "
          "parité, investissement compris, sera présenté comme un "
          "financement public du culte.</p>"
          "<p><strong>Ce que nous répondons.</strong> La loi Debré de 1959 a "
@@ -1270,21 +1301,37 @@ def chiffrage() -> str:
              f"{v('eleves_second_degre')} × {v('prive_second_degre')}",
              "≈ 1 190 000"),
             ("Écart de financement par élève, second degré",
-             "hypothèse : de 1 000 à 2 000 €, l'écart relatif étant plus "
-             "faible qu'au primaire (forfait d'externat)",
+             "hypothèse dérivée des parts de budget publiées par la Cour : "
+             f"l'État couvre {v('prive_budget_etat_secondaire')} du budget "
+             f"du privé contre {v('public_budget_etat_secondaire')} de "
+             "celui du public, soit six points d'écart — d'où une "
+             "fourchette de 1 000 à 2 000 €",
              "1,2 à 2,4 Md€"),
             ("Total", "", "3 à 4 Md€ par an"),
         ),
         ("long", "long", "nombre"),
     )
     corps += g.note(
-        "<p><strong>L'hypothèse contestable est la deuxième.</strong> La Cour "
-        "des comptes établit l'écart pour le premier degré ; pour le second, "
-        "nous l'estimons, en nous appuyant sur le fait qu'elle relève des "
-        "taux de financement public plus proches entre public et privé à ce "
-        "niveau. Un contradicteur qui dispose du chiffre exact nous "
-        "corrigera, et il aura raison de le faire : "
-        f'<a href="{g.DEPOT}/issues">l\'adresse est ici</a>.</p>',
+        "<p><strong>L'hypothèse contestable est la deuxième</strong>, et "
+        "c'est la seule du tableau. La Cour des comptes publie l'écart en "
+        "euros pour le premier degré, mais pas pour le second : elle y "
+        f"donne des parts de budget ({v('prive_budget_etat_secondaire')} "
+        f"pour le privé, {v('public_budget_etat_secondaire')} pour le "
+        "public). Nous en déduisons une "
+        "fourchette, et nous la présentons comme une déduction.</p>"
+        "<p>Un point que ce tableau ne dit pas assez fort : <strong>si le "
+        "privé sous contrat coûte moins cher, c'est aussi parce qu'il "
+        "dépense moins</strong> — classes plus chargées, enseignants plus "
+        "souvent contractuels, pas de remplaçants. Financer à parité ne "
+        "fait donc pas que déplacer de l'argent : cela porte la dépense par "
+        f"élève du privé vers celle du public. Dit sans détour, nous "
+        f"proposons de verser 3 à 4 Md€ de plus à un réseau dont "
+        f"{v('prive_catholique')} des élèves sont dans une école "
+        "catholique. Qui trouve cela inacceptable a une objection réelle, "
+        "et nous préférons qu'il la formule sur ce chiffre-là que sur un "
+        "chiffre que nous aurions tu. "
+        f'<a href="{g.DEPOT}/issues">L\'adresse pour nous corriger est '
+        "ici</a>.</p>",
         "vigilance",
     )
 
@@ -1728,8 +1775,8 @@ def objections() -> str:
 
     corps += g.section_cle(
         "laicite",
-        f"{v('prive_catholique')} des écoles sous contrat sont catholiques : "
-        "vous allez financer la religion.",
+        f"{v('prive_catholique')} des élèves du privé sous contrat sont "
+        "dans une école catholique : vous allez financer la religion.",
         "C'est le régime actuel qui produit ce chiffre, et c'est un argument "
         "pour la réforme, pas contre. Le contingentement des contrats a figé "
         "la situation telle qu'elle était : les seuls candidats déjà "
@@ -1792,7 +1839,10 @@ def objections() -> str:
         "fixe ses tarifs, n'ouvre pas ses comptes, ne passe aucune "
         "évaluation externe, et le contrôle de l'État s'y limite à "
         "l'instruction. C'est dans cet espace-là que prospère ce que la loi "
-        "de 2021 a cherché à contenir. <strong>Notre contrat unique fait "
+        "du 24 août 2021 a cherché à contenir, en soumettant l'instruction "
+        "en famille à autorisation et en renforçant le contrôle du hors "
+        "contrat (" + _source("loi_2021") + "). <strong>Notre contrat "
+        "unique fait "
         "exactement l'inverse</strong> : socle national enseigné en "
         "totalité, aucune sélection à l'entrée, évaluations nationales "
         "corrigées à l'extérieur, comptes publics, et une autorité "
@@ -1843,9 +1893,16 @@ def objections() -> str:
         "l'accompagnement — condition sans laquelle l'établissement a "
         "intérêt à décourager l'inscription. L'accompagnement devient un "
         "emploi de l'établissement, à temps complet, inscrit dans sa "
-        "dotation. Nous ne savons pas chiffrer ce poste aujourd'hui, et il "
-        "ne figure donc pas dans notre chiffrage : c'est une lacune, nous "
-        "l'écrivons plutôt que de la combler par un chiffre inventé.",
+        "dotation. L'ordre de grandeur est connu : l'école inclusive pèse "
+        f"{v('inclusion_budget')} au budget 2026, dont "
+        f"{v('inclusion_aesh')} pour la seule rémunération des "
+        f"{v('aesh_nombre')} accompagnants, au bénéfice de "
+        f"{v('eleves_handicap')} élèves — soit environ 9 000 € par élève "
+        "accompagné, qui s'ajoutent au coût de sa scolarité ordinaire. "
+        "<strong>C'est ce montant-là que la majoration de handicap doit "
+        "reprendre</strong>, et il est déjà dans le budget de l'État : la "
+        "réforme le transforme en dotation attachée à l'enfant au lieu "
+        "d'un contingent d'emplois géré par le rectorat.",
         "Voir la réforme 2, page « La proposition ».",
     )
 
