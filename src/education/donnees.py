@@ -77,6 +77,17 @@ GRONDWET = "https://wetten.overheid.nl/BWBR0001840/"
 IGESR_GROUPES = ("https://www.ih2ef.gouv.fr/mise-en-place-des-groupes-de-"
                  "besoins-en-francais-et-mathematiques-rapport-de-ligesr")
 DECRET_GROUPES = "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053652587"
+CC_LIBERTE = "https://www.conseil-constitutionnel.fr/decision/1977/7787DC.htm"
+LOI_1905_ART2 = ("https://www.legifrance.gouv.fr/loda/article_lc/"
+                 "LEGIARTI000006340314")
+CODE_EDUC_L151_4 = ("https://www.legifrance.gouv.fr/codes/article_lc/"
+                    "LEGIARTI000006524461")
+DEPP_IPS = ("https://www.education.gouv.fr/depp/"
+            "l-indice-de-position-sociale-ips-357755")
+DEPP_DEDOUBLEMENT = ("https://archives-statistiques-depp.education.gouv.fr/"
+                     "Default/doc/SYRACUSE/50756/evaluation-de-l-impact-de-la-"
+                     "reduction-de-la-taille-des-classes-de-cp-et-de-ce1-en-"
+                     "rep-sur-les-resul")
 
 
 CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
@@ -440,6 +451,24 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        ("gouvernance",)),
 
     # -- ailleurs -------------------------------------------------------------
+    _c("prive_fonds_etat", "8 Md€",
+       "Fonds versés par l'État à l'enseignement privé sous contrat, "
+       "essentiellement en rémunération des enseignants.",
+       "2022", "Cour des comptes", COUR_PRIVE,
+       "Environ 10 Md€ de fonds publics au total, collectivités comprises. "
+       "Les ressources publiques représentent 73 % du budget de ces "
+       "établissements.", ("depense", "liberte")),
+    _c("prive_cout_etat_primaire", "2 244 €",
+       "Ce qu'un écolier du privé sous contrat coûte à l'État.",
+       "2022", "Cour des comptes", COUR_PRIVE,
+       "Classes plus chargées, enseignants plus souvent contractuels, "
+       "absence de remplaçants.", ("depense", "liberte")),
+    _c("public_cout_etat_primaire", "4 212 €",
+       "Ce qu'un écolier du public coûte à l'État.",
+       "2022", "Cour des comptes", COUR_PRIVE,
+       "L'écart avec le privé sous contrat est de près du double : c'est lui "
+       "que le financement à l'élève doit combler, et c'est le premier poste "
+       "de coût de notre proposition.", ("depense", "liberte")),
     _c("danemark_financement", "environ 75 %",
        "Part du coût d'une école libre danoise prise en charge par l'État ; "
        "le reste est à la charge des familles, avec des barèmes sociaux.",
@@ -523,6 +552,42 @@ FAITS: dict[str, Fait] = {f.cle: f for f in (
          "un « accompagnement pédagogique renforcé » en français et en "
          "mathématiques, applicable à la rentrée 2026.",
          "2026", "Décret n° 2026-172 du 10 mars 2026", DECRET_GROUPES),
+    Fait("liberte_enseignement",
+         "Le Conseil constitutionnel a jugé que la liberté de l'enseignement "
+         "figure parmi les principes fondamentaux reconnus par les lois de "
+         "la République, et a valeur constitutionnelle. La même décision "
+         "reconnaît l'obligation, pour les maîtres du privé sous contrat, de "
+         "respecter le caractère propre de l'établissement, sans que cela "
+         "puisse porter atteinte à leur liberté de conscience.",
+         "1977", "Conseil constitutionnel, décision n° 77-87 DC du "
+         "23 novembre 1977", CC_LIBERTE),
+    Fait("falloux",
+         "L'article L. 151-4 du code de l'éducation, hérité de la loi "
+         "Falloux de 1850, plafonne à un dixième de leurs dépenses annuelles "
+         "les subventions que les collectivités et l'État peuvent verser aux "
+         "établissements privés d'enseignement général du second degré.",
+         "1850", "Article L. 151-4 du code de l'éducation", CODE_EDUC_L151_4),
+    Fait("laicite_1905",
+         "L'article 2 de la loi du 9 décembre 1905 dispose que la République "
+         "ne reconnaît, ne salarie ni ne subventionne aucun culte.",
+         "1905", "Loi du 9 décembre 1905, article 2", LOI_1905_ART2),
+    Fait("ips",
+         "La DEPP calcule pour chaque école, collège et lycée un indice de "
+         "position sociale (IPS), qui résume les conditions "
+         "socio-économiques et culturelles des familles de ses élèves. Ces "
+         "indices sont publiés en données ouvertes, établissement par "
+         "établissement.",
+         "2022", "DEPP, indice de position sociale", DEPP_IPS),
+    Fait("dedoublement_effets",
+         "L'évaluation de la DEPP mesure un effet du dédoublement sur la "
+         "progression des élèves en français et en mathématiques au cours "
+         "des deux premières années de l'élémentaire, ainsi qu'un climat de "
+         "classe plus favorable. Mais l'écart de résultats entre l'éducation "
+         "prioritaire et le reste du système ne s'est pas réduit, et le "
+         "dispositif ne touche qu'une minorité des élèves en difficulté de "
+         "l'école élémentaire.",
+         "2023", "DEPP, évaluation de l'impact de la réduction de la taille "
+         "des classes en REP+", DEPP_DEDOUBLEMENT),
     Fait("cae_rendement",
          "Le Conseil d'analyse économique propose de lire la dépense "
          "scolaire à travers le rendement social net de chaque euro investi. "

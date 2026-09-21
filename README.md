@@ -4,7 +4,7 @@
 choses : établir ce que la politique scolaire française coûte et ce qu'elle
 obtient, puis exposer l'alternative libérale.
 
-Huit pages statiques, aucun script chez le lecteur, aucune requête vers un
+Neuf pages statiques, aucun script chez le lecteur, aucune requête vers un
 tiers — ni police, ni mesure d'audience, ni bouton de réseau social. Le
 lecteur d'un site politique n'a pas à être compté pour le lire.
 
@@ -14,9 +14,10 @@ lecteur d'un site politique n'a pas à être compté pour le lire.
 | `resultats.html` | PISA, TIMSS, PIRLS, Journée défense et citoyenneté |
 | `depense.html` | Où va l'argent : niveaux, financeurs, réformes évaluées |
 | `gouvernance.html` | Qui décide : centralisation, recrutement, affectation |
-| `proposition.html` | Les sept réformes, leur calendrier, leurs garde-fous |
+| `proposition.html` | Les huit réformes, leur calendrier, le droit à changer, les garde-fous |
+| `chiffrage.html` | Ce que la réforme coûte, ce qui la finance, qui la paie |
 | `comparaisons.html` | Pays-Bas, Danemark, Estonie, Suède |
-| `objections.html` | Dix objections, dont trois que nous jugeons fondées |
+| `objections.html` | Quatorze objections, dont six que nous jugeons fondées |
 | `sources.html` | Tous les chiffres, leur année, leur source |
 
 ## L'apparence
@@ -89,6 +90,27 @@ L'énoncé enregistré est ce que le document établit, **non ce qui arrangerait
 la page**. C'est la seule contrainte qui vaille : elle a déjà obligé à retirer
 une phrase qui faisait dire à une note du Conseil d'analyse économique
 l'inverse de son propre périmètre.
+
+### La seule page qui calcule
+
+`chiffrage.html` déroge à la règle des chiffres, et le dit en tête. Partout
+ailleurs le site ne fait que citer ; là, il faut un modèle. Il est donc posé à
+découvert : chaque entrée est un chiffre sourcé du registre, chaque opération
+est écrite dans le tableau, et les trois hypothèses non publiées — l'écart de
+financement au second degré, la part variable de la dépense, la masse
+salariale enseignante — sont signalées comme telles à l'endroit où elles
+servent.
+
+Cette page nomme aussi trois perdants. C'était la condition pour qu'elle
+existe : un chiffrage sans perdant n'est pas un chiffrage.
+
+### La date du pied de page
+
+`gabarit.DERNIERE_MISE_A_JOUR` se met à jour **à la main**, et c'est voulu.
+La dériver de l'horloge ferait changer les neuf pages publiées chaque nuit,
+et `construire_site.py --verifier` échouerait dès le lendemain. Un document
+de campagne sans date se fait reprocher des chiffres périmés ; celle-ci se
+corrige en un caractère, et l'historique du dépôt porte le détail.
 
 ### La typographie
 

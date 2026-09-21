@@ -21,11 +21,18 @@ import re
 from dataclasses import dataclass
 
 DEPOT = "https://github.com/g-pliberal/education"
+
+# La date que porte le pied de page. Elle se met à jour à la main, et c'est
+# voulu : la dériver de l'horloge ferait changer les huit pages publiées
+# chaque nuit, et le test qui compare le HTML publié à ce que le code produit
+# échouerait dès le lendemain. Un document de campagne sans date se fait
+# reprocher des chiffres périmés ; celle-ci se corrige en un caractère.
+DERNIERE_MISE_A_JOUR = "21 septembre 2026"
 SITE_PARENT = "https://partiliberalfrancais.fr/"
 
 # -- la navigation -----------------------------------------------------------
 #
-# Huit pages, sous trois étiquettes de groupe. Les étiquettes ne s'affichent
+# Neuf pages, sous quatre étiquettes de groupe. Les étiquettes ne s'affichent
 # pas : elles sont lues par les synthèses vocales, pour qui une barre de huit
 # liens sans structure est une liste de huit liens sans structure.
 
@@ -35,6 +42,7 @@ GROUPES_NAVIGATION: tuple[tuple[str, tuple[tuple[str, str], ...]], ...] = (
                     ("depense", "Dépense"),
                     ("gouvernance", "Qui décide"))),
     ("La proposition", (("proposition", "La proposition"),
+                        ("chiffrage", "Le chiffrage"),
                         ("comparaisons", "Ailleurs"))),
     ("La confiance", (("objections", "Objections"),
                       ("sources", "Sources"))),
@@ -46,6 +54,7 @@ TITRES: dict[str, str] = {
     "depense": "Dépense",
     "gouvernance": "Qui décide",
     "proposition": "La proposition",
+    "chiffrage": "Le chiffrage",
     "comparaisons": "Ailleurs en Europe",
     "objections": "Objections",
     "sources": "Sources",
@@ -67,6 +76,9 @@ DESCRIPTIONS: dict[str, str] = {
     "proposition": "Sept réformes libérales de l'école : le financement suit "
                    "l'élève, l'établissement s'administre, les résultats se "
                    "publient, le métier d'enseignant redevient un métier.",
+    "chiffrage": "Ce que la réforme coûte, ce qui la finance et qui la paie : "
+                 "le calcul écrit en entier, avec ses hypothèses et ses "
+                 "perdants nommés.",
     "comparaisons": "Pays-Bas, Danemark, Estonie, Suède : ce que la liberté "
                     "scolaire donne quand elle est bien faite, et ce qu'elle "
                     "coûte quand elle est mal faite.",
@@ -157,6 +169,9 @@ def pied() -> str:
   textes sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr">CC BY-SA 4.0</a>).
   Une erreur, un chiffre périmé, une objection oubliée : ouvrez une
   <a href="{DEPOT}/issues">issue</a>.</p>
+  <p class="discret">Dernière mise à jour : {DERNIERE_MISE_A_JOUR}. Chaque
+  correction est publiée avec sa date dans l'historique du
+  <a href="{DEPOT}">dépôt</a>.</p>
   <p class="retour-site">Un document du
   <a href="{SITE_PARENT}" target="_top">Parti libéral français</a>.</p>
 </footer>"""

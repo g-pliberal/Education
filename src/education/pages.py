@@ -86,12 +86,15 @@ def index() -> str:
          "d'établissement français ne choisit pas son équipe : il reçoit des "
          "affectations. On ne peut pas lui demander des résultats dont il ne "
          "tient aucun des leviers."),
-        ("L'inégalité est le résultat",
+        ("L'inégalité n'est pas corrigée",
          f"{v('pisa_ecart_social')} séparent en mathématiques les élèves "
-         "français les plus favorisés des plus défavorisés. Le système qui se "
-         "réclame le plus de l'égalité est l'un de ceux où l'origine sociale "
-         "pèse le plus lourd. Ce n'est pas un accident de parcours : c'est "
-         "ce qu'il produit."),
+         "français les plus favorisés des plus défavorisés. Le système qui "
+         "se réclame le plus de l'égalité est l'un de ceux où l'origine "
+         "sociale pèse le plus lourd sur les résultats. Nous n'écrivons pas "
+         "que l'école fabrique cette inégalité — les enquêtes ne "
+         "l'établissent pas. Nous écrivons qu'elle la corrige moins que "
+         "celles de nos voisins, ce qui suffit à juger une institution dont "
+         "c'est la raison d'être."),
     ))
 
     corps += g.engagements((
@@ -179,8 +182,10 @@ def index() -> str:
          f'<a href="{g.lien("depense")}">la dépense</a>, '
          f'<a href="{g.lien("gouvernance")}">la gouvernance</a>.'),
         ("La proposition",
-         "Sept réformes, leur calendrier, leur coût et leurs garde-fous. "
-         f'<a href="{g.lien("proposition")}">La proposition</a>, et '
+         "Huit réformes, leur calendrier, leurs garde-fous — et le calcul "
+         "de ce qu'elles coûtent, avec ses perdants nommés. "
+         f'<a href="{g.lien("proposition")}">La proposition</a>, '
+         f'<a href="{g.lien("chiffrage")}">le chiffrage</a>, et '
          f'<a href="{g.lien("comparaisons")}">ce que font nos voisins</a>.'),
         ("La contradiction",
          "Les dix objections sérieuses, y compris celles qui ont raison, et "
@@ -518,13 +523,22 @@ def depense() -> str:
          "de CE1 en REP et REP+ à une douzaine d'élèves. Son coût annuel est "
          f"estimé à {v('dedoublement_cout')} par la Cour des comptes, pour "
          f"{v('dedoublement_etp')} équivalents temps plein.</p>"
-         "<p>Les évaluations de la DEPP montrent des effets positifs "
-         "mesurables à la fin du CP, <strong>qui ne persistent pas</strong> : "
-         "au-delà de la première année, l'effet supplémentaire n'est plus "
-         "significatif. Réduire la taille des classes fonctionne, mais "
-         "beaucoup moins que son coût ne le laissait espérer — et le facteur "
-         "décisif, dans toute la littérature, reste ce que l'enseignant fait "
-         "de ces élèves, non leur nombre.</p>"),
+         "<p>L'évaluation est plus nuancée que ce que nous en disions, et "
+         "il faut la citer exactement. La DEPP mesure un effet réel sur la "
+         "progression des élèves en français et en mathématiques "
+         "<strong>pendant les deux premières années</strong> de "
+         "l'élémentaire, et un climat de classe plus favorable. Ce qui n'a "
+         "pas bougé, c'est l'essentiel : <strong class=\"cle-texte\">"
+         "l'écart entre l'éducation prioritaire et le reste du système ne "
+         "s'est pas réduit</strong>, et le dispositif ne touche qu'une "
+         "minorité des élèves en difficulté de l'école élémentaire ("
+         + _source("dedoublement_effets") + ").</p>"
+         "<p>Réduire la taille des classes fonctionne donc, mais beaucoup "
+         "moins que son coût ne le laissait espérer, et sur un périmètre "
+         "trop étroit pour déplacer la moyenne nationale. C'est un argument "
+         "contre l'usage <em>uniforme</em> d'un levier coûteux, non contre "
+         "le levier lui-même — et c'est bien pourquoi nous proposons que "
+         "l'établissement décide lui-même où le mettre.</p>"),
         ("Les groupes de niveau puis de besoins au collège",
          "<p>Annoncés en 2023 sous le nom de « choc des savoirs », mis en "
          "place à la rentrée 2024 en sixième et cinquième, les groupes de "
@@ -559,6 +573,13 @@ def depense() -> str:
         "2035. À dépense constante, cela signifie mécaniquement un "
         "desserrement considérable : davantage d'adultes par enfant, sans "
         "un euro de plus.</p>"
+        "<p>Une précision que nous nous devons, parce que nous expliquons "
+        "ailleurs le contraire : <strong>la dépense ne baisse pas "
+        "proportionnellement aux effectifs</strong>. Les murs, le chauffage "
+        "et la direction ne suivent pas les élèves — c'est exactement ce qui "
+        "a mis les communes suédoises en difficulté. Seule la part variable "
+        "se libère, et le calcul que nous en faisons, hypothèses comprises, "
+        f'est page <a href="{g.lien("chiffrage")}">Le chiffrage</a>.</p>'
         "<p>Cette baisse est une occasion, et elle ne se représentera pas. "
         "Deux usages en sont possibles. Le premier est de ne rien décider et "
         "de laisser l'économie se faire silencieusement, poste par poste, au "
@@ -735,7 +756,9 @@ def proposition() -> str:
     corps = g.affiche(
         "La proposition",
         "Le financement suit l'élève. L'école s'administre. Les résultats se publient.",
-        "Sept réformes, à enveloppe constante. Aucune n'est nouvelle : "
+        "Huit réformes, à enveloppe constante — et le calcul qui le "
+        f'montre est sur la page <a href="{g.lien("chiffrage")}">Le '
+        "chiffrage</a>. Aucune n'est nouvelle : "
         "chacune est appliquée quelque part en Europe, et l'on sait donc à "
         "quoi s'attendre — <strong class=\"cle-texte\">y compris quand cela "
         "tourne mal</strong>.",
@@ -749,12 +772,14 @@ def proposition() -> str:
         ("evaluation", "5. L'évaluation publique"),
         ("metier", "6. Le métier d'enseignant"),
         ("socle", "7. Le socle"),
+        ("autorite", "8. L'autorité"),
+        ("droit", "Ce qu'il faut changer dans le droit"),
         ("calendrier", "Le calendrier"),
         ("garde-fous", "Les garde-fous"),
     ))
 
     corps += g.note(
-        "<p><strong>La logique d'ensemble.</strong> Les sept réformes ne sont "
+        "<p><strong>La logique d'ensemble.</strong> Les huit réformes ne sont "
         "pas un catalogue : elles tiennent ensemble ou elles échouent. Le "
         "financement à l'élève sans pondération sociale produit de la "
         "ségrégation. L'autonomie sans évaluation produit de l'arbitraire. "
@@ -792,12 +817,26 @@ def proposition() -> str:
         "<p>C'est la réforme la plus importante de cette page, et celle qui "
         "distingue cette proposition d'un simple chèque éducation.</p>"
         "<p>Le montant attaché à l'élève est <strong>pondéré</strong> : "
-        "majoré d'environ 40 % pour un élève d'origine défavorisée, et d'un "
-        "montant calculé pour un élève en situation de handicap ou "
-        "allophone. Un établissement a alors un intérêt financier direct à "
-        "accueillir les élèves que le système actuel se renvoie, et à les "
-        "faire progresser — puisque l'évaluation (réforme 5) mesure la "
-        "valeur ajoutée et non le niveau brut.</p>"
+        "majoré de 40 % pour un élève d'origine défavorisée, et d'un montant "
+        "calculé pour un élève en situation de handicap ou allophone. Un "
+        "établissement a alors un intérêt financier direct à accueillir les "
+        "élèves que le système actuel se renvoie, et à les faire "
+        "progresser — puisque l'évaluation (réforme 5) mesure la valeur "
+        "ajoutée et non le niveau brut.</p>"
+        "<p><strong>Sur quoi se calcule la majoration.</strong> Une "
+        "pondération sociale dont personne ne sait mesurer l'assiette n'est "
+        "qu'un slogan. Nous n'en inventons pas : l'instrument existe, il "
+        "est français, il est public. La DEPP calcule pour chaque école, "
+        "collège et lycée un <strong class=\"cle-texte\">indice de "
+        "position sociale</strong>, publié en données ouvertes, "
+        "établissement par établissement (" + _source("ips") + "). C'est "
+        "lui qui sert d'assiette, et il a l'avantage d'être déjà contesté, "
+        "discuté et corrigé publiquement depuis des années.</p>"
+        "<p>Le taux de 40 %, lui, est un choix politique et non un résultat "
+        "d'étude : il est de l'ordre de grandeur des pondérations "
+        "néerlandaises, et il doit être révisable au vu de ce qu'il produit. "
+        f'Ce qu\'il coûte est calculé page <a href="{g.lien("chiffrage")}">'
+        "Le chiffrage</a> — et il y a un perdant.</p>"
         "<p>Sans cette pondération, la liberté de choix organise le tri. "
         f"C'est ce qui s'est produit en Suède après {v('suede_reforme')}, et "
         "nous ne demandons à personne de nous croire sur parole : "
@@ -956,22 +995,162 @@ def proposition() -> str:
         "pas le temps disponible : c'est ce qu'on y met.</p>"
     )
 
+    corps += "<h2 id=\"autorite\">8. Une autorité qui ferme les écoles</h2>"
+    corps += (
+        "<p>C'est la réforme que nous avions oubliée, et c'était la plus "
+        "grosse faille de ce programme. Nous écrivions qu'une école qui "
+        "échoue durablement doit « changer de direction ou fermer » sans "
+        "dire <strong>qui le décide, à partir de quel seuil, et avec quel "
+        "recours</strong>. Une promesse de responsabilité sans autorité qui "
+        "la prononce n'engage personne.</p>"
+        "<p>Les Pays-Bas, que nous citons en modèle, ne tiennent pas par "
+        "leur liberté scolaire : ils tiennent par leur inspection, qui "
+        "classe les établissements, publie ses rapports, suit les écoles "
+        "faibles et peut faire cesser le financement. Nous avions retenu le "
+        "résultat néerlandais en omettant la machine qui le produit.</p>"
+        "<p>Nous proposons donc une <strong class=\"cle-texte\">autorité "
+        "indépendante d'évaluation des établissements</strong>, distincte du "
+        "ministère qui pilote et des rectorats qui gèrent, sur le modèle des "
+        "autorités administratives indépendantes existantes : membres "
+        "nommés pour un mandat non renouvelable, budget propre, rapports "
+        "publics, et compte rendu annuel devant le Parlement.</p>"
+    )
+    corps += g.gestes((
+        "<strong>Le seuil est écrit à l'avance.</strong> Un établissement "
+        "dont la valeur ajoutée est significativement négative trois années "
+        "consécutives entre en procédure. Non pas un mauvais résultat, qui "
+        "peut tenir au public accueilli : une progression des élèves "
+        "inférieure à ce que leur niveau d'entrée laissait attendre, trois "
+        "ans de suite.",
+        "<strong>La procédure est contradictoire.</strong> L'établissement "
+        "répond, produit son analyse, et dispose de deux ans avec un appui "
+        "renforcé et des moyens supplémentaires. Une école en difficulté "
+        "reçoit d'abord de l'aide, pas une sanction.",
+        "<strong>La sanction est graduée.</strong> Changement de direction, "
+        "puis retrait du contrat et réaffectation des élèves, avec "
+        "obligation pour l'autorité publique d'assurer une place à chacun. "
+        "Aucune fermeture ne peut laisser un enfant sans école.",
+        "<strong>Le recours existe.</strong> Les décisions de l'autorité "
+        "sont susceptibles de recours devant le juge administratif, comme "
+        "toute décision administrative faisant grief.",
+    ))
+    corps += g.note(
+        "<p><strong>Ce que cela nous coûte politiquement, et que nous "
+        "assumons.</strong> Créer une autorité, c'est créer de "
+        "l'administration — ce qu'un programme libéral n'aime pas faire. "
+        "Nous le faisons parce que l'alternative est pire : une liberté "
+        "scolaire sans arbitre, c'est la version suédoise, et nous avons "
+        "passé une page entière à expliquer pourquoi nous n'en voulons "
+        "pas. <strong>L'autonomie sans autorité n'est pas du libéralisme, "
+        "c'est de l'abandon.</strong></p>",
+        "vigilance",
+    )
+
+    corps += ("<h2 id=\"droit\">Ce qu'il faut changer dans le droit, et ce "
+              "qui résistera</h2>")
+    corps += (
+        "<p>Un programme scolaire français qui ne dit rien du droit "
+        "constitutionnel n'a pas été écrit sérieusement. Trois textes se "
+        "dressent devant cette proposition. Nous les nommons, parce que nos "
+        "contradicteurs le feront, et parce qu'il vaut mieux avoir lu "
+        "l'obstacle que le découvrir.</p>"
+    )
+    corps += g.sections_depliables((
+        ("La liberté de l'enseignement a valeur constitutionnelle",
+         "<p>Le Conseil constitutionnel a jugé que la liberté de "
+         "l'enseignement figure parmi les principes fondamentaux reconnus "
+         "par les lois de la République, et qu'elle a donc valeur "
+         "constitutionnelle. La même décision reconnaît le <em>caractère "
+         "propre</em> des établissements privés sous contrat ("
+         + _source("liberte_enseignement") + ").</p>"
+         "<p><strong>Ce que cela nous oppose.</strong> Notre contrat unique "
+         "impose à tout établissement financé d'enseigner le socle en "
+         "totalité et de n'exercer aucune sélection à l'entrée. On peut "
+         "soutenir que cela vide le caractère propre de sa substance, et "
+         "donc porte atteinte à une liberté constitutionnelle.</p>"
+         "<p><strong>Ce que nous répondons.</strong> La liberté "
+         "d'enseignement reste entière hors financement public : le hors "
+         "contrat continue d'exister, et notre réforme ne le touche pas. Ce "
+         "que nous encadrons, c'est la contrepartie de l'argent public. Un "
+         "établissement demeure libre de son projet, de sa pédagogie, de son "
+         "recrutement d'enseignants et de son organisation ; il ne l'est pas "
+         "de choisir ses élèves avec l'argent du contribuable. Nous pensons "
+         "cette lecture défendable. Nous ne garantissons pas qu'elle "
+         "l'emporterait.</p>"),
+        ("La loi Falloux plafonne le financement des murs",
+         "<p>Hérité de la loi Falloux de 1850, un article du code de "
+         "l'éducation plafonne à un dixième de leurs dépenses annuelles les "
+         "subventions publiques aux établissements privés d'enseignement "
+         "général du second degré (" + _source("falloux") + ").</p>"
+         "<p><strong>Ce que cela nous oppose.</strong> Notre réforme 1 exige "
+         "une dotation consolidée « murs compris ». C'est une collision "
+         "frontale : en l'état du droit, le financement à parité du second "
+         "degré privé est illégal.</p>"
+         "<p><strong>Ce que nous répondons.</strong> Rien, sinon qu'il faut "
+         "abroger cet article, par une loi ordinaire. Nous rappelons que la "
+         "dernière tentative, en 1994, a mis six cent mille personnes dans "
+         "la rue et a été censurée par le Conseil constitutionnel pour "
+         "rupture d'égalité — dans une rédaction qui laissait les "
+         "collectivités libres de subventionner sans critères. Une abrogation "
+         "assortie d'une règle uniforme et opposable à tous les "
+         "établissements financés ne présente pas le même défaut. C'est une "
+         "difficulté politique majeure, pas un verrou juridique "
+         "infranchissable.</p>"),
+        ("La loi de 1905 et le financement des écoles confessionnelles",
+         "<p>La République ne reconnaît, ne salarie ni ne subventionne "
+         "aucun culte (" + _source("laicite_1905") + ").</p>"
+         "<p><strong>Ce que cela nous oppose.</strong> "
+         f"{v('prive_catholique')} des établissements privés sous contrat "
+         "relèvent de l'enseignement catholique. Porter leur financement à "
+         "parité, investissement compris, sera présenté comme un "
+         "financement public du culte.</p>"
+         "<p><strong>Ce que nous répondons.</strong> La loi Debré de 1959 a "
+         "déjà tranché ce point : l'État rémunère des enseignants qui "
+         "dispensent un enseignement, non un culte, et le Conseil "
+         "constitutionnel l'a validé. Notre contrat unique <em>renforce</em> "
+         "cette séparation plutôt qu'il ne l'affaiblit, puisqu'il rend le "
+         "socle républicain intégralement opposable à tout établissement "
+         "financé — ce qu'il n'est pas aujourd'hui. Reste que le "
+         "financement des bâtiments est d'une autre nature que celui des "
+         "traitements, et que ce point sera le plus disputé des trois.</p>"),
+    ))
+    corps += g.note(
+        "<p><strong>Ce que ces trois obstacles impliquent.</strong> Les "
+        "réformes 3, 5, 6, 7 et 8 — autonomie, évaluation, métier, socle, "
+        "autorité — se font à droit constant ou par loi ordinaire. Les "
+        "réformes 1, 2 et 4 — financement à parité, pondération, contrat "
+        "unique — supposent d'abroger l'article L. 151-4 et d'accepter un "
+        "contrôle de constitutionnalité que nous pouvons perdre. "
+        "<strong class=\"cle-texte\">C'est une raison de plus de commencer "
+        "par ce qui ne demande pas la loi.</strong></p>",
+        "resume",
+    )
+
     corps += "<h2 id=\"calendrier\">En quel ordre</h2>"
     corps += g.gestes((
-        "<strong>Première année — la transparence.</strong> Publication des "
-        "évaluations nationales en valeur ajoutée, des moyens et des comptes "
-        "de chaque établissement. Rien d'autre. Cette étape ne coûte presque "
-        "rien, ne retire rien à personne, et rend toutes les suivantes "
-        "discutables sur pièces.",
+        "<strong>Première année — la transparence, et la mise en place de "
+        "la mesure.</strong> Publication des moyens, des comptes et de la "
+        "composition sociale de chaque établissement, et des résultats bruts "
+        "contextualisés. <em>Pas</em> la valeur ajoutée : elle exige deux "
+        "vagues d'évaluation appariées au niveau de l'élève, et ne peut donc "
+        "pas exister la première année. Ce qui se fait l'année 1, c'est le "
+        "dispositif qui la rendra possible. L'étape ne coûte presque rien et "
+        "ne retire rien à personne.",
         "<strong>Deuxième année — l'autonomie du public.</strong> Dotation "
         "globale et recrutement par l'établissement, d'abord sur les postes "
-        "vacants et dans les académies volontaires.",
-        "<strong>Troisième année — l'affectation.</strong> Procédure de vœux "
-        "publique à la place de la sectorisation, à l'entrée en sixième "
-        "d'abord.",
+        "vacants et dans les académies volontaires. Installation de "
+        "l'autorité indépendante (réforme 8), qui doit exister avant qu'on "
+        "lui donne quelque chose à surveiller.",
+        "<strong>Troisième année — l'affectation et la valeur ajoutée.</strong> "
+        "Procédure de vœux publique à la place de la sectorisation, à "
+        "l'entrée en sixième d'abord. Première publication de la valeur "
+        "ajoutée, deux vagues d'évaluation étant désormais disponibles — "
+        "l'IVAL des lycées fait cela depuis des années, nous l'étendons.",
         "<strong>Quatrième année — le contrat unique</strong> et la "
         "pondération sociale du financement, appliqués ensemble : l'un sans "
-        "l'autre serait la faute suédoise.",
+        "l'autre serait la faute suédoise. C'est aussi le poste coûteux, et "
+        f'il arrive <a href="{g.lien("chiffrage")}">quand la démographie a '
+        "commencé à rendre</a>.",
         "<strong>En continu — la rémunération.</strong> Chaque euro libéré "
         "par la baisse démographique est affecté au salaire des enseignants, "
         "et la loi de finances le documente.",
@@ -1010,6 +1189,263 @@ def proposition() -> str:
         "libérale qui ne les porterait pas serait une proposition "
         f'irresponsable. <a href="{g.lien("objections")}">Les objections, '
         "une par une</a>.</p>",
+        "vigilance",
+    )
+    return corps
+
+
+def chiffrage() -> str:
+    corps = g.affiche(
+        "La proposition · le coût",
+        "Ce que la réforme coûte, et qui le paie.",
+        "Nous écrivions jusqu'ici que notre proposition tenait à enveloppe "
+        "constante sans l'avoir démontré. Cette page fait le calcul. Il est "
+        "grossier, entièrement écrit, et il désigne un perdant — "
+        "<strong class=\"cle-texte\">sans quoi ce ne serait pas un "
+        "chiffrage, mais une promesse</strong>.",
+    )
+
+    corps += g.plan((
+        ("methode", "La méthode"),
+        ("couts", "Ce que ça coûte"),
+        ("ressources", "Ce qui le finance"),
+        ("perdant", "Qui paie"),
+        ("bilan", "Le bilan, et son trou"),
+        ("limites", "Ce que ce calcul ne prouve pas"),
+    ))
+
+    corps += g.note(
+        "<p><strong>La seule page de ce site qui calcule.</strong> Ailleurs, "
+        "nous ne faisons que citer : les sources publient des agrégats, et "
+        "recalculer un chiffre qu'on n'a pas produit soi-même donne "
+        "l'illusion d'un modèle. Ici, il faut bien un modèle. Nous le "
+        "posons donc à découvert : <strong>chaque entrée est un chiffre "
+        "sourcé du site, chaque opération est écrite, chaque hypothèse est "
+        "signalée comme telle</strong>. Un lecteur qui conteste une "
+        "hypothèse peut refaire le calcul avec la sienne en dix lignes. "
+        "C'est tout ce qu'on peut demander à un chiffrage d'opposition, qui "
+        "n'a ni la direction du budget ni les fichiers de paie.</p>",
+        "entree",
+    )
+
+    corps += "<h2 id=\"methode\">Trois dépenses, deux ressources</h2>"
+    corps += (
+        "<p>La proposition engage trois dépenses nouvelles : porter le "
+        "financement public à parité pour tous les élèves, majorer le "
+        "montant versé pour l'élève défavorisé, et relever la rémunération "
+        "des enseignants. Elle dispose de deux ressources : la baisse "
+        "démographique, et le réalignement de la dépense par lycéen sur ce "
+        "que font les autres pays.</p>"
+        "<p>Les trois dépenses ne se déploient pas au même rythme, et c'est "
+        "ce qui rend le calendrier de la page "
+        f'<a href="{g.lien("proposition")}">La proposition</a> aussi '
+        "important que les montants.</p>"
+    )
+
+    corps += "<h2 id=\"couts\">Ce que ça coûte</h2>"
+    corps += "<h3 class=\"serif\">1. Le financement à parité</h3>"
+    corps += (
+        "<p>C'est le poste principal, et le moins discuté par les partisans "
+        "de la liberté scolaire — qui présentent volontiers leur réforme "
+        "comme gratuite. Elle ne l'est pas. Aujourd'hui, un élève du privé "
+        f"sous contrat coûte moins à l'État qu'un élève du public : "
+        f"{v('prive_cout_etat_primaire')} contre "
+        f"{v('public_cout_etat_primaire')} dans le premier degré, d'après la "
+        "Cour des comptes. <strong>Verser le même montant pour tous, c'est "
+        "combler cet écart, et donc dépenser davantage.</strong></p>"
+    )
+    corps += g.tableau(
+        "Le coût du financement à parité, par an, à la fin du déploiement",
+        ("Ligne", "Calcul", "Ordre de grandeur"),
+        (
+            ("Élèves du premier degré dans le privé sous contrat",
+             f"{v('eleves_premier_degre')} × {v('prive_premier_degre')}",
+             "≈ 840 000"),
+            ("Écart de financement par élève, premier degré",
+             f"{v('public_cout_etat_primaire')} − "
+             f"{v('prive_cout_etat_primaire')}",
+             "≈ 1 970 €"),
+            ("Coût du premier degré", "840 000 × 1 970 €", "≈ 1,7 Md€"),
+            ("Élèves du second degré dans le privé sous contrat",
+             f"{v('eleves_second_degre')} × {v('prive_second_degre')}",
+             "≈ 1 190 000"),
+            ("Écart de financement par élève, second degré",
+             "hypothèse : de 1 000 à 2 000 €, l'écart relatif étant plus "
+             "faible qu'au primaire (forfait d'externat)",
+             "1,2 à 2,4 Md€"),
+            ("Total", "", "3 à 4 Md€ par an"),
+        ),
+        ("long", "long", "nombre"),
+    )
+    corps += g.note(
+        "<p><strong>L'hypothèse contestable est la deuxième.</strong> La Cour "
+        "des comptes établit l'écart pour le premier degré ; pour le second, "
+        "nous l'estimons, en nous appuyant sur le fait qu'elle relève des "
+        "taux de financement public plus proches entre public et privé à ce "
+        "niveau. Un contradicteur qui dispose du chiffre exact nous "
+        "corrigera, et il aura raison de le faire : "
+        f'<a href="{g.DEPOT}/issues">l\'adresse est ici</a>.</p>',
+        "vigilance",
+    )
+
+    corps += "<h3 class=\"serif\">2. La pondération sociale</h3>"
+    corps += (
+        "<p>Elle ne coûte rien — et c'est précisément ce qui la rend "
+        "douloureuse. <strong class=\"cle-texte\">Majorer le montant versé "
+        "pour l'élève défavorisé sans augmenter l'enveloppe, c'est diminuer "
+        "celui versé pour les autres.</strong> Le calcul est immédiat : si "
+        "l'on retient le quart des élèves les moins favorisés et qu'on "
+        "majore leur dotation de 40 %, les trois autres quarts voient la "
+        "leur baisser d'environ 13 %.</p>"
+        "<p>Nous ne connaissons aucune manière d'éviter cela, et nous ne "
+        "cherchons pas à la masquer. C'est le cœur de la réforme : un "
+        "établissement qui accueille des élèves favorisés reçoit moins qu'il "
+        "ne reçoit aujourd'hui. Le lecteur dont l'enfant est scolarisé dans "
+        "un tel établissement sait maintenant ce que nous lui proposons.</p>"
+    )
+
+    corps += "<h3 class=\"serif\">3. La rémunération des enseignants</h3>"
+    corps += (
+        "<p>C'est le poste le plus lourd, et celui sans lequel rien d'autre "
+        "ne tient. Le salaire effectif d'un professeur des écoles français "
+        f"est inférieur de {v('salaire_ecart_elementaire')} à celui des "
+        "autres diplômés du supérieur, contre "
+        f"{v('salaire_ecart_elementaire_ocde')} en moyenne dans l'OCDE. "
+        "Combler seulement cet écart-là — non pas rattraper les autres "
+        "diplômés, mais rejoindre la position relative moyenne de "
+        "l'OCDE — demande une hausse d'environ 12 % de la rémunération "
+        "enseignante.</p>"
+        "<p>Appliquée à une masse salariale enseignante que nous supposons "
+        f"de l'ordre de 50 Md€ — la mission Enseignement scolaire pèse "
+        f"{v('budget_mission')} hors pensions, dont l'essentiel en "
+        "salaires —, cette hausse coûte <strong>environ 6 Md€ par "
+        "an</strong>. Les 50 Md€ sont une hypothèse de notre part, pas un "
+        "chiffre publié.</p>"
+    )
+
+    corps += "<h2 id=\"ressources\">Ce qui le finance</h2>"
+    corps += "<h3 class=\"serif\">1. La baisse démographique</h3>"
+    corps += (
+        f"<p>Le système scolaire doit perdre {v('demographie')} d'ici 2035. "
+        "À dépense par élève inchangée, la tentation est de multiplier ce "
+        "nombre par le coût moyen et d'annoncer une quinzaine de milliards. "
+        "<strong>Ce serait faux, et c'est nous-mêmes qui avons expliqué "
+        "pourquoi</strong> : la page "
+        f'<a href="{g.lien("comparaisons")}">Ailleurs en Europe</a> raconte '
+        "comment les communes suédoises se sont retrouvées avec des écoles à "
+        "demi vides dont les coûts fixes ne baissaient pas. Les murs, le "
+        "chauffage, la direction et l'entretien ne suivent pas les "
+        "effectifs.</p>"
+        "<p>Seule la part variable — pour l'essentiel les postes "
+        "d'enseignant — se libère réellement. Nous retenons l'hypothèse "
+        "qu'elle représente environ 60 % de la dépense par élève.</p>"
+    )
+    corps += g.tableau(
+        "Ce que la démographie libère réellement d'ici 2035",
+        ("Ligne", "Calcul", "Ordre de grandeur"),
+        (
+            ("Élèves en moins d'ici 2035", "projection DEPP",
+             v("demographie")),
+            ("Dépense par élève, premier degré", "chiffre DEPP",
+             v("die_premier_degre")),
+            ("Part variable retenue", "hypothèse : 60 %", "≈ 5 450 €"),
+            ("Ressource annuelle à l'horizon 2035",
+             "1,7 million × 5 450 €", "≈ 9 Md€"),
+        ),
+        ("long", "long", "nombre"),
+    )
+    corps += g.note(
+        "<p>Cette ressource <strong>n'existe pas encore</strong>. Elle "
+        "arrive par tranches, au rythme des générations, sur dix ans. Une "
+        "réforme qui dépenserait tout de suite ce que la démographie "
+        "rapportera en 2035 serait financée à crédit, et il faut le dire.</p>",
+        "vigilance",
+    )
+
+    corps += "<h3 class=\"serif\">2. Le réalignement du lycée</h3>"
+    corps += (
+        f"<p>La France dépense {v('ocde_lycee_fr')} par lycéen contre "
+        f"{v('ocde_lycee_ocde')} en moyenne dans l'OCDE, soit "
+        f"{v('ocde_ecart_lycee')} — quand elle dépense "
+        f"{v('ocde_ecart_elementaire')} que cette moyenne par écolier. "
+        "Ramener la dépense par lycéen à la moyenne de l'OCDE, et porter "
+        "l'écart sur l'élémentaire, est la seconde ressource de ce "
+        "programme. Elle ne demande pas un euro de plus : elle déplace.</p>"
+        "<p>Nous ne chiffrons pas ce transfert à l'euro, faute de connaître "
+        "la répartition exacte des effectifs du second cycle. Nous indiquons "
+        "seulement son sens et son ampleur : de l'ordre d'un quart de la "
+        "dépense par élève du second cycle du secondaire.</p>"
+    )
+
+    corps += "<h2 id=\"perdant\">Qui paie</h2>"
+    corps += g.encadre(
+        "<h3 class=\"serif\">Les trois perdants, nommés</h3>"
+        "<p>Un programme sans perdant est un programme qui ment. Voici les "
+        "nôtres.</p>"
+        "<p><strong>Les familles favorisées.</strong> La pondération sociale "
+        "abaisse d'environ 13 % la dotation attachée à un élève qui n'est "
+        "pas défavorisé. Les établissements qui en accueillent beaucoup "
+        "recevront moins qu'aujourd'hui.</p>"
+        "<p><strong>Le second cycle du secondaire.</strong> Le lycée général "
+        "et technologique, et au premier chef les classes préparatoires, "
+        f"dont l'élève reçoit {v('die_cpge')} quand l'écolier en reçoit "
+        f"{v('die_premier_degre')}. Moins d'options, des groupes moins "
+        "dédoublés, une carte des formations resserrée : c'est le prix de "
+        "l'école primaire.</p>"
+        "<p><strong>L'administration centrale et académique.</strong> "
+        "L'autonomie des établissements retire leur objet à une partie des "
+        "fonctions d'affectation, de dotation horaire et de contrôle "
+        "a priori. Nous ne prétendons pas que ces postes disparaissent sans "
+        "douleur ni sans conflit.</p>"
+    )
+
+    corps += "<h2 id=\"bilan\">Le bilan, et son trou</h2>"
+    corps += g.tableau(
+        "Le compte, à l'horizon 2035, en milliards d'euros par an",
+        ("", "Dépense", "Ressource"),
+        (
+            ("Financement à parité", "3 à 4", "—"),
+            ("Pondération sociale", "0 (redéploiement interne)", "—"),
+            ("Rémunération des enseignants", "≈ 6", "—"),
+            ("Baisse démographique (part variable)", "—", "≈ 9"),
+            ("Réalignement du lycée", "—", "non chiffré, positif"),
+            ("Total", "9 à 10", "9 et plus"),
+        ),
+        ("long", "nombre", "nombre"),
+    )
+    corps += (
+        "<p>Le compte tombe juste à l'horizon 2035, et <strong>il ne tombe "
+        "juste qu'à cet horizon</strong>. C'est le trou de ce programme, et "
+        "nous préférons l'écrire que le laisser trouver : entre la première "
+        "année et la dixième, les dépenses arrivent plus vite que la "
+        "ressource démographique.</p>"
+        "<p>Nous en tirons une conséquence sur le calendrier plutôt qu'une "
+        "pirouette. Les deux premières années ne coûtent presque rien — "
+        "publier des résultats et des comptes, donner de l'autonomie à des "
+        "académies volontaires. Le financement à parité, qui est le poste "
+        "coûteux, vient en quatrième année, quand la démographie a déjà "
+        "commencé à rendre. <strong class=\"cle-texte\">L'ordre des réformes "
+        "n'est pas une prudence politique : c'est une contrainte de "
+        "trésorerie.</strong></p>"
+    )
+
+    corps += "<h2 id=\"limites\">Ce que ce calcul ne prouve pas</h2>"
+    corps += g.note(
+        "<p>Il ne prouve pas que la réforme est finançable. Il établit "
+        "qu'elle est <em>plausiblement</em> finançable à l'horizon d'une "
+        "décennie, sous trois hypothèses que nous avons écrites en toutes "
+        "lettres : l'écart de financement au second degré, la part variable "
+        "de la dépense, et la masse salariale enseignante. Aucune n'est "
+        "publiée telle quelle ; chacune peut être fausse.</p>"
+        "<p>Il ne dit rien non plus des coûts de transition — systèmes "
+        "d'information, double régime statutaire pendant vingt ans, "
+        "accompagnement des établissements qui perdent des élèves. Ces "
+        "coûts existent, nous ne savons pas les évaluer, et ils vont dans "
+        "le mauvais sens.</p>"
+        "<p>Ce qu'on peut nous opposer de plus fort, c'est qu'un "
+        "gouvernement disposant de la direction du budget ferait ce calcul "
+        "mieux que nous. C'est exact. Nous demandons qu'il le fasse, et "
+        "qu'il le publie.</p>",
         "vigilance",
     )
     return corps
@@ -1191,16 +1627,19 @@ def objections() -> str:
     corps = g.affiche(
         "La confiance · 1",
         "Les objections, y compris celles qui ont raison.",
-        "Dix objections sérieuses à ce programme. Nous les formulons dans "
-        "leur version la plus forte, et non dans leur caricature — trois "
+        "Quatorze objections sérieuses à ce programme. Nous les formulons "
+        "dans leur version la plus forte, et non dans leur caricature — six "
         "d'entre elles, à notre avis, touchent juste.",
     )
 
     corps += g.note(
         "<p>Une proposition politique qui ne publie pas ses points faibles "
         "demande qu'on lui fasse confiance sur parole. Celle-ci les publie. "
-        "Les objections 3, 8 et 10 nous paraissent fondées, en tout ou en "
-        "partie, et nous le disons à l'endroit où on les lit.</p>",
+        "Six objections nous paraissent fondées, en tout ou en partie — "
+        "l'écrémage, le refus des enseignants, l'absence de preuve "
+        "française, l'école du village, les élèves handicapés, et le refus "
+        "probable de l'enseignement catholique. Nous le disons à l'endroit "
+        "où on les lit, et non dans une note de bas de page.</p>",
         "resume",
     )
 
@@ -1267,8 +1706,9 @@ def objections() -> str:
         f"dépense {v('ocde_lycee_fr')} par élève contre "
         f"{v('ocde_lycee_ocde')} dans l'OCDE, un quart de plus, pour des "
         "résultats qui ne le sont pas. Et le dédoublement des classes, qui "
-        f"coûte {v('dedoublement_cout')}, a produit des effets réels mais "
-        "qui ne persistent pas. Les moyens comptent, et ils manquent au "
+        f"coûte {v('dedoublement_cout')}, a produit des effets réels sans "
+        "réduire l'écart avec le reste du système. Les moyens comptent, et "
+        "ils manquent au "
         "primaire ; ailleurs, ils ne compensent pas une organisation qui "
         "empêche quiconque d'agir.",
         "Voir la page « Dépense ».",
@@ -1340,6 +1780,91 @@ def objections() -> str:
         "élèves, et ne récompense pas l'école favorisée qui se contente de "
         "recevoir de bons élèves. La presse publiera de toute façon des "
         "classements : autant qu'ils reposent sur la bonne grandeur.",
+    )
+
+    corps += g.section_cle(
+        "separatisme",
+        "Vous allez financer des écoles séparatistes.",
+        "C'est l'objection la plus lourde qui nous soit faite, et notre "
+        "silence sur ce point aurait valu aveu. Voici la réponse, et elle "
+        "est à notre avantage. Aujourd'hui, une école qui veut échapper au "
+        "socle républicain ouvre hors contrat : elle choisit ses élèves, "
+        "fixe ses tarifs, n'ouvre pas ses comptes, ne passe aucune "
+        "évaluation externe, et le contrôle de l'État s'y limite à "
+        "l'instruction. C'est dans cet espace-là que prospère ce que la loi "
+        "de 2021 a cherché à contenir. <strong>Notre contrat unique fait "
+        "exactement l'inverse</strong> : socle national enseigné en "
+        "totalité, aucune sélection à l'entrée, évaluations nationales "
+        "corrigées à l'extérieur, comptes publics, et une autorité "
+        "indépendante qui peut retirer le financement. Un établissement qui "
+        "voudrait trier ses élèves sur un critère religieux ou "
+        "communautaire ne remplit pas le contrat, et n'est donc pas financé. "
+        "Nous ne proposons pas d'ouvrir les vannes : nous proposons "
+        "d'échanger de l'argent public contre un contrôle qui n'existe pas "
+        "aujourd'hui, et de rendre le hors contrat moins attractif en "
+        "rendant le contrat accessible.",
+        "Voir la réforme 4 et la réforme 8, page « La proposition ».",
+    )
+
+    corps += g.section_cle(
+        "ecole-du-village",
+        "Le libre choix va fermer l'école du village.",
+        "<strong>Objection fondée</strong>, et c'est nous qui en avons "
+        "fourni la démonstration : notre page sur la Suède explique que les "
+        "communes se sont retrouvées avec des écoles à demi vides dont les "
+        "coûts fixes ne baissaient pas. Le même mécanisme jouerait ici, "
+        "aggravé par une baisse démographique qui fermera des écoles de "
+        "toute façon. Nous en tirons trois règles, et non une dénégation. "
+        "D'abord, une <strong>dotation socle garantie</strong> sous un "
+        "effectif plancher : en deçà, l'école est financée sur un forfait "
+        "fixe et non au nombre d'élèves, parce qu'une école de village n'est "
+        "pas divisible. Ensuite, aucune fermeture décidée par la seule "
+        "arithmétique de la dotation : la décision revient à la commune et à "
+        "l'autorité indépendante, sur des critères publiés. Enfin, le "
+        "calendrier — le libre choix vient en quatrième année, après "
+        "l'autonomie, qui est ce qui sert réellement à l'école rurale. Nous "
+        "ne prétendons pas que cela suffira partout.",
+    )
+
+    corps += g.section_cle(
+        "handicap",
+        "Et les élèves handicapés, dans votre système ?",
+        "<strong>Objection partiellement fondée : nous les avions traités "
+        "en une incise, et ils méritent mieux.</strong> L'école inclusive "
+        "française est aujourd'hui à la fois une obligation légale et une "
+        "promesse mal tenue — des notifications qui ne sont pas honorées, "
+        "des accompagnants payés à temps incomplet et sans carrière, des "
+        "familles qui plaident pendant des mois. Un financement à l'élève "
+        "sans pondération de handicap sérieuse rendrait ces enfants "
+        "financièrement indésirables, et aggraverait tout. Nous proposons "
+        "donc que la majoration de handicap soit <strong>attachée à la "
+        "notification, versée à l'établissement qui scolarise "
+        "effectivement</strong>, et d'un montant qui couvre le coût réel de "
+        "l'accompagnement — condition sans laquelle l'établissement a "
+        "intérêt à décourager l'inscription. L'accompagnement devient un "
+        "emploi de l'établissement, à temps complet, inscrit dans sa "
+        "dotation. Nous ne savons pas chiffrer ce poste aujourd'hui, et il "
+        "ne figure donc pas dans notre chiffrage : c'est une lacune, nous "
+        "l'écrivons plutôt que de la combler par un chiffre inventé.",
+        "Voir la réforme 2, page « La proposition ».",
+    )
+
+    corps += g.section_cle(
+        "catholique",
+        "L'enseignement catholique lui-même n'en veut pas.",
+        "C'est probablement vrai, et il faut le dire puisque nous passons "
+        "pour ses alliés. Le réseau catholique reçoit aujourd'hui "
+        f"{v('prive_fonds_etat')} de l'État tout en conservant le droit de "
+        "choisir ses élèves, de faire payer une contribution aux familles "
+        "et de faire valoir son caractère propre. Notre contrat unique lui "
+        "retire les trois : plus de sélection à l'entrée, plus de reste à "
+        "charge, et un socle national intégralement opposable. En échange, "
+        "il reçoit un financement à parité et la fin du contingentement. "
+        "<strong class=\"cle-texte\">Nous proposons donc à nos supposés "
+        "alliés un marché qu'ils ont de bonnes raisons de refuser</strong>, "
+        "et à nos adversaires une laïcité plus exigeante qu'aujourd'hui. "
+        "C'est inconfortable, et c'est la preuve que cette proposition "
+        "n'est pas la défense d'un intérêt établi.",
     )
 
     corps += g.section_cle(
@@ -1468,6 +1993,7 @@ PAGES = {
     "depense": depense,
     "gouvernance": gouvernance,
     "proposition": proposition,
+    "chiffrage": chiffrage,
     "comparaisons": comparaisons,
     "objections": objections,
     "sources": sources_page,
