@@ -11,6 +11,7 @@ d'un coup, page « Sources » comprise.
 
 from __future__ import annotations
 
+from . import chiffrage as ch
 from . import gabarit as g
 from .donnees import (CHIFFRES, FAITS, fait, par_theme, sources,
                       valeur as v)
@@ -158,9 +159,12 @@ def index() -> str:
             '<span class="badge">Non</span> Que l\'école publique devrait '
             "disparaître. Elle scolarisera toujours la grande majorité des "
             "élèves, et c'est elle que la réforme doit libérer en premier.",
-            '<span class="badge">Non</span> Qu\'il faut dépenser moins. '
-            "Nous proposons de dépenser autrement, à enveloppe constante, "
-            "et de rémunérer mieux les enseignants.",
+            '<span class="badge">Non</span> Que cela ne coûtera rien. '
+            "Tel qu'il est écrit, le programme coûte "
+            f"{ch.euros(ch.solde())} de plus par an que la dépense "
+            "d'aujourd'hui ; nous le chiffrons, et nous disons ce qu'il "
+            f'faudrait abandonner pour l\'éviter — <a href="{g.lien("chiffrage")}">'
+            "le chiffrage</a>.",
             '<span class="badge">Non</span> Que le marché réglera tout. '
             "La Suède a montré ce que donne une liberté scolaire sans "
             "garde-fous : nous en tirons quatre règles précises.",
@@ -180,7 +184,8 @@ def index() -> str:
          f'<a href="{g.lien("gouvernance")}">la gouvernance</a>.'),
         ("La proposition",
          "Sept réformes, leur calendrier, leur coût et leurs garde-fous. "
-         f'<a href="{g.lien("proposition")}">La proposition</a>, et '
+         f'<a href="{g.lien("proposition")}">La proposition</a>, '
+         f'<a href="{g.lien("chiffrage")}">son chiffrage</a>, et '
          f'<a href="{g.lien("comparaisons")}">ce que font nos voisins</a>.'),
         ("La contradiction",
          "Les dix objections sérieuses, y compris celles qui ont raison, et "
@@ -558,22 +563,29 @@ def depense() -> str:
         f"<p>Les projections du ministère annoncent {v('demographie')} d'ici "
         "2035. À dépense constante, cela signifie mécaniquement un "
         "desserrement considérable : davantage d'adultes par enfant, sans "
-        "un euro de plus.</p>"
+        "un euro de plus — ou, si l'on garde la dépense par élève, "
+        f"{ch.euros(-ch.montant(ch.poste('dividende')))} d'économie par an "
+        "pour l'État.</p>"
         "<p>Cette baisse est une occasion, et elle ne se représentera pas. "
         "Deux usages en sont possibles. Le premier est de ne rien décider et "
         "de laisser l'économie se faire silencieusement, poste par poste, au "
         "gré des lois de finances. Le second est de décider ce qu'on en fait : "
         "<strong class=\"cle-texte\">relever la rémunération des enseignants "
-        "et financer la liberté de choix, à enveloppe constante</strong>. "
-        "C'est le choix de ce programme.</p>"
+        "et financer la liberté de choix</strong>. C'est le choix de ce "
+        "programme — et la baisse démographique n'y suffit pas.</p>"
     )
     corps += g.note(
-        "<p><strong>Notre proposition ne demande pas un euro de plus.</strong> "
-        "Elle redirige l'euro existant : vers les premières années, vers la "
-        "rémunération des enseignants, et vers l'élève plutôt que vers "
-        f'l\'institution. Le détail est sur la page <a href="'
-        f'{g.lien("proposition")}">La proposition</a>.</p>',
-        "resume",
+        "<p><strong>Notre proposition coûte plus que la dépense "
+        "d'aujourd'hui.</strong> Nous avions écrit qu'elle ne demandait pas "
+        "un euro de plus ; son chiffrage dit le contraire. La baisse "
+        "démographique libère "
+        f"{ch.euros(-ch.montant(ch.poste('dividende')))} par an ; "
+        "revaloriser les enseignants, financer l'élève du privé comme celui "
+        "du public et majorer le financement de l'élève défavorisé coûtent "
+        f"davantage. Le solde est de {ch.euros(ch.solde(), True)} par an en "
+        f'2035. Le détail, poste par poste, est sur la page <a href="'
+        f'{g.lien("chiffrage")}">Chiffrage</a>.</p>',
+        "vigilance",
     )
     return corps
 
@@ -735,7 +747,7 @@ def proposition() -> str:
     corps = g.affiche(
         "La proposition",
         "Le financement suit l'élève. L'école s'administre. Les résultats se publient.",
-        "Sept réformes, à enveloppe constante. Aucune n'est nouvelle : "
+        "Sept réformes, chiffrées une par une. Aucune n'est nouvelle : "
         "chacune est appliquée quelque part en Europe, et l'on sait donc à "
         "quoi s'attendre — <strong class=\"cle-texte\">y compris quand cela "
         "tourne mal</strong>.",
@@ -777,8 +789,14 @@ def proposition() -> str:
         "<p>Le montant de base est celui qui existe déjà : la dépense "
         "moyenne par élève du niveau considéré — de l'ordre de "
         f"{v('die_premier_degre')} dans le premier degré et "
-        f"{v('die_college')} au collège. Il n'y a pas d'argent nouveau, il y "
-        "a un destinataire nouveau.</p>"
+        f"{v('die_college')} au collège. Pour l'élève du public, il n'y a "
+        "pas d'argent nouveau : il y a un destinataire nouveau. Pour "
+        "l'élève du privé sous contrat, qui reçoit aujourd'hui "
+        f"{v('prive_eleve_1d')} d'argent public à l'école contre "
+        f"{v('public_eleve_1d')} dans le public, l'alignement coûte "
+        f"{ch.euros(ch.montant(ch.poste('alignement_prive')))} par an : "
+        f'c\'est le poste le plus lourd du <a href="{g.lien("chiffrage")}">'
+        "chiffrage</a>.</p>"
         "<p>Parce que l'État, les départements, les régions et les communes "
         f"financent ensemble l'école — respectivement {v('die_etat')} et "
         f"{v('die_collectivites')} de la dépense —, la dotation doit être "
@@ -1184,6 +1202,394 @@ def comparaisons() -> str:
     return corps
 
 
+
+def chiffrage() -> str:
+    central = ch.solde()
+    favorable = ch.solde("favorable")
+    defavorable = ch.solde("defavorable")
+    e = ch.euros
+
+    corps = g.affiche(
+        "La proposition · le chiffrage",
+        "Ce que le programme coûte, et ce qu'il rapporte.",
+        "Chaque réforme, chiffrée poste par poste par rapport à la situation "
+        "actuelle, avec ses formules et ses hypothèses. Le résultat n'est pas "
+        "celui que nous annoncions : <strong class=\"cle-texte\">tel qu'il "
+        f"est écrit, le programme coûte environ {e(central)} de plus par an "
+        "que la dépense d'aujourd'hui</strong>. Nous le publions quand même, "
+        "et nous disons ce qu'il faudrait abandonner pour qu'il tienne dans "
+        "l'enveloppe.",
+    )
+
+    corps += g.reperes((
+        g.Repere("Ce que le programme ajoute", e(ch.total("charge")),
+                 "par an en 2035 : revalorisation, alignement du privé, "
+                 "majoration sociale, autonomie."),
+        g.Repere("Ce que la démographie et la réforme libèrent",
+                 e(-ch.total("ressource")),
+                 f"par an en 2035, dont l'essentiel vient de "
+                 f"{v('demographie')}."),
+        g.Repere("Le solde", e(central, True),
+                 f"par an, entre {e(favorable, True)} et "
+                 f"{e(defavorable, True)} selon les hypothèses."),
+    ))
+
+    corps += g.plan((
+        ("regle", "La règle du chiffrage"),
+        ("postes", "Poste par poste"),
+        ("lectures", "Deux lectures du solde"),
+        ("plus-moins", "Les + et les −"),
+        ("gagnants", "Qui y gagne, qui y perd"),
+        ("annees", "Année par année"),
+        ("equilibre", "Revenir à l'enveloppe"),
+        ("hypotheses", "Les hypothèses"),
+        ("depart", "Les chiffres de départ"),
+        ("limites-chiffrage", "Ce que ce chiffrage ne fait pas"),
+    ))
+
+    corps += g.note(
+        "<p><strong>Ce que ce chiffrage change à notre propre discours.</strong> "
+        "Nous écrivions que le programme tenait « à enveloppe constante », "
+        "financé par la baisse du nombre d'élèves. Le calcul dit autre "
+        "chose. La démographie libère bien "
+        f"{e(-ch.montant(ch.poste('dividende')))} par an ; mais trois engagements "
+        "pèsent davantage à eux seuls — aligner le financement public de "
+        "l'élève du privé sur celui du public, majorer de 40 % celui de "
+        "l'élève défavorisé, et ramener le salaire des enseignants à la "
+        "moyenne de l'OCDE. <strong class=\"cle-texte\">Ils sont "
+        "justes, et ils ne sont pas gratuits.</strong> Les pages qui "
+        "disaient le contraire ont été corrigées.</p>",
+        "vigilance",
+    )
+
+    corps += "<h2 id=\"regle\">La règle de ce chiffrage</h2>"
+    corps += g.leviers((
+        "<strong>Le point de comparaison est la situation actuelle</strong>, "
+        "en 2035 : l'année où la baisse des effectifs annoncée par la DEPP "
+        "sera acquise, et où toutes les réformes du calendrier seront en "
+        "place. Les montants sont annuels.",
+        "<strong>Le signe est celui du solde public</strong> : un "
+        "<span class=\"badge\">+</span> est une dépense de plus pour l'État "
+        "ou les collectivités, un <span class=\"badge\">−</span> une "
+        "dépense de moins.",
+        "<strong>Les chiffres constatés sont ceux du registre</strong> du "
+        "site, avec leur source : le calcul les lit, il ne les recopie pas. "
+        "Les montants sont dans les euros de leurs années — 2021 pour la "
+        "dépense par élève, 2026 pour le budget. Rien n'est revalorisé, ce "
+        "qui sous-estime plutôt les coûts.",
+        "<strong>Ce qui n'est pas constaté est une hypothèse</strong>, "
+        "donnée avec une valeur favorable, centrale et défavorable, et sa "
+        "raison. Le chiffre principal est celui du scénario central ; la "
+        "fourchette, celle des deux autres.",
+    ))
+
+    corps += "<h2 id=\"postes\">Poste par poste</h2>"
+    corps += g.tableau(
+        "Effet annuel de chaque poste en 2035, par rapport à la situation "
+        "actuelle (+ : dépense de plus ; − : dépense de moins)",
+        ("Réforme", "Poste", "Aujourd'hui", "Avec le programme",
+         "Effet central", "Fourchette"),
+        tuple(
+            (
+                p.reforme,
+                f"<strong>{g.echapper(p.intitule)}</strong><br>"
+                f'<span class="discret">{g.echapper(p.formule)}</span>',
+                g.echapper(p.actuel),
+                g.echapper(p.programme),
+                e(ch.montant(p), True),
+                f"{e(ch.montant(p, 'favorable'), True)} à "
+                f"{e(ch.montant(p, 'defavorable'), True)}",
+            )
+            for p in ch.postes("charge") + ch.postes("ressource")
+        ),
+        ("texte", "long", "long", "long", "nombre", "nombre"),
+    )
+    corps += g.tableau(
+        "Le bilan annuel en 2035",
+        ("", "Favorable", "Central", "Défavorable"),
+        (
+            ("Dépenses nouvelles",) + tuple(
+                e(ch.total("charge", s), True) for s in ch.SCENARIOS),
+            ("Dépenses évitées",) + tuple(
+                e(ch.total("ressource", s), True) for s in ch.SCENARIOS),
+            ("<strong>Solde</strong>",) + tuple(
+                f"<strong>{e(ch.solde(s), True)}</strong>"
+                for s in ch.SCENARIOS),
+        ),
+    )
+    corps += (
+        "<p>Deux postes ne figurent pas dans ce bilan parce qu'ils ne "
+        "durent pas. Ils sont comptés dans le tableau année par année.</p>"
+    )
+    corps += g.tableau(
+        "Les coûts de transition, dus seulement pendant la mise en place "
+        "(montant par année où ils sont dus)",
+        ("Réforme", "Poste", "Pourquoi", "Effet central", "Fourchette"),
+        tuple(
+            (
+                p.reforme,
+                f"<strong>{g.echapper(p.intitule)}</strong><br>"
+                f'<span class="discret">{g.echapper(p.formule)}</span>',
+                g.echapper(p.programme),
+                e(ch.montant(p), True),
+                f"{e(ch.montant(p, 'favorable'), True)} à "
+                f"{e(ch.montant(p, 'defavorable'), True)}",
+            )
+            for p in ch.postes("transition")
+        ),
+        ("texte", "long", "long", "nombre", "nombre"),
+    )
+    corps += (
+        "<p>Deux réformes ne coûtent presque rien et n'ont pas de ligne. "
+        "Le socle resserré (réforme 7) réécrit des programmes. Les "
+        f"{v('groupes_postes')} des groupes de besoins, et les autres "
+        "dispositifs nationaux, ne sont pas comptés comme des économies : "
+        "leurs moyens restent dans la dotation des établissements, qui en "
+        "décideront l'usage. La majoration pour le handicap reprend les "
+        f"{v('aesh_credits')} des accompagnants, sans plus.</p>"
+    )
+
+    corps += "<h2 id=\"lectures\">Deux lectures du solde, et laquelle compte</h2>"
+    corps += g.paire(
+        "<h3>Par rapport au budget d'aujourd'hui</h3>"
+        f"<p class=\"cle-texte\">{e(central, True)} par an</p>"
+        "<p>C'est la question « faut-il plus d'argent que maintenant ? ». La "
+        "baisse démographique est comptée comme une ressource du programme. "
+        "La réponse est oui : même dans l'hypothèse favorable, "
+        f"{e(favorable, True)}.</p>",
+        "<h3>Par rapport à ce que l'État dépenserait sans nous</h3>"
+        f"<p class=\"cle-texte\">{e(ch.solde_tendanciel(), True)} par an</p>"
+        "<p>Sans le programme, les classes se videraient et la dépense "
+        "baisserait d'elle-même. Le programme dépense cette baisse au lieu "
+        "de la rendre au contribuable. Pour les finances publiques, c'est le "
+        "vrai coût : ce que l'on aurait pu économiser, et que l'on "
+        "n'économise pas.</p>",
+    )
+    corps += (
+        "<p>Nous tenons la seconde lecture pour la plus honnête, et c'est "
+        "celle qu'un adversaire retiendra. La première est celle que nous "
+        "avions en tête en écrivant « à enveloppe constante ». Même elle ne "
+        "tient pas.</p>"
+    )
+
+    corps += "<h2 id=\"plus-moins\">Les + et les − de chaque réforme</h2>"
+    corps += g.tableau(
+        "Ce que chaque réforme améliore et ce qu'elle dégrade ou coûte, par "
+        "rapport à la situation actuelle",
+        ("Réforme", "+ Ce qui s'améliore", "− Ce qui se dégrade, ou coûte"),
+        (
+            ("1. Le financement suit l'élève",
+             "Le choix de l'école ne dépend plus du revenu ni de l'adresse ; "
+             "les familles du privé ne paient plus les "
+             f"{v('prive_frais_familles')} de frais de scolarité qu'elles "
+             "versent chaque année ; une école nouvelle peut être financée.",
+             "Le poste le plus lourd du programme, "
+             f"{e(ch.montant(ch.poste('alignement_prive')))} par an ; des coûts fixes "
+             "laissés dans les établissements quittés ; un risque de "
+             "concentration des élèves en difficulté si la pondération ne "
+             "suit pas."),
+            ("2. La majoration sociale",
+             "L'élève défavorisé devient recherché au lieu d'être évité ; les "
+             "moyens le suivent où qu'il aille, au lieu d'être attachés à un "
+             "zonage.",
+             f"{e(ch.montant(ch.poste('ponderation')))} par an de plus que l'éducation "
+             "prioritaire actuelle ; la fin du zonage retire aux écoles REP "
+             "leurs classes dédoublées garanties : elles devront les payer "
+             "sur leur dotation."),
+            ("3. L'autonomie",
+             "Le chef d'établissement choisit son équipe ; la fin du "
+             "mouvement au barème libère des emplois de gestion ; les "
+             "dispositifs uniformes cessent.",
+             f"{e(ch.montant(ch.poste('gestion_ecoles')))} par an de gestionnaires pour les "
+             "écoles, qui n'en ont pas ; un risque d'arbitraire local dans "
+             "le recrutement ; la protection du barème disparaît pour les "
+             "nouveaux enseignants."),
+            ("4. Le contrat unique",
+             "L'offre se diversifie au-delà de l'enseignement catholique ; "
+             "le socle et l'accueil sans sélection deviennent opposables à "
+             "tous les établissements financés.",
+             f"{e(ch.montant(ch.poste('hors_contrat')))} par an pour les établissements "
+             "hors contrat qui signeront ; un contrôle à organiser sur "
+             "des milliers d'établissements nouveaux."),
+            ("5. L'évaluation publique et l'affectation",
+             "Les familles choisissent sur pièces ; l'école qui fait "
+             "progresser est reconnue ; la dérogation opaque disparaît.",
+             f"{e(ch.montant(ch.poste('evaluation')) + ch.montant(ch.poste('affectation')))} par "
+             f"an ; et {e(ch.montant(ch.poste('transport')))} de transport pour les "
+             "collectivités, faute de quoi le choix resterait réservé aux "
+             "familles motorisées."),
+            ("6. Le métier d'enseignant",
+             "Un salaire au niveau de la moyenne de l'OCDE : "
+             f"{ch._HAUSSE_1D} à l'école, {ch._HAUSSE_2D} au collège et au "
+             "lycée ; un recrutement sur projet.",
+             f"{e(ch.montant(ch.poste('revalorisation')))} par an, à comparer aux "
+             f"{v('mesures_salariales')} de toutes les mesures salariales "
+             "décidées depuis 2022 ; la baisse démographique ne suffit pas à "
+             "la financer en même temps que le reste."),
+            ("7. Le socle",
+             "Un niveau attendu, défini année par année et vérifié.",
+             "Un coût négligeable ; une réécriture des programmes que "
+             "chaque changement de majorité peut défaire."),
+        ),
+        ("texte", "long", "long"),
+    )
+
+    corps += "<h2 id=\"gagnants\">Qui y gagne, qui y perd</h2>"
+    corps += g.tableau(
+        "Effet du programme sur chaque acteur, par rapport à la situation "
+        "actuelle",
+        ("Acteur", "Effet", "Pourquoi"),
+        (
+            ("Les enseignants", "+",
+             f"{e(ch.montant(ch.poste('revalorisation')))} de rémunération en plus par an. "
+             "Ils perdent en revanche, pour les nouveaux recrutés, "
+             "l'affectation au barème."),
+            ("Les familles du privé sous contrat", "+",
+             f"Elles ne paient plus les {v('prive_frais_familles')} de frais "
+             "de scolarité annuels."),
+            ("Les élèves défavorisés", "+",
+             "Un financement majoré qui les suit, et des établissements qui "
+             "ont intérêt à les accueillir."),
+            ("Les familles du hors contrat", "+ ou =",
+             "Financées si leur école signe le contrat ; inchangées sinon."),
+            ("Les collectivités", "−",
+             "Le transport des élèves qui choisissent plus loin, et une part "
+             "des coûts fixes des établissements quittés."),
+            ("Le contribuable", "−",
+             f"{e(central)} par an de plus qu'aujourd'hui, et "
+             f"{e(ch.solde_tendanciel())} de plus que sans le programme."),
+            ("Les établissements publics favorisés", "= ou −",
+             "Inchangés si le programme est financé comme il est écrit. Si "
+             "l'on veut tenir l'enveloppe, ce sont eux qui paient : voir "
+             "ci-dessous."),
+        ),
+        ("texte", "texte", "long"),
+    )
+
+    corps += "<h2 id=\"annees\">Année par année</h2>"
+    corps += (
+        "<p>Le calendrier de la proposition commence par ce qui ne coûte "
+        "presque rien. Les premières années sont donc excédentaires : la "
+        "baisse des effectifs libère plus que la transparence et "
+        "l'autonomie ne coûtent. Le solde bascule en 2031, avec le contrat "
+        "unique et la majoration sociale.</p>"
+    )
+    corps += g.tableau(
+        "Trajectoire annuelle, scénario central (les effectifs de 2035 sont "
+        "appliqués à toutes les années, ce qui sous-estime un peu les "
+        "premières)",
+        ("Année", "Dépenses nouvelles", "Dépenses évitées", "Transition",
+         "Solde"),
+        tuple(
+            (str(annee), e(charges, True), e(ressources, True),
+             e(transition, True), f"<strong>{e(solde, True)}</strong>")
+            for annee, charges, ressources, transition, solde
+            in ch.trajectoire()
+        ),
+    )
+
+    corps += "<h2 id=\"equilibre\">Revenir à l'enveloppe : ce que chaque choix coûte, et à qui</h2>"
+    corps += (
+        f"<p>Pour tenir le programme à dépense constante, il faut trouver "
+        f"{e(central)} par an. Faire payer tout le monde également "
+        "reviendrait à baisser de "
+        f"{ch.pourcent(central / ch.base_par_eleve())} le montant versé "
+        "pour chaque élève, avant majoration. Les autres voies sont "
+        "ciblées ; chacune a son perdant, et nous le nommons.</p>"
+    )
+    corps += g.tableau(
+        "Ce que rapporterait, seul, chaque renoncement possible",
+        ("Renoncement", "Qui le paie", "Baisse du solde"),
+        tuple((g.echapper(quoi), g.echapper(qui), e(-gain))
+              for quoi, qui, gain in ch.leviers_equilibre()),
+        ("long", "long", "nombre"),
+    )
+    corps += g.note(
+        "<p>Aucune de ces options ne suffit seule, et nous ne choisissons "
+        "pas ici : c'est un choix politique, qui appartient au débat. Ce "
+        "que ce tableau interdit, en revanche, c'est de promettre les quatre "
+        "engagements à la fois sans dire qui paie.</p>",
+        "resume",
+    )
+
+    corps += "<h2 id=\"hypotheses\">Les hypothèses</h2>"
+    corps += g.tableau(
+        "Chaque hypothèse du chiffrage, ses trois valeurs et sa raison",
+        ("Hypothèse", "Favorable", "Centrale", "Défavorable", "Pourquoi"),
+        tuple(
+            (g.echapper(h.libelle),
+             ch.hypothese_texte(h, "favorable"),
+             ch.hypothese_texte(h, "central"),
+             ch.hypothese_texte(h, "defavorable"),
+             g.echapper(h.fondement))
+            for h in ch.HYPOTHESES.values()
+        ),
+        ("long", "nombre", "nombre", "nombre", "long"),
+    )
+    corps += (
+        "<p>Toutes les hypothèses ne se valent pas. Le tableau suivant pousse "
+        "chacune seule à ses deux bornes, les autres restant centrales, et "
+        "montre ce que devient le solde. Trois d'entre elles font l'essentiel "
+        "de l'incertitude ; les autres déplacent le résultat de quelques "
+        "centaines de millions.</p>"
+    )
+    corps += g.tableau(
+        "Sensibilité du solde annuel en 2035 à chaque hypothèse",
+        ("Hypothèse", "Solde si favorable", "Solde si défavorable"),
+        tuple((g.echapper(h.libelle), e(f, True), e(d, True))
+              for h, f, d in ch.sensibilite()),
+        ("long", "nombre", "nombre"),
+    )
+
+    corps += "<h2 id=\"depart\">Les chiffres de départ</h2>"
+    corps += (
+        "<p>Ce que le calcul lit au registre, en plus des chiffres déjà cités "
+        "sur les autres pages. Chacun figure avec sa source sur la page "
+        f'<a href="{g.lien("sources")}">Sources</a>.</p>'
+    )
+    corps += g.tableau(
+        "Les chiffres constatés dont part le chiffrage",
+        ("Ce qui est mesuré", "Valeur", "Année"),
+        tuple(
+            (g.echapper(c.libelle), g.echapper(c.texte), c.annee)
+            for c in CHIFFRES.values() if "chiffrage" in c.themes
+        ) + (
+            ("Baisse des effectifs d'ici 2035, rapportée aux effectifs "
+             "actuels (calculée)", ch.pourcent(ch.baisse_demographique()),
+             "2026"),
+            ("Part des cotisations de pension dans les dépenses de personnel "
+             "(calculée)", ch.pourcent(ch.part_pensions()), "2026"),
+        ),
+        ("long", "nombre", "nombre"),
+    )
+
+    corps += "<h2 id=\"limites-chiffrage\">Ce que ce chiffrage ne fait pas</h2>"
+    corps += g.note(
+        "<p><strong>Il ne compte aucun bénéfice.</strong> Un élève qui sort "
+        "de l'école en sachant lire rapporte, sur une vie, bien plus que ce "
+        "qu'il a coûté ; nous ne l'avons pas chiffré, parce que la "
+        "littérature ne permet pas d'attribuer un gain à une réforme qui "
+        "n'a pas eu lieu. Le chiffrage est un chiffrage de dépense, pas un "
+        "calcul de rentabilité.</p>"
+        "<p><strong>Il mêle des années.</strong> La dépense par élève du "
+        "public et du privé date de 2021 ; le budget, de 2026. Rien n'est "
+        "revalorisé de l'inflation : les coûts de l'alignement du privé et "
+        "de la majoration sociale sont donc plutôt sous-estimés.</p>"
+        "<p><strong>Il ne suit pas les comportements.</strong> Si le "
+        "financement à 100 % attire vers le privé plus d'élèves qu'il n'en "
+        "compte aujourd'hui, le coût de l'alignement ne change pas — l'élève "
+        "coûte le même montant partout —, mais les coûts fixes laissés dans "
+        "le public augmentent. Si la démographie déçoit les projections, le "
+        "dividende baisse d'autant.</p>"
+        "<p><strong>Il n'est pas un rapport officiel.</strong> C'est un "
+        "calcul de campagne, fait avec les chiffres publics disponibles, "
+        "dont chaque ligne peut être refaite. Une erreur se signale "
+        f'<a href="{g.DEPOT}/issues">sur le dépôt</a>.</p>',
+        "vigilance",
+    )
+    return corps
+
+
 # -- la confiance ------------------------------------------------------------
 
 
@@ -1364,8 +1770,8 @@ def sources_page() -> str:
         "Tous les chiffres, et d'où ils viennent.",
         "Chaque chiffre cité sur ce site figure ici, avec son année, son "
         "émetteur et l'adresse du document. Aucun n'est de notre "
-        "fabrication : nous n'avons ni modèle ni estimation propre — "
-        "seulement des citations, et leur mise en regard.",
+        "fabrication : les seuls calculs du site sont ceux du chiffrage, "
+        "qui affiche ses formules et ses hypothèses.",
     )
 
     corps += g.note(
@@ -1445,10 +1851,12 @@ def sources_page() -> str:
         "indicateurs de répartition des décisions datent de la dernière "
         "vague disponible ; la structure qu'ils décrivent n'a pas changé, "
         "mais les pourcentages précis, eux, peuvent avoir bougé.",
-        "<strong>Les propositions ne sont pas chiffrées à l'euro.</strong> "
-        "Nous affirmons qu'elles tiennent à enveloppe constante ; nous "
-        "n'avons pas construit le modèle budgétaire qui le démontrerait, et "
-        "nous ne prétendons pas le contraire.",
+        "<strong>Le chiffrage est le seul calcul du site.</strong> Il part "
+        "des chiffres de cette page, mais il y ajoute des hypothèses : "
+        "elles sont données une par une, avec trois valeurs et leur raison, "
+        f'sur la page <a href="{g.lien("chiffrage")}">Chiffrage</a>. Il a '
+        "démenti ce que nous affirmions — que le programme tenait à "
+        "enveloppe constante —, et nous l'avons corrigé partout.",
     ))
 
     corps += g.encadre(
@@ -1469,6 +1877,7 @@ PAGES = {
     "gouvernance": gouvernance,
     "proposition": proposition,
     "comparaisons": comparaisons,
+    "chiffrage": chiffrage,
     "objections": objections,
     "sources": sources_page,
 }

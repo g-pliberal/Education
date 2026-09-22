@@ -129,7 +129,7 @@ main { max-width: var(--largeur); margin: 0 auto; padding: 0 var(--marge); }
 
 /* -- le bandeau -------------------------------------------------------------
 
-   Une seule rangée : le nom du site à gauche, les huit onglets à droite, sur
+   Une seule rangée : le nom du site à gauche, les neuf onglets à droite, sur
    le même vert que la page, fermée par un filet. Collé en haut, parce que les
    pages sont longues et qu'on change de page en cours de lecture. */
 header.bandeau {

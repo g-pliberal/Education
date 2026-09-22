@@ -25,9 +25,9 @@ SITE_PARENT = "https://partiliberalfrancais.fr/"
 
 # -- la navigation -----------------------------------------------------------
 #
-# Huit pages, sous trois étiquettes de groupe. Les étiquettes ne s'affichent
-# pas : elles sont lues par les synthèses vocales, pour qui une barre de huit
-# liens sans structure est une liste de huit liens sans structure.
+# Neuf pages, sous quatre étiquettes de groupe. Les étiquettes ne s'affichent
+# pas : elles sont lues par les synthèses vocales, pour qui une barre de neuf
+# liens sans structure est une liste de neuf liens sans structure.
 
 GROUPES_NAVIGATION: tuple[tuple[str, tuple[tuple[str, str], ...]], ...] = (
     ("Le site", (("index", "Accueil"),)),
@@ -35,7 +35,8 @@ GROUPES_NAVIGATION: tuple[tuple[str, tuple[tuple[str, str], ...]], ...] = (
                     ("depense", "Dépense"),
                     ("gouvernance", "Qui décide"))),
     ("La proposition", (("proposition", "La proposition"),
-                        ("comparaisons", "Ailleurs"))),
+                        ("comparaisons", "Ailleurs"),
+                        ("chiffrage", "Chiffrage"))),
     ("La confiance", (("objections", "Objections"),
                       ("sources", "Sources"))),
 )
@@ -47,6 +48,7 @@ TITRES: dict[str, str] = {
     "gouvernance": "Qui décide",
     "proposition": "La proposition",
     "comparaisons": "Ailleurs en Europe",
+    "chiffrage": "Chiffrage",
     "objections": "Objections",
     "sources": "Sources",
 }
@@ -70,6 +72,9 @@ DESCRIPTIONS: dict[str, str] = {
     "comparaisons": "Pays-Bas, Danemark, Estonie, Suède : ce que la liberté "
                     "scolaire donne quand elle est bien faite, et ce qu'elle "
                     "coûte quand elle est mal faite.",
+    "chiffrage": "Ce que coûte le programme libéral pour l'école, poste par "
+                 "poste, par rapport à la situation actuelle : formules, "
+                 "hypothèses, fourchettes, et qui y gagne ou y perd.",
     "objections": "Les dix objections sérieuses à la liberté scolaire, et ce "
                   "que nous y répondons — y compris quand elles ont raison.",
     "sources": "Tous les chiffres cités sur ce site, avec leur année, leur "
@@ -114,7 +119,7 @@ def entete(page_active: str) -> str:
     """Bandeau de tête, précédé du lien d'évitement.
 
     Le lien d'évitement est le premier élément parcouru au clavier : sans lui,
-    atteindre le contenu impose de traverser les huit onglets à chaque page.
+    atteindre le contenu impose de traverser les neuf onglets à chaque page.
     """
     return f"""<a class="evitement" href="#contenu">Aller au contenu</a>
 <header class="bandeau"><div class="interieur">
@@ -548,7 +553,7 @@ main { max-width: var(--largeur); margin: 0 auto; padding: 0 var(--marge); }
 
 /* -- le bandeau -------------------------------------------------------------
 
-   Une seule rangée : le nom du site à gauche, les huit onglets à droite, sur
+   Une seule rangée : le nom du site à gauche, les neuf onglets à droite, sur
    le même vert que la page, fermée par un filet. Collé en haut, parce que les
    pages sont longues et qu'on change de page en cours de lecture. */
 header.bandeau {

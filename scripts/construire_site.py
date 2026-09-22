@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Écrit le site : les huit pages, la feuille de style, l'icône.
+"""Écrit le site : les neuf pages, la feuille de style, l'icône.
 
     python3 scripts/construire_site.py
 

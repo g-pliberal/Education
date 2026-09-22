@@ -23,10 +23,12 @@ class Chiffre:
     """Un chiffre publiable : sa valeur, ce qu'elle mesure, et sa provenance.
 
     `texte` est la forme telle qu'elle s'écrit dans une phrase — espaces
-    insécables comprises. Le site n'en calcule aucune : les sources publient
-    des agrégats, pas des séries, et reformater à la volée un nombre qu'on n'a
-    pas recalculé soi-même donne l'illusion d'un modèle là où il n'y a qu'une
-    citation.
+    insécables comprises. Le registre n'en calcule aucune : les sources
+    publient des agrégats, pas des séries, et reformater à la volée un nombre
+    qu'on n'a pas recalculé soi-même donne l'illusion d'un modèle là où il
+    n'y a qu'une citation. Le seul calcul du site est le chiffrage du
+    programme (`chiffrage.py`), qui lit ces chiffres par `nombre()` et
+    affiche chacune de ses formules.
     """
 
     cle: str
@@ -78,6 +80,17 @@ GRONDWET = "https://wetten.overheid.nl/BWBR0001840/"
 IGESR_GROUPES = ("https://www.ih2ef.gouv.fr/mise-en-place-des-groupes-de-"
                  "besoins-en-francais-et-mathematiques-rapport-de-ligesr")
 DECRET_GROUPES = "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053652587"
+PAP_2026 = ("https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/"
+            "1087978/file/PAP2026_BG_Enseignement_scolaire_EC.pdf")
+SENAT_NP_2026 = ("https://www.senat.fr/fileadmin/Commissions/Finances/2025-2026/"
+                 "PLF_2026/NP/Enseignement_scolaire_NP_PLF_2026.pdf")
+SENAT_EP = "https://www.senat.fr/rap/r24-575/r24-575_mono.html"
+AN_PRIVE = ("https://www.assemblee-nationale.fr/dyn/16/rapports/cion-cedu/"
+            "l16b2423_rapport-information.pdf")
+RERS_2026_CH1 = ("https://www.education.gouv.fr/sites/default/files/document/"
+                 "1-le-systeme-educatifpdf-519276.pdf")
+RERS_2025_CH2 = ("https://www.education.gouv.fr/sites/default/files/2025-07/"
+                 "rers2025-chapitre-2-441717.pdf")
 
 
 CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
@@ -484,6 +497,145 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "ségrégation scolaire suédoise a augmenté ; la part qu'en explique le "
        "libre choix est, selon l'IFAU, modeste au regard de la ségrégation "
        "résidentielle.", ("comparaisons",)),
+
+    # -- ce que le programme coûterait ----------------------------------------
+    #
+    # Les chiffres dont part le chiffrage (`chiffrage.py`). Ils sont cités, pas
+    # calculés : le calcul, lui, est fait à partir d'eux, et affiché avec sa
+    # formule sur la page « Chiffrage ».
+    _c("t2_p140", "27,85 Md€",
+       "Dépenses de personnel (titre 2) du programme « Enseignement scolaire "
+       "public du premier degré », cotisations de pension comprises.",
+       "2026", "Projet annuel de performances « Enseignement scolaire », "
+       "PLF 2026", PAP_2026, "", ("chiffrage",)),
+    _c("t2_p141", "39,65 Md€",
+       "Dépenses de personnel du programme « Enseignement scolaire public du "
+       "second degré », cotisations de pension comprises.",
+       "2026", "Projet annuel de performances « Enseignement scolaire », "
+       "PLF 2026", PAP_2026,
+       "Comprend quelques personnels non enseignants (conseillers principaux "
+       "d'éducation, professeurs documentalistes).", ("chiffrage",)),
+    _c("t2_p139", "7,97 Md€",
+       "Dépenses de personnel du programme « Enseignement privé du premier "
+       "et du second degrés », cotisations de pension comprises.",
+       "2026", "Projet annuel de performances « Enseignement scolaire », "
+       "PLF 2026", PAP_2026, "", ("chiffrage",)),
+    _c("t2_mission_hors_pensions", "59,23 Md€",
+       "Dépenses de personnel de la mission « Enseignement scolaire », hors "
+       "cotisations de pension.",
+       "2026", "Sénat, commission des finances, note de présentation du "
+       "PLF 2026, mission « Enseignement scolaire »", SENAT_NP_2026,
+       "94 % des crédits de la mission hors pensions.", ("chiffrage",)),
+    _c("pensions_mission", "25,16 Md€",
+       "Cotisations au compte d'affectation spéciale « Pensions » de la "
+       "mission « Enseignement scolaire ».",
+       "2026", "Sénat, commission des finances, note de présentation du "
+       "PLF 2026, mission « Enseignement scolaire »", SENAT_NP_2026,
+       "Écart entre les crédits pensions comprises (89,6 Md€) et hors "
+       "pensions (64,5 Md€).", ("chiffrage",)),
+    _c("mesures_salariales", "6,44 Md€",
+       "Coût en 2026 de l'ensemble des mesures salariales décidées pour les "
+       "personnels de l'éducation nationale depuis 2022 (revalorisation "
+       "« socle », points d'indice).",
+       "2026", "Sénat, commission des finances, note de présentation du "
+       "PLF 2026, mission « Enseignement scolaire »", SENAT_NP_2026,
+       "", ("chiffrage",)),
+    _c("public_eleve_1d", "7 331 €",
+       "Dépense publique (État et collectivités) par élève du premier degré "
+       "dans l'enseignement public.",
+       "2021", "Assemblée nationale, rapport d'information n° 2423 sur le "
+       "financement public de l'enseignement privé sous contrat", AN_PRIVE,
+       "Chiffre de la direction des affaires financières du ministère.",
+       ("chiffrage",)),
+    _c("prive_eleve_1d", "3 285 €",
+       "La même dépense publique par élève du premier degré dans le privé "
+       "sous contrat.",
+       "2021", "Assemblée nationale, rapport d'information n° 2423 sur le "
+       "financement public de l'enseignement privé sous contrat", AN_PRIVE,
+       "L'écart tient notamment à l'absence de financement public de "
+       "l'investissement et à une structure d'emplois moins coûteuse.",
+       ("chiffrage",)),
+    _c("public_eleve_2d", "10 339 €",
+       "Dépense publique (État et collectivités) par élève du second degré "
+       "dans l'enseignement public.",
+       "2021", "Assemblée nationale, rapport d'information n° 2423 sur le "
+       "financement public de l'enseignement privé sous contrat", AN_PRIVE,
+       "", ("chiffrage",)),
+    _c("prive_eleve_2d", "5 662 €",
+       "La même dépense publique par élève du second degré dans le privé "
+       "sous contrat.",
+       "2021", "Assemblée nationale, rapport d'information n° 2423 sur le "
+       "financement public de l'enseignement privé sous contrat", AN_PRIVE,
+       "", ("chiffrage",)),
+    _c("prive_frais_familles", "3,3 Md€",
+       "Contributions versées par les familles aux établissements privés "
+       "sous contrat.",
+       "2022", "Assemblée nationale, rapport d'information n° 2423 sur le "
+       "financement public de l'enseignement privé sous contrat", AN_PRIVE,
+       "Chiffre de la DEPP. La Cour des comptes relevait 2,8 Md€ en 2020.",
+       ("chiffrage",)),
+    _c("hors_contrat_1d", "59 800",
+       "Élèves du premier degré scolarisés dans une école privée hors "
+       "contrat.",
+       "2025", "DEPP, Repères et références statistiques 2026, fiche 1.02",
+       RERS_2026_CH1, "", ("chiffrage",)),
+    _c("hors_contrat_2d", "24 800",
+       "Élèves de moins de seize ans du second degré scolarisés dans un "
+       "établissement privé hors contrat.",
+       "2025", "DEPP, Repères et références statistiques 2026, fiche 1.02",
+       RERS_2026_CH1, "", ("chiffrage",)),
+    _c("ecoles_publiques", "42 396",
+       "Écoles publiques du premier degré.",
+       "2025", "DEPP, Repères et références statistiques 2026, fiche 1.09",
+       RERS_2026_CH1,
+       "Une école n'a pas de personnalité juridique : son directeur n'a ni "
+       "budget ni autorité sur ses collègues.", ("chiffrage",)),
+    _c("eple_publics", "7 821",
+       "Collèges et lycées publics de l'éducation nationale.",
+       "2025", "DEPP, Repères et références statistiques 2026, fiche 1.09",
+       RERS_2026_CH1, "", ("chiffrage",)),
+    _c("ep_cout", "2,6 Md€",
+       "Coût pour l'État de l'éducation prioritaire (REP et REP+), dont 83 % "
+       "au titre de la réduction de la taille des classes.",
+       "2023", "Sénat, rapport d'information n° 575 (2024-2025) sur "
+       "l'éducation prioritaire", SENAT_EP,
+       "Chiffre de la Cour des comptes, en hausse de 86 % depuis 2016.",
+       ("chiffrage",)),
+    _c("ep_collectivites", "environ 1 Md€",
+       "Dépense des collectivités territoriales au titre de l'éducation "
+       "prioritaire.",
+       "2023", "Sénat, rapport d'information n° 575 (2024-2025) sur "
+       "l'éducation prioritaire", SENAT_EP, "Estimation.", ("chiffrage",)),
+    _c("ep_eleves", "1,68 million",
+       "Élèves des écoles et collèges publics classés en REP ou REP+, soit "
+       "environ un sur cinq.",
+       "2024", "DEPP, Repères et références statistiques 2025, fiche 2.18",
+       RERS_2025_CH2,
+       "Somme des quatre effectifs publiés : écoles et collèges, REP et REP+.",
+       ("chiffrage",)),
+    _c("aesh_credits", "3,16 Md€",
+       "Crédits consacrés aux accompagnants d'élèves en situation de "
+       "handicap (AESH).",
+       "2026", "Sénat, commission des finances, note de présentation du "
+       "PLF 2026, mission « Enseignement scolaire »", SENAT_NP_2026,
+       "Pour près de 140 000 accompagnants.", ("chiffrage",)),
+    _c("p214_rh", "11 248,5 ETPT",
+       "Emplois du programme « Soutien de la politique de l'éducation "
+       "nationale » consacrés à la gestion des ressources humaines.",
+       "2026", "Projet annuel de performances « Enseignement scolaire », "
+       "PLF 2026", PAP_2026,
+       "Sur 28 974 emplois du programme.", ("chiffrage",)),
+    _c("evaluation_controle", "101,4 M€",
+       "Crédits de l'action « Évaluation et contrôle » : inspection "
+       "générale, DEPP, services statistiques académiques.",
+       "2026", "Projet annuel de performances « Enseignement scolaire », "
+       "PLF 2026", PAP_2026, "", ("chiffrage",)),
+    _c("groupes_postes", "2 800 postes",
+       "Emplois d'enseignants mobilisés pour les groupes de besoins en "
+       "sixième et cinquième.",
+       "2025", "Sénat, commission des finances, note de présentation du "
+       "PLF 2026, mission « Enseignement scolaire »", SENAT_NP_2026,
+       "", ("chiffrage",)),
 )}
 
 
@@ -555,6 +707,7 @@ THEMES: tuple[tuple[str, str], ...] = (
     ("moyens", "Les moyens et les effectifs"),
     ("gouvernance", "Qui décide"),
     ("comparaisons", "Les autres pays"),
+    ("chiffrage", "Ce que le programme coûterait"),
 )
 
 

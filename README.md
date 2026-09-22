@@ -4,7 +4,7 @@
 choses : établir ce que la politique scolaire française coûte et ce qu'elle
 obtient, puis exposer l'alternative libérale.
 
-Huit pages statiques, aucun script chez le lecteur, aucune requête vers un
+Neuf pages statiques, aucun script chez le lecteur, aucune requête vers un
 tiers — ni police, ni mesure d'audience, ni bouton de réseau social. Le
 lecteur d'un site politique n'a pas à être compté pour le lire.
 
@@ -16,6 +16,7 @@ lecteur d'un site politique n'a pas à être compté pour le lire.
 | `gouvernance.html` | Qui décide : centralisation, recrutement, affectation |
 | `proposition.html` | Les sept réformes, leur calendrier, leurs garde-fous |
 | `comparaisons.html` | Pays-Bas, Danemark, Estonie, Suède |
+| `chiffrage.html` | Ce que coûte chaque réforme, par rapport à la situation actuelle |
 | `objections.html` | Dix objections, dont trois que nous jugeons fondées |
 | `sources.html` | Tous les chiffres, leur année, leur source |
 
@@ -53,7 +54,8 @@ dépôt dès qu'ils diffèrent de ce que le code produit
 ```
 src/education/donnees.py   les chiffres et les faits, avec leur source
 src/education/gabarit.py   la feuille de style et les fragments HTML
-src/education/pages.py     le texte des huit pages
+src/education/chiffrage.py le chiffrage du programme : hypothèses et postes
+src/education/pages.py     le texte des neuf pages
 scripts/construire_site.py écrit le site
 tests/test_site.py         ce que le site doit tenir
 ```
@@ -89,6 +91,21 @@ L'énoncé enregistré est ce que le document établit, **non ce qui arrangerait
 la page**. C'est la seule contrainte qui vaille : elle a déjà obligé à retirer
 une phrase qui faisait dire à une note du Conseil d'analyse économique
 l'inverse de son propre périmètre.
+
+### La règle du chiffrage
+
+Le chiffrage est le seul endroit du site qui calcule. Il ne recopie aucun
+chiffre : il lit le registre par `nombre("cle")`, qui convertit « 6,15
+millions » en 6 150 000. Ce que le registre ne contient pas est une
+**hypothèse**, déclarée dans `HYPOTHESES` avec une valeur favorable, centrale
+et défavorable au solde, et sa raison. Chaque poste porte sa formule en
+toutes lettres, affichée à côté de son résultat.
+
+Les mêmes garde-fous que pour les chiffres s'appliquent : une hypothèse que
+plus aucun poste ne lit fait échouer les tests, et le solde affiché doit être
+la somme des postes affichés. Le chiffrage a démenti une phrase du site — « le
+programme ne demande pas un euro de plus » — et c'est la phrase qui a été
+corrigée, non le calcul.
 
 ### La typographie
 

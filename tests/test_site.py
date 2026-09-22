@@ -20,8 +20,8 @@ from pathlib import Path
 RACINE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RACINE / "src"))
 
-from education import gabarit  # noqa: E402
-from education.donnees import CHIFFRES, FAITS  # noqa: E402
+from education import chiffrage, gabarit  # noqa: E402
+from education.donnees import CHIFFRES, FAITS, nombre  # noqa: E402
 from education.pages import PAGES  # noqa: E402
 
 # Les balises qui n'ont pas de fermeture : les compter comme ouvertes ferait
@@ -118,7 +118,7 @@ class TestPages(unittest.TestCase):
                         self.assertTrue((RACINE / cible).exists(), cible)
 
     def test_chaque_page_est_atteignable(self) -> None:
-        """Le bandeau mène aux huit pages : aucune n'est orpheline."""
+        """Le bandeau mène aux neuf pages : aucune n'est orpheline."""
         for nom in PAGES:
             with self.subTest(page=nom):
                 self.assertIn(f'href="{nom}.html"', self.pages["index"])
@@ -194,6 +194,75 @@ class TestChiffres(unittest.TestCase):
                 self.assertTrue(chiffre.source.strip())
                 self.assertRegex(chiffre.annee, r"^\d{4}$")
                 self.assertTrue(chiffre.url.startswith("https://"))
+
+
+class TestChiffrage(unittest.TestCase):
+
+    def test_nombre_lit_le_registre(self) -> None:
+        """La conversion d'un chiffre en nombre respecte son unité."""
+        self.assertEqual(nombre("die_montant"), 197.1e9)
+        self.assertEqual(nombre("eleves_premier_degre"), 6.15e6)
+        self.assertAlmostEqual(nombre("salaire_ecart_elementaire"), 0.26)
+        self.assertEqual(nombre("enseignants_public"), 711_600)
+        self.assertEqual(nombre("evaluation_controle"), 101.4e6)
+
+    def test_toute_hypothese_sert(self) -> None:
+        """Une hypothèse qu'aucun poste ne lit est une hypothèse morte.
+
+        Même règle que pour les chiffres : elle aurait l'air justifiée sur la
+        page sans rien étayer.
+        """
+        for scenario in chiffrage.SCENARIOS:
+            for poste in chiffrage.POSTES:
+                chiffrage.montant(poste, scenario)
+        self.assertEqual(set(chiffrage.HYPOTHESES), chiffrage._Lecteur.lues)
+
+    def test_scenarios_ordonnes(self) -> None:
+        """Le scénario favorable coûte le moins, le défavorable le plus.
+
+        C'est ce qui garantit qu'une hypothèse n'a pas été saisie à
+        l'envers — une valeur « favorable » qui alourdirait le solde.
+        """
+        for poste in chiffrage.POSTES:
+            with self.subTest(poste=poste.cle):
+                self.assertLessEqual(chiffrage.montant(poste, "favorable"),
+                                     chiffrage.montant(poste, "central"))
+                self.assertLessEqual(chiffrage.montant(poste, "central"),
+                                     chiffrage.montant(poste, "defavorable"))
+
+    def test_signes(self) -> None:
+        """Une charge coûte, une ressource rapporte."""
+        for poste in chiffrage.POSTES:
+            with self.subTest(poste=poste.cle):
+                m = chiffrage.montant(poste)
+                if poste.nature == "ressource":
+                    self.assertLess(m, 0)
+                else:
+                    self.assertGreater(m, 0)
+
+    def test_solde_est_la_somme(self) -> None:
+        somme = sum(chiffrage.montant(p) for p in chiffrage.POSTES
+                    if p.nature != "transition")
+        self.assertAlmostEqual(chiffrage.solde(), somme)
+
+    def test_trajectoire_rejoint_la_croisiere(self) -> None:
+        """La dernière année de la trajectoire est le régime de croisière."""
+        derniere = chiffrage.trajectoire()[-1]
+        self.assertEqual(derniere[0], chiffrage.CROISIERE)
+        self.assertAlmostEqual(derniere[4], chiffrage.solde())
+
+    def test_page_porte_les_postes_et_le_solde(self) -> None:
+        page = gabarit.page("chiffrage", PAGES["chiffrage"]())
+        self.assertIn(gabarit.typographie(
+            chiffrage.euros(chiffrage.solde(), True)), page)
+        for poste in chiffrage.POSTES:
+            with self.subTest(poste=poste.cle):
+                self.assertIn(gabarit.typographie(
+                    gabarit.echapper(poste.intitule)), page)
+        for h in chiffrage.HYPOTHESES.values():
+            with self.subTest(hypothese=h.cle):
+                self.assertIn(gabarit.typographie(
+                    gabarit.echapper(h.libelle)), page)
 
 
 class TestTypographie(unittest.TestCase):
