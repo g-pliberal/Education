@@ -14,6 +14,7 @@ pas vérifiée n'est qu'un paragraphe.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 
 
@@ -606,3 +607,37 @@ def valeur(cle: str) -> str:
     chiffre doit casser la construction, et non écrire une phrase trouée.
     """
     return CHIFFRES[cle].texte
+
+
+# Les multiplicateurs que le registre écrit en toutes lettres. La liste est
+# fermée : une unité inconnue lève une erreur plutôt que d'être lue comme
+# une unité simple — « 3 Md€ » lu comme « 3 € » serait une faute de
+# neuf ordres de grandeur, et silencieuse.
+_MULTIPLICATEURS = (
+    ("Md€", 1e9), ("M€", 1e6), ("millions", 1e6), ("million", 1e6),
+)
+
+
+def nombre(cle: str) -> float:
+    """La valeur d'un chiffre du registre, en nombre, pour un calcul.
+
+    Le chiffrage (`chiffrage.py`) est le seul endroit du site qui calcule. Il
+    ne recopie pas les chiffres du registre : il les lit ici, si bien qu'un
+    chiffre corrigé à la source corrige aussi tous les calculs qui en
+    dépendent. « 6,15 millions » donne 6 150 000 ; « 197,1 Md€ » donne
+    197 100 000 000 ; « 26 % » donne 0,26.
+    """
+    texte = CHIFFRES[cle].texte
+    trouve = re.search(r"[−-]?\d[\d   ]*(?:,\d+)?", texte)
+    if not trouve:
+        raise ValueError(f"{cle} : aucun nombre dans « {texte} »")
+    brut = trouve.group(0)
+    valeur = float(re.sub(r"[   ]", "", brut)
+                   .replace(",", ".").replace("−", "-"))
+    reste = texte[trouve.end():].strip()
+    if reste.startswith("%"):
+        return valeur / 100
+    for unite, facteur in _MULTIPLICATEURS:
+        if reste.startswith(unite):
+            return valeur * facteur
+    return valeur
