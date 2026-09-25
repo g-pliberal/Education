@@ -85,9 +85,12 @@ HYPOTHESES: dict[str, Hypothese] = {h.cle: h for h in (
         "part_ecart_prive",
         "Part de l'écart de financement public entre privé sous contrat et "
         "public que l'alignement comble",
-        1.0, 1.0, 1.0, "part",
-        "Engagement du programme : « le même montant public par élève, quel "
-        "que soit l'établissement ». Le chiffrage le prend au mot."),
+        0.2, 0.2, 0.2, "part",
+        "Choix du programme pour tenir la dépense d'aujourd'hui. L'alignement "
+        "complet coûterait à lui seul plus que la baisse démographique ne "
+        "libère ; un cinquième de l'écart est ce que l'enveloppe permet, une "
+        "fois les enseignants revalorisés. Le reste peut être demandé aux "
+        "familles, jamais aux familles modestes."),
     Hypothese(
         "majoration",
         "Majoration du montant versé pour un élève défavorisé",
@@ -243,7 +246,9 @@ class Poste:
     `calcul` reçoit un lecteur d'hypothèses (`h("mobilite")`) et rend un
     montant annuel en euros, avec le signe du solde public. `nature` range le
     poste : `charge` et `ressource` en régime de croisière, `transition` pour
-    ce qui ne se paie que pendant la mise en place.
+    ce qui ne se paie que pendant la mise en place, `transfert` pour ce qui
+    est pris aux uns pour être donné aux autres sans changer la dépense
+    totale — et n'entre donc pas dans le solde.
     """
 
     cle: str
@@ -377,27 +382,29 @@ POSTES: tuple[Poste, ...] = (
           "part retenue des cotisations de pension × part de la masse "
           "salariale maintenue en 2035.",
           _revalorisation, _rampe(PREMIERE_ANNEE, CROISIERE)),
-    Poste("alignement_prive", "1", "Même financement public pour l'élève du "
-          "privé sous contrat",
+    Poste("alignement_prive", "1", "Rapprochement du financement public de "
+          "l'élève du privé sous contrat",
           "charge",
           f"Un élève du privé sous contrat reçoit {v('prive_eleve_1d')} "
           f"d'argent public à l'école contre {v('public_eleve_1d')} dans le "
           f"public, {v('prive_eleve_2d')} au collège et au lycée contre "
           f"{v('public_eleve_2d')} ; sa famille paie des frais de "
           "scolarité.",
-          "Le même montant public par élève ; les frais de scolarité "
-          "disparaissent.",
+          "L'écart se réduit d'un cinquième. La contribution des familles "
+          "est plafonnée à l'écart restant, et nulle pour les familles "
+          "modestes.",
           "Écart de dépense publique par élève entre public et privé, au "
           "premier et au second degré × élèves du privé sous contrat × part "
-          "des effectifs maintenue en 2035.",
+          "de l'écart comblée × part des effectifs maintenue en 2035.",
           _alignement_prive, _rampe(2031, 2034)),
     Poste("ponderation", "2", "Majoration de 40 % pour l'élève défavorisé",
-          "charge",
+          "transfert",
           "L'éducation prioritaire concentre des moyens sur des zones, "
           "surtout en réduisant la taille des classes.",
           "Chaque élève défavorisé, où qu'il soit scolarisé, apporte 40 % "
           "de plus ; l'éducation prioritaire actuelle est absorbée dans la "
-          "majoration.",
+          "majoration, et le surplus est pris sur le montant de base des "
+          "autres élèves.",
           "40 % × part des élèves défavorisés × financement public de tous "
           "les élèves au niveau du public, moins ce que l'éducation "
           "prioritaire coûte déjà à l'État et aux collectivités — le tout "
@@ -596,34 +603,53 @@ def sensibilite() -> list[tuple[Hypothese, float, float]]:
     return lignes
 
 
-def leviers_equilibre() -> list[tuple[str, str, float]]:
-    """Ce que rapporterait, seul, chaque renoncement possible.
+def solde_initial(scenario: str = "central",
+                  forcees: dict[str, float] | None = None) -> float:
+    """Le solde du programme tel que nous l'avions d'abord annoncé.
 
-    Chaque ligne : ce à quoi l'on renonce, qui le paie, et de combien le
-    solde de croisière baisse. Aucune ne suffit seule — c'est le sens du
-    tableau.
+    Alignement complet du privé, majoration sociale financée par de
+    l'argent nouveau. C'est ce qu'a démenti le premier chiffrage ; il reste
+    calculé pour que la correction se lise.
     """
-    central = solde()
-    ponderation = poste("ponderation")
-    options = (
-        ("Aligner le financement du privé sous contrat à moitié seulement",
-         "Les familles du privé, qui garderaient une partie de leurs frais "
-         "de scolarité.",
-         central - solde(forcees={"part_ecart_prive": 0.5})),
+    tout = {"part_ecart_prive": 1.0, **(forcees or {})}
+    return (solde(scenario, tout)
+            + montant(poste("ponderation"), scenario, tout))
+
+
+def baisse_autres_eleves() -> float:
+    """La baisse du montant de base des élèves non majorés.
+
+    C'est le prix de la majoration sociale financée à enveloppe constante :
+    ce qu'elle coûte, rapporté au financement des élèves qui n'y ouvrent pas
+    droit.
+    """
+    return -montant(poste("ponderation")) / (base_par_eleve() * (
+        1 - HYPOTHESES["part_defavorises"].central))
+
+
+def options_ecartees() -> list[tuple[str, str, float]]:
+    """Les autres manières de tenir l'enveloppe, et pourquoi nous ne les
+    retenons pas.
+
+    Chaque ligne : l'option, la raison du refus, et ce qu'elle aurait
+    rapporté par rapport au programme initial. Aucune ne suffit seule.
+    """
+    initial = solde_initial()
+    return [
+        ("Ramener la majoration sociale de 40 % à 20 %",
+         "C'est la faute suédoise : sans une majoration forte, "
+         "l'établissement n'a pas intérêt à accueillir l'élève difficile.",
+         initial - solde_initial(forcees={"majoration": 0.2})),
         ("Ne combler que la moitié de l'écart de salaire avec l'OCDE",
-         "Les enseignants.",
-         central - solde(forcees={"part_ecart_comble": 0.5})),
-        ("Financer la majoration sociale en prenant sur les autres élèves",
-         "Les établissements qui accueillent peu d'élèves défavorisés, "
-         "dont le montant par élève baisserait de "
-         + pourcent(-montant(ponderation) / (base_par_eleve() * (
-             1 - HYPOTHESES["part_defavorises"].central))) + ".",
-         montant(ponderation)),
-        ("Ramener la majoration de 40 % à 20 %",
-         "Les élèves défavorisés.",
-         central - solde(forcees={"majoration": 0.2})),
-    )
-    return [(quoi, qui, gain) for quoi, qui, gain in options]
+         "Aucune réforme ne réussira sans ses enseignants, et c'est le poste "
+         "que la baisse démographique suffit à financer.",
+         initial - solde_initial(forcees={"part_ecart_comble": 0.5})),
+        ("Baisser uniformément le montant versé pour chaque élève, de "
+         + pourcent(initial / base_par_eleve()),
+         "C'est l'économie silencieuse, poste par poste, que ce programme "
+         "veut remplacer par un choix dit à voix haute.",
+         initial),
+    ]
 
 
 def base_par_eleve() -> float:
