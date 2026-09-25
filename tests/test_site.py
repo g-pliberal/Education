@@ -108,10 +108,14 @@ class TestPages(unittest.TestCase):
                 if cible.startswith(("http://", "https://", "mailto:")):
                     continue
                 with self.subTest(page=nom, lien=cible):
-                    if cible.startswith("#"):
-                        self.assertIn(cible[1:], ancres)
-                    elif cible.endswith(".html"):
-                        self.assertIn(cible[: -len(".html")], noms)
+                    fichier, _, ancre = cible.partition("#")
+                    if not fichier:
+                        self.assertIn(ancre, ancres)
+                    elif fichier.endswith(".html"):
+                        autre = fichier[: -len(".html")]
+                        self.assertIn(autre, noms)
+                        if ancre:
+                            self.assertIn(f'id="{ancre}"', self.pages[autre])
                     else:
                         # Feuille de style, icône : des fichiers du dépôt,
                         # servis à côté des pages.
@@ -242,7 +246,7 @@ class TestChiffrage(unittest.TestCase):
 
     def test_solde_est_la_somme(self) -> None:
         somme = sum(chiffrage.montant(p) for p in chiffrage.POSTES
-                    if p.nature != "transition")
+                    if p.nature in ("charge", "ressource"))
         self.assertAlmostEqual(chiffrage.solde(), somme)
 
     def test_trajectoire_rejoint_la_croisiere(self) -> None:
