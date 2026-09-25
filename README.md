@@ -17,7 +17,7 @@ lecteur d'un site politique n'a pas à être compté pour le lire.
 | `proposition.html` | Les sept réformes, leur calendrier, leurs garde-fous |
 | `comparaisons.html` | Pays-Bas, Danemark, Estonie, Suède |
 | `chiffrage.html` | Ce que coûte chaque réforme, par rapport à la situation actuelle |
-| `objections.html` | Dix objections, dont trois que nous jugeons fondées |
+| `objections.html` | Dix objections, dont cinq que nous jugeons fondées, en tout ou en partie |
 | `sources.html` | Tous les chiffres, leur année, leur source |
 
 ## L'apparence
@@ -124,7 +124,7 @@ Ce n'est pas un rapport officiel, et il ne se donne pas pour tel. Les
 des choix politiques, et se discutent comme tels. Les limites que nous
 connaissons à notre propre argumentation sont écrites sur le site lui-même,
 pas cachées ici : voir la fin de `sources.html` et la page `objections.html`,
-où trois objections sur dix sont données pour partiellement fondées.
+où cinq objections sur dix sont données pour fondées, en tout ou en partie.
 
 Une erreur, un chiffre périmé, une objection oubliée :
 [ouvrez une issue](https://github.com/g-pliberal/education/issues).

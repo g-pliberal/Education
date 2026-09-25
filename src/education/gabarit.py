@@ -62,16 +62,16 @@ DESCRIPTIONS: dict[str, str] = {
                  "les élèves français savent faire, et ce qu'ils ne savent "
                  "plus faire.",
     "depense": "197,1 milliards d'euros, 6,8 % du PIB, et un euro mal réparti "
-               "entre l'écolier et l'étudiant : où va l'argent de l'école.",
+               "entre l'écolier et le lycéen : où va l'argent de l'école.",
     "gouvernance": "55 % des décisions prises au niveau central, 10 % des "
-                   "chefs d'établissement qui recrutent leur équipe : qui "
-                   "décide vraiment dans l'école française.",
+                   "élèves dans un établissement dont le chef recrute son "
+                   "équipe : qui décide vraiment dans l'école française.",
     "proposition": "Sept réformes libérales de l'école : le financement suit "
                    "l'élève, l'établissement s'administre, les résultats se "
                    "publient, le métier d'enseignant redevient un métier.",
     "comparaisons": "Pays-Bas, Danemark, Estonie, Suède : ce que la liberté "
-                    "scolaire donne quand elle est bien faite, et ce qu'elle "
-                    "coûte quand elle est mal faite.",
+                    "scolaire donne, ce qu'elle coûte quand elle est mal "
+                    "faite, et ce qu'elle ne garantit pas.",
     "chiffrage": "Ce que coûte le programme libéral pour l'école, poste par "
                  "poste, par rapport à la situation actuelle : formules, "
                  "hypothèses, fourchettes, et qui y gagne ou y perd.",

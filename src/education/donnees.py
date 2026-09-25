@@ -91,6 +91,32 @@ RERS_2026_CH1 = ("https://www.education.gouv.fr/sites/default/files/document/"
                  "1-le-systeme-educatifpdf-519276.pdf")
 RERS_2025_CH2 = ("https://www.education.gouv.fr/sites/default/files/2025-07/"
                  "rers2025-chapitre-2-441717.pdf")
+DEPP_PISA_2025 = ("https://www.education.gouv.fr/sites/default/files/document/"
+                  "depp-ni-2026-40pisa-mathspdf-520231.pdf")
+DEPP_PISA_2025_SCIENCES = ("https://www.education.gouv.fr/sites/default/files/"
+                           "document/depp-ni-2026-39pisa-sciencespdf-520225.pdf")
+OCDE_PISA_2025_FRANCE = ("https://www.oecd.org/content/dam/oecd/fr/publications/"
+                         "reports/2026/09/pisa-2025-results-volume-i-country-"
+                         "notes_88d1164e/france_69779694/9840dc6b-fr.pdf")
+OCDE_PISA_2025_PAYSBAS = ("https://www.oecd.org/content/dam/oecd/en/publications/"
+                          "reports/2026/09/pisa-2025-results-volume-i-country-"
+                          "notes_88d1164e/netherlands_e5cbc486/1c998a42-en.pdf")
+OCDE_DECENTRALISATION = ("https://www.oecd.org/content/dam/oecd/fr/publications/"
+                         "reports/2018/11/how-decentralised-are-education-systems-"
+                         "and-what-does-it-mean-for-schools_7c1806fc/"
+                         "b3b6fcc4-fr.pdf")
+PAYSBAS_ADMISSION = ("https://www.government.nl/themes/education/"
+                     "freedom-of-education/public-authority-and-private-schools")
+TALLINN_CONCOURS = "https://tik.edu.ee/p/1637-nelja-kooli-uhiskatsed-joint-tests"
+DEPP_IVAC = ("https://www.education.gouv.fr/sites/default/files/document/"
+             "Depp_Guide_m%C3%A9thodologique_IVAC_2025.pdf-515492.pdf")
+FACK_GRENET_CARTE = ("https://archives-statistiques-depp.education.gouv.fr/"
+                     "Default/doc/SYRACUSE/13199/les-effets-de-l-assouplissement-"
+                     "de-la-carte-scolaire-dans-l-education-prioritaire")
+INSEE_PRIX_2025 = "https://www.insee.fr/fr/statistiques/8726461"
+POSTES_2025 = ("https://www.franceinfo.fr/societe/education/francois-bayrou-"
+               "confirme-qu-il-n-y-aura-pas-suppression-de-4-000-postes-d-"
+               "enseignants-une-decision-definitive_7040645.html")
 
 
 CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
@@ -157,9 +183,35 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "l'élémentaire au supérieur, sur le périmètre retenu par l'OCDE — "
        "plus étroit que la dépense intérieure d'éducation française.",
        "2022", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
-       "La DIE française y ajoute notamment les cantines, les transports "
-       "scolaires et la formation continue : les deux chiffres ne se "
-       "comparent pas.", ("depense",)),
+       "Supérieur à la moyenne de l'OCDE (4,7 %). La DIE française y ajoute "
+       "notamment les cantines, les transports scolaires et la formation "
+       "continue : les deux chiffres ne se comparent pas.", ("depense",)),
+    _c("ocde_pib_comparable_ocde", "4,7 %",
+       "La même part, en moyenne dans l'OCDE.",
+       "2022", "OCDE, Regards sur l'éducation 2025, tableau C1.2", OCDE_RSE,
+       "", ("depense",)),
+    _c("part_publique", "92 %",
+       "Part des pouvoirs publics dans le financement de l'enseignement, de "
+       "l'élémentaire au post-secondaire non supérieur.",
+       "2022", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
+       "Moyenne OCDE : 90,1 %. Les familles françaises financent donc une "
+       "part de l'école un peu plus faible qu'ailleurs.", ("depense",)),
+    _c("part_publique_ocde", "90,1 %",
+       "La même part, en moyenne dans l'OCDE.",
+       "2022", "OCDE, Regards sur l'éducation 2025", OCDE_RSE, "",
+       ("depense",)),
+    _c("services_annexes", "12,2 %",
+       "Part des services annexes — transports scolaires, internats, "
+       "cantines, médecine scolaire — dans la dépense d'éducation en France.",
+       "2025", "Grenet et Landais, notes du CAE n° 84, mai 2025 (données "
+       "OCDE)", CAE_EDUCATION,
+       "Moyenne OCDE : 5,6 %. C'est l'une des raisons, avec la diversité des "
+       "filières et des options, du coût élevé du second degré.",
+       ("depense",)),
+    _c("services_annexes_ocde", "5,6 %",
+       "La même part, en moyenne dans l'OCDE.",
+       "2025", "Grenet et Landais, notes du CAE n° 84, mai 2025 (données "
+       "OCDE)", CAE_EDUCATION, "", ("depense",)),
     _c("ocde_elementaire_fr", "11 135 USD",
        "Dépense annuelle par élève dans l'enseignement élémentaire en "
        "France, en équivalents USD à parité de pouvoir d'achat.",
@@ -189,12 +241,14 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "2022", "OCDE, Regards sur l'éducation 2025, tableau C4.1", OCDE_RSE,
        "", ("depense",)),
     _c("dedoublement_cout", "800 M€ par an",
-       "Coût annuel du dédoublement des classes de CP et CE1 en éducation "
-       "prioritaire, pour 16 000 équivalents temps plein.",
-       "2023", "Cour des comptes, cité par La Vie des idées",
-       VIE_IDEES_DEDOUBLEMENT,
-       "Effets positifs mesurés à court terme, qui ne persistent pas au-delà "
-       "du CP.", ("depense", "reformes")),
+       "Coût annuel du dédoublement des classes de grande section, de CP et "
+       "de CE1 en éducation prioritaire, pour 16 000 équivalents temps plein.",
+       "2024", "Sénat, rapport d'information n° 575 (2024-2025) sur "
+       "l'éducation prioritaire", SENAT_EP,
+       "Chiffre de la Cour des comptes. Effets mesurés par la DEPP : "
+       "positifs en CP, surtout en mathématiques ; au CE1, la progression "
+       "ne se distingue plus de celle d'élèves comparables.",
+       ("depense", "reformes")),
 
     _c("die_hausse", "+1,4 %",
        "Hausse de la dépense intérieure d'éducation sur un an, en euros "
@@ -223,44 +277,118 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        ("depense",)),
     _c("dedoublement_etp", "16 000",
        "Équivalents temps plein mobilisés par le dédoublement des classes de "
-       "CP et CE1 en éducation prioritaire.",
-       "2023", "Cour des comptes, cité par La Vie des idées",
-       VIE_IDEES_DEDOUBLEMENT, "", ("depense",)),
+       "grande section, de CP et de CE1 en éducation prioritaire.",
+       "2024", "Sénat, rapport d'information n° 575 (2024-2025) sur "
+       "l'éducation prioritaire", SENAT_EP, "Chiffre de la Cour des comptes.",
+       ("depense",)),
 
     # -- ce que l'école produit -----------------------------------------------
-    _c("pisa_maths", "474 points",
+    _c("pisa_maths", "458 points",
        "Score moyen des élèves français de 15 ans en mathématiques (PISA).",
-       "2022", "OCDE / DEPP", DEPP_PISA,
-       "Moyenne OCDE : 472 points.", ("resultats",)),
-    _c("pisa_maths_ocde", "472 points",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025,
+       "Moyenne OCDE : 463 points, un écart qui n'est pas significatif. "
+       "Selon l'OCDE, les résultats de 2025 comptent parmi les plus faibles "
+       "jamais obtenus par la France dans cette enquête.", ("resultats",)),
+    _c("pisa_maths_ocde", "463 points",
        "Moyenne OCDE en mathématiques (PISA).",
-       "2022", "OCDE / DEPP", DEPP_PISA, "", ("resultats",)),
-    _c("pisa_maths_chute", "−21 points",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_maths_chute", "−16 points",
+       "Recul du score français en mathématiques entre PISA 2022 et PISA 2025.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025,
+       "Après 21 points de recul entre 2018 et 2022 ; le score était stable "
+       "de 2006 à 2018.", ("resultats",)),
+    _c("pisa_maths_chute_ocde", "−9 points",
+       "Recul de la moyenne de l'OCDE en mathématiques entre PISA 2022 et "
+       "PISA 2025.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_maths_chute_2022", "−21 points",
        "Recul du score français en mathématiques entre PISA 2018 et PISA 2022.",
        "2022", "OCDE / DEPP", DEPP_PISA,
-       "La plus forte baisse jamais enregistrée par la France dans cette "
-       "enquête.", ("resultats",)),
-    _c("pisa_lecture", "474 points",
+       "La plus forte baisse enregistrée par la France dans cette enquête "
+       "jusqu'alors.", ("resultats",)),
+    _c("pisa_lecture", "456 points",
        "Score moyen en compréhension de l'écrit (PISA).",
-       "2022", "OCDE / DEPP", DEPP_PISA,
-       "Moyenne OCDE : 476 points. Recul de 19 points depuis 2018.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025,
+       "Moyenne OCDE : 461 points, un écart qui n'est pas significatif.",
        ("resultats",)),
-    _c("pisa_sciences", "487 points",
-       "Score moyen en culture scientifique (PISA).",
-       "2022", "OCDE / DEPP", DEPP_PISA,
-       "Moyenne OCDE : 485 points. Stable depuis 2018.", ("resultats",)),
-    _c("pisa_faibles", "29 %",
-       "Part des élèves français de 15 ans sous le niveau 2 en mathématiques, "
-       "c'est-à-dire incapables d'appliquer une procédure simple à une "
-       "situation qui n'a pas été apprise telle quelle.",
-       "2022", "OCDE / DEPP", DEPP_PISA,
-       "Ils étaient 21 % en 2018.", ("resultats",)),
-    _c("pisa_ecart_social", "113 points",
-       "Écart de score en mathématiques entre les élèves français les plus "
-       "favorisés et les plus défavorisés.",
-       "2022", "OCDE / DEPP", DEPP_PISA,
-       "La France reste l'un des pays de l'OCDE où l'origine sociale pèse le "
-       "plus lourd sur les résultats.", ("resultats", "inegalites")),
+    _c("pisa_sciences", "483 points",
+       "Score moyen en culture scientifique, domaine principal de l'enquête "
+       "2025 (PISA).",
+       "2025", "DEPP, note d'information n° 26.39", DEPP_PISA_2025_SCIENCES,
+       "Moyenne OCDE : 482 points. Stable depuis 2022 ; 495 points en 2015.",
+       ("resultats",)),
+    _c("pisa_faibles", "36 %",
+       "Part des élèves français de 15 ans sous le niveau 2 en mathématiques : "
+       "ils ne savent pas reconnaître, sans consigne, comment une situation "
+       "simple se traduit en mathématiques.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025,
+       "Moyenne OCDE : 35 %. Ils étaient 29 % en 2022 et 21 % en 2018.",
+       ("resultats",)),
+    _c("pisa_faibles_ocde", "35 %",
+       "La même part, en moyenne dans l'OCDE.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_faibles_2022", "29 %",
+       "La même part en France lors de l'enquête précédente.",
+       "2022", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_faibles_lecture", "33 %",
+       "Part des élèves français de 15 ans sous le niveau 2 en compréhension "
+       "de l'écrit.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025,
+       "Moyenne OCDE : 30 %. Ils étaient 27 % en 2022, 21 % en 2018 et 15 % "
+       "en 2000.", ("resultats",)),
+    _c("pisa_faibles_lecture_ocde", "30 %",
+       "La même part, en moyenne dans l'OCDE.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_faibles_lecture_2000", "15 %",
+       "La même part en France lors de la première enquête PISA.",
+       "2000", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_tres_bons", "5 %",
+       "Part des élèves français de 15 ans très performants en mathématiques "
+       "(au-dessus du niveau 4).",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025,
+       "Moyenne OCDE : 8 %. Ils étaient 15 % en 2003.", ("resultats",)),
+    _c("pisa_tres_bons_ocde", "8 %",
+       "La même part, en moyenne dans l'OCDE.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_tres_bons_2003", "15 %",
+       "La même part en France en 2003, première enquête centrée sur les "
+       "mathématiques.",
+       "2003", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_ecart_social", "95 points",
+       "Écart de score en mathématiques entre les élèves français très "
+       "favorisés et très défavorisés (PISA).",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025,
+       "Moyenne OCDE : 83 points. La France est l'un des pays de l'OCDE où "
+       "cet écart est le plus marqué.", ("resultats", "inegalites")),
+    _c("pisa_ecart_social_ocde", "83 points",
+       "Le même écart, en moyenne dans l'OCDE.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_ecart_lecture", "91 points",
+       "Le même écart en compréhension de l'écrit.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025,
+       "Moyenne OCDE : 77 points.", ("resultats",)),
+    _c("pisa_ecart_lecture_ocde", "77 points",
+       "Le même écart en compréhension de l'écrit, en moyenne dans l'OCDE.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_ecart_sciences", "100 points",
+       "Écart de score en culture scientifique entre les 25 % d'élèves "
+       "français les plus favorisés et les 25 % les plus défavorisés.",
+       "2025", "DEPP, note d'information n° 26.39", DEPP_PISA_2025_SCIENCES,
+       "Moyenne OCDE : 85 points.", ("resultats",)),
+    _c("pisa_ecart_sciences_ocde", "85 points",
+       "Le même écart en culture scientifique, en moyenne dans l'OCDE.",
+       "2025", "DEPP, note d'information n° 26.39", DEPP_PISA_2025_SCIENCES,
+       "", ("resultats",)),
     _c("timss_cm1_maths", "484 points",
        "Score moyen des élèves français de CM1 en mathématiques (TIMSS).",
        "2023", "IEA / DEPP", DEPP_TIMSS,
@@ -303,20 +431,28 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
 
     _c("pisa_faibles_2018", "21 %",
        "Part des élèves français de 15 ans sous le niveau 2 en mathématiques "
-       "lors de l'enquête précédente.",
+       "lors de l'enquête de 2018.",
        "2018", "OCDE / DEPP", DEPP_PISA,
-       "Ils sont 29 % en 2022 : huit points de plus en quatre ans.",
+       "Ils sont 36 % en 2025 : quinze points de plus en sept ans.",
        ("resultats",)),
-    _c("pisa_lecture_ocde", "476 points",
+    _c("pisa_lecture_ocde", "461 points",
        "Moyenne OCDE en compréhension de l'écrit (PISA).",
-       "2022", "OCDE / DEPP", DEPP_PISA, "", ("resultats",)),
-    _c("pisa_lecture_chute", "−19 points",
-       "Recul du score français en compréhension de l'écrit entre PISA 2018 "
-       "et PISA 2022.",
-       "2022", "OCDE / DEPP", DEPP_PISA, "", ("resultats",)),
-    _c("pisa_sciences_ocde", "485 points",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_lecture_chute", "−18 points",
+       "Recul du score français en compréhension de l'écrit entre PISA 2022 "
+       "et PISA 2025.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025,
+       "Après 19 points de recul entre 2018 et 2022.", ("resultats",)),
+    _c("pisa_lecture_chute_ocde", "−14 points",
+       "Recul de la moyenne de l'OCDE en compréhension de l'écrit entre PISA "
+       "2022 et PISA 2025.",
+       "2025", "DEPP, note d'information n° 26.40", DEPP_PISA_2025, "",
+       ("resultats",)),
+    _c("pisa_sciences_ocde", "482 points",
        "Moyenne OCDE en culture scientifique (PISA).",
-       "2022", "OCDE / DEPP", DEPP_PISA, "", ("resultats",)),
+       "2025", "DEPP, note d'information n° 26.39", DEPP_PISA_2025_SCIENCES,
+       "", ("resultats",)),
     _c("timss_cm1_sciences_ue", "518 points",
        "Moyenne de l'Union européenne en sciences en CM1 (TIMSS).",
        "2023", "IEA / DEPP", DEPP_TIMSS, "", ("resultats",)),
@@ -375,9 +511,48 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "Moyenne OCDE : 909 heures.", ("moyens",)),
     _c("taille_classe", "21,6 élèves",
        "Taille moyenne d'une classe élémentaire en France.",
-       "2025", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
+       "2023", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
        "Moyenne OCDE : 21 élèves. En baisse de près de deux élèves depuis "
        "2013.", ("moyens",)),
+    _c("taille_classe_college", "25,6 élèves",
+       "Taille moyenne d'une classe de collège en France.",
+       "2023", "Grenet et Landais, notes du CAE n° 84, mai 2025", CAE_EDUCATION,
+       "Moyenne des autres pays de l'Union européenne : 20,7 élèves.",
+       ("moyens",)),
+    _c("taille_classe_college_ue", "20,7 élèves",
+       "La même taille, en moyenne dans les autres pays de l'Union "
+       "européenne.",
+       "2023", "Grenet et Landais, notes du CAE n° 84, mai 2025", CAE_EDUCATION,
+       "", ("moyens",)),
+    _c("fondamentaux", "59 %",
+       "Part du temps d'instruction obligatoire de l'élémentaire consacrée à "
+       "la lecture, à l'écriture, à la littérature et aux mathématiques en "
+       "France.",
+       "2025", "OCDE, Regards sur l'éducation 2025, tableaux D1.3 et D1.4",
+       OCDE_RSE,
+       "38 % pour la lecture, l'écriture et la littérature, 21 % pour les "
+       "mathématiques. Moyenne OCDE : 41 %.", ("moyens",)),
+    _c("fondamentaux_ocde", "41 %",
+       "La même part, en moyenne dans l'OCDE.",
+       "2025", "OCDE, Regards sur l'éducation 2025, tableaux D1.3 et D1.4",
+       OCDE_RSE, "", ("moyens",)),
+    _c("salaire_debut_hausse", "8 %",
+       "Hausse des salaires statutaires de début de carrière des enseignants "
+       "français entre 2015 et 2024.",
+       "2024", "OCDE, Regards sur l'éducation 2025", OCDE_RSE,
+       "Moyenne OCDE : 17 % dans l'élémentaire. Au bout de quinze ans de "
+       "carrière, le salaire statutaire d'un professeur des écoles n'a pas "
+       "augmenté sur la période.", ("moyens", "enseignants")),
+    _c("salaire_debut_hausse_ocde", "17 %",
+       "La même hausse dans l'élémentaire, en moyenne dans l'OCDE.",
+       "2024", "OCDE, Regards sur l'éducation 2025", OCDE_RSE, "",
+       ("moyens", "enseignants")),
+    _c("postes_2025", "4 000 postes",
+       "Suppressions de postes d'enseignants prévues au projet de loi de "
+       "finances pour 2025, auxquelles le gouvernement a renoncé.",
+       "2025", "franceinfo, 28 janvier 2025", POSTES_2025,
+       "Le Premier ministre a présenté ce renoncement comme une « décision "
+       "définitive ».", ("moyens",)),
 
     _c("salaire_ecart_elementaire_ocde", "17 %",
        "Écart moyen, dans l'OCDE, entre le salaire d'un enseignant du "
@@ -436,6 +611,16 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "La « liberté de choix » française est donc, en pratique, le choix "
        "entre l'école publique de son quartier et une école confessionnelle.",
        ("gouvernance", "liberte")),
+    _c("prive_tres_favorises", "40,2 %",
+       "Part des élèves issus de familles très favorisées dans l'enseignement "
+       "privé sous contrat.",
+       "2021", "Cour des comptes", COUR_PRIVE,
+       "Elle était de 26,4 % en 2000. Les élèves de familles favorisées et "
+       "très favorisées y sont désormais majoritaires.",
+       ("gouvernance", "liberte")),
+    _c("prive_tres_favorises_2000", "26,4 %",
+       "La même part en 2000.",
+       "2000", "Cour des comptes", COUR_PRIVE, "", ("gouvernance", "liberte")),
 
     _c("decisions_pleine_autonomie", "2 %",
        "Part des décisions prises en pleine autonomie par l'établissement en "
@@ -475,9 +660,9 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "Plus d'un siècle de liberté scolaire financée, dans un pays qui n'a "
        "pas cessé d'être un État social.", ("comparaisons",)),
     _c("estonie_pisa", "510 points",
-       "Score de l'Estonie en mathématiques (PISA 2022) : premier rang "
-       "européen, et troisième rang des pays de l'OCDE derrière le Japon et "
-       "la Corée.",
+       "Score de l'Estonie en mathématiques (PISA 2022) : troisième rang des "
+       "pays de l'OCDE derrière le Japon et la Corée, au niveau de la "
+       "Suisse.",
        "2022", "OCDE, PISA 2022",
        "https://www.oecd.org/en/about/programmes/pisa.html",
        "Deux points devant la Suisse (508) : l'écart est inférieur à la "
@@ -485,6 +670,18 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "comme un classement. La dépense estonienne par élève est inférieure "
        "à la française.",
        ("comparaisons",)),
+    _c("estonie_sciences", "527 points",
+       "Score de l'Estonie en culture scientifique (PISA 2025) : le deuxième "
+       "de l'OCDE, derrière le Japon.",
+       "2025", "DEPP, note d'information n° 26.39", DEPP_PISA_2025_SCIENCES,
+       "", ("comparaisons",)),
+    _c("paysbas_ecart_sciences", "105 points",
+       "Écart de score en culture scientifique entre les 25 % d'élèves "
+       "néerlandais les plus favorisés et les 25 % les plus défavorisés "
+       "(PISA 2025).",
+       "2025", "OCDE, Résultats du PISA 2025, volume I, note pays : "
+       "Pays-Bas", OCDE_PISA_2025_PAYSBAS,
+       "Moyenne OCDE : 85 points ; France : 100 points.", ("comparaisons",)),
     _c("estonie_recrutement", "94 %",
        "Part des élèves estoniens dont le chef d'établissement recrute "
        "lui-même les enseignants.",
@@ -636,6 +833,22 @@ CHIFFRES: dict[str, Chiffre] = {c.cle: c for c in (
        "2025", "Sénat, commission des finances, note de présentation du "
        "PLF 2026, mission « Enseignement scolaire »", SENAT_NP_2026,
        "", ("chiffrage",)),
+    _c("inflation_2022", "5,2 %",
+       "Hausse des prix à la consommation en 2022, en moyenne annuelle.",
+       "2022", "Insee, Informations rapides n° 8, 15 janvier 2026",
+       INSEE_PRIX_2025, "", ("chiffrage",)),
+    _c("inflation_2023", "4,9 %",
+       "Hausse des prix à la consommation en 2023, en moyenne annuelle.",
+       "2023", "Insee, Informations rapides n° 8, 15 janvier 2026",
+       INSEE_PRIX_2025, "", ("chiffrage",)),
+    _c("inflation_2024", "2,0 %",
+       "Hausse des prix à la consommation en 2024, en moyenne annuelle.",
+       "2024", "Insee, Informations rapides n° 8, 15 janvier 2026",
+       INSEE_PRIX_2025, "", ("chiffrage",)),
+    _c("inflation_2025", "0,9 %",
+       "Hausse des prix à la consommation en 2025, en moyenne annuelle.",
+       "2025", "Insee, Informations rapides n° 8, 15 janvier 2026",
+       INSEE_PRIX_2025, "", ("chiffrage",)),
 )}
 
 
@@ -686,6 +899,98 @@ FAITS: dict[str, Fait] = {f.cle: f for f in (
          "Grenet et Landais, « Éducation : comment mieux orienter la "
          "dépense », notes du CAE n° 84, mai 2025",
          CAE_EDUCATION),
+    Fait("cae_taille_classes",
+         "Le Conseil d'analyse économique range la réduction de la taille des "
+         "classes au primaire parmi les politiques « autofinancées », et "
+         "recommande de mobiliser les marges budgétaires ouvertes par la "
+         "baisse démographique pour l'amplifier dans le premier degré, en "
+         "ciblant les contextes prioritaires.",
+         "2025", "Grenet et Landais, notes du CAE n° 84, mai 2025, "
+         "recommandation 1", CAE_EDUCATION),
+    Fait("cae_recrutement",
+         "Le Conseil d'analyse économique relève que la recherche ne converge "
+         "pas vers un consensus clair sur l'efficacité des politiques de "
+         "recrutement des enseignants ou des incitations financières comme "
+         "les primes à la performance.",
+         "2025", "Grenet et Landais, notes du CAE n° 84, mai 2025, « Former et "
+         "accompagner les enseignants »", CAE_EDUCATION),
+    Fait("dedoublement_depp",
+         "Selon l'évaluation de la DEPP, les élèves des classes de CP "
+         "dédoublées en REP+ progressent davantage que des élèves comparables, "
+         "surtout en mathématiques ; au CE1, les différences de progression "
+         "ne sont plus significatives.",
+         "2022", "DEPP, document de travail n° 2021.E04, analysé par Pierre "
+         "Merle, La Vie des idées, 31 mai 2022", VIE_IDEES_DEDOUBLEMENT),
+    Fait("ocde_pisa_2025",
+         "Les résultats de la France en 2025 comptent parmi les plus faibles "
+         "jamais obtenus au test PISA, dans les trois domaines. Entre 2015 et "
+         "2025, l'écart en sciences entre les 25 % d'élèves les plus favorisés "
+         "et les 25 % les plus défavorisés s'est réduit : les résultats ont "
+         "baissé parmi les élèves favorisés et sont restés stables parmi les "
+         "défavorisés.",
+         "2026", "OCDE, Résultats du PISA 2025, volume I, note pays : France",
+         OCDE_PISA_2025_FRANCE),
+    Fait("depp_pisa_tendance",
+         "En compréhension de l'écrit, l'évolution du score moyen de la France "
+         "depuis 2000 suit approximativement la même tendance que celle des "
+         "pays de l'OCDE ; en culture mathématique, le score de la France "
+         "était stable de 2006 à 2018.",
+         "2026", "DEPP, note d'information n° 26.40, septembre 2026",
+         DEPP_PISA_2025),
+    Fait("depp_pisa_voisins",
+         "En 2025, le Danemark a en compréhension de l'écrit un score "
+         "similaire à celui de la France, et la Suède en culture "
+         "mathématique ; en Europe, l'Estonie et la Suisse présentent les "
+         "scores les plus élevés en culture mathématique.",
+         "2026", "DEPP, note d'information n° 26.40, septembre 2026, "
+         "figures 1 et 4", DEPP_PISA_2025),
+    Fait("ocde_pisa_2025_paysbas",
+         "Aux Pays-Bas, les résultats de 2025 comptent parmi les plus faibles "
+         "jamais observés dans les trois domaines : supérieurs à la moyenne de "
+         "l'OCDE en mathématiques, inférieurs en compréhension de l'écrit, "
+         "proches de la moyenne en sciences. Depuis 2015, la part d'élèves "
+         "sous le niveau 2 en compréhension de l'écrit a augmenté de vingt "
+         "points.",
+         "2026", "OCDE, Résultats du PISA 2025, volume I, note pays : "
+         "Pays-Bas, synthèse", OCDE_PISA_2025_PAYSBAS),
+    Fait("paysbas_admission",
+         "Aux Pays-Bas, une école privée fondée sur des principes religieux "
+         "ou philosophiques peut exiger de ses élèves qu'ils adhèrent aux "
+         "convictions de son courant, si c'est nécessaire au respect de ses "
+         "principes et à condition de l'appliquer sans discrimination et de "
+         "façon constante.",
+         "2026", "Gouvernement des Pays-Bas, « Public-authority and private "
+         "schools »", PAYSBAS_ADMISSION),
+    Fait("tallinn_concours",
+         "Quatre lycées de Tallinn — Gustav Adolfi Gümnaasium, Tallinna "
+         "Inglise Kolledž, Tallinna Reaalkool et Tallinna 21. Kool — "
+         "recrutent leurs élèves par un concours d'entrée commun, passé en "
+         "fin de neuvième année, en estonien, en mathématiques, en physique "
+         "et en anglais.",
+         "2026", "Tallinna Inglise Kolledž, « Nelja kooli ühiskatsed »",
+         TALLINN_CONCOURS),
+    Fait("ocde_decentralisation",
+         "Dans l'enseignement public du premier cycle du secondaire, "
+         "l'Espagne, la Suisse, la Grèce, la Turquie et la Finlande laissent "
+         "aux établissements une part des décisions plus faible encore que la "
+         "France.",
+         "2018", "OCDE, Les indicateurs de l'éducation à la loupe n° 64, "
+         "novembre 2018", OCDE_DECENTRALISATION),
+    Fait("ivac",
+         "Le ministère publie, pour chaque collège public et privé sous "
+         "contrat, des indicateurs de valeur ajoutée calculés sur le diplôme "
+         "national du brevet (IVAC) ; les lycées disposent d'indicateurs du "
+         "même type (IVAL) depuis de nombreuses années.",
+         "2025", "DEPP, Les indicateurs de valeur ajoutée des collèges publics "
+         "et privés sous contrat, diplôme national du brevet 2025", DEPP_IVAC),
+    Fait("carte_scolaire_2007",
+         "Entre 2006 et 2009, la hausse des dérogations permise par "
+         "l'assouplissement de la carte scolaire a entraîné une érosion "
+         "significative des effectifs de sixième des collèges de l'éducation "
+         "prioritaire : au moins 5 % dans les réseaux « réussite scolaire » et "
+         "9 % dans les collèges « ambition réussite ».",
+         "2013", "Fack et Grenet, Éducation & formations n° 83, DEPP, juin "
+         "2013", FACK_GRENET_CARTE),
 )}
 
 

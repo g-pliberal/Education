@@ -234,6 +234,29 @@ def financement_public_aligne() -> float:
             + nombre("eleves_second_degre") * nombre("public_eleve_2d"))
 
 
+def postes_non_remplaces(scenario: str = "central") -> float:
+    """Les postes d'enseignants que suppose le dividende démographique.
+
+    Le dividende n'existe que si les emplois suivent les élèves : à taux
+    d'encadrement constant, la baisse des effectifs se traduit en départs
+    non remplacés. C'est la formule du dividende, appliquée aux enseignants
+    du public et du privé sous contrat plutôt qu'aux crédits.
+    """
+    enseignants = nombre("enseignants_public") + nombre("enseignants_prive")
+    return (enseignants * baisse_demographique()
+            * HYPOTHESES["part_variable"].valeur(scenario))
+
+
+def inflation_depuis_2021() -> float:
+    """La hausse des prix de 2021 à 2025, en chaînant les moyennes annuelles
+    publiées par l'Insee. 2026 n'est pas encore connue : c'est un plancher.
+    """
+    hausse = 1.0
+    for annee in (2022, 2023, 2024, 2025):
+        hausse *= 1 + nombre(f"inflation_{annee}")
+    return hausse - 1
+
+
 # -- les postes --------------------------------------------------------------
 
 Lecteur = Callable[[str], float]
@@ -435,7 +458,9 @@ POSTES: tuple[Poste, ...] = (
           "et publiées en valeur ajoutée",
           "charge",
           "Des évaluations nationales existent, mais ne sont ni corrigées "
-          "hors de l'établissement ni publiées école par école.",
+          "hors de l'établissement ni publiées école par école ; seuls le "
+          "brevet et le baccalauréat donnent lieu à des indicateurs de valeur "
+          "ajoutée par collège et par lycée.",
           "Correction externe, calcul de la valeur ajoutée, publication.",
           "Hypothèse directe de coût annuel.",
           lambda h: h("cout_evaluation"), _rampe(PREMIERE_ANNEE,
@@ -621,9 +646,9 @@ def baisse_autres_eleves() -> float:
 
     C'est le prix de la majoration sociale financée à enveloppe constante :
     ce qu'elle coûte, rapporté au financement des élèves qui n'y ouvrent pas
-    droit.
+    droit. Rendue positive : les pages écrivent déjà « baisse de ».
     """
-    return -montant(poste("ponderation")) / (base_par_eleve() * (
+    return montant(poste("ponderation")) / (base_par_eleve() * (
         1 - HYPOTHESES["part_defavorises"].central))
 
 
@@ -650,6 +675,21 @@ def options_ecartees() -> list[tuple[str, str, float]]:
          "veut remplacer par un choix dit à voix haute.",
          initial),
     ]
+
+
+def surcout_inflation(scenario: str = "central") -> float:
+    """Ce que coûteraient en plus, revalorisés de l'inflation depuis 2021,
+    les postes du solde chiffrés en euros de 2021.
+
+    Ce sont le rapprochement du privé et le financement du hors contrat, qui
+    partent de la dépense publique par élève de 2021. La majoration sociale
+    part des mêmes chiffres, mais c'est un transfert : revalorisée, elle
+    déplace davantage entre élèves sans changer le solde. Le reste du
+    chiffrage part des budgets de 2026, déjà en euros courants.
+    """
+    return inflation_depuis_2021() * (
+        montant(poste("alignement_prive"), scenario)
+        + montant(poste("hors_contrat"), scenario))
 
 
 def base_par_eleve() -> float:
@@ -684,6 +724,14 @@ def euros(valeur: float, signe: bool = False) -> str:
     if valeur < 0:
         return MOINS + texte
     return ("+" if signe else "") + texte
+
+
+def milliers(valeur: float) -> str:
+    """Un effectif arrondi au millier, comme il s'écrit : « 98 000 ».
+
+    Un calcul fait d'hypothèses n'a pas de chiffre significatif en deçà.
+    """
+    return f"{round(valeur, -3):,.0f}".replace(",", " ")
 
 
 def pourcent(valeur: float, signe: bool = False) -> str:

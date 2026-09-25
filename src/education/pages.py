@@ -28,7 +28,7 @@ def _source(cle: str) -> str:
 def index() -> str:
     corps = g.affiche(
         "Parti libéral français · École",
-        "L'école française dépense beaucoup et apprend peu.",
+        "L'école française dépense beaucoup, et apprend de moins en moins.",
         "Ce site fait deux choses, et deux seulement : établir ce que la "
         "politique éducative française coûte et ce qu'elle obtient, puis "
         "exposer l'alternative libérale — <strong class=\"cle-texte\">le "
@@ -57,12 +57,15 @@ def index() -> str:
 
     corps += g.note(
         "<p><strong>Ce site en deux minutes.</strong> La France consacre à "
-        "son école un effort comparable à celui de ses voisins, et le "
-        "répartit à contretemps : moins que la moyenne de l'OCDE par "
-        "écolier, un quart de plus par lycéen. Ses résultats, eux, sont "
-        "inférieurs à cette moyenne. Ce n'est donc pas d'abord une question "
-        "de montant : c'est une question de qui décide, de qui rend des "
-        "comptes, et de qui peut partir quand rien ne change.</p>"
+        "son école une part de sa richesse supérieure à la moyenne de "
+        "l'OCDE, et la répartit à contretemps : moins que la moyenne par "
+        "écolier, un quart de plus par lycéen. Ses résultats, eux, "
+        "reculent : à quinze ans, la France est dans la moyenne de l'OCDE, "
+        "à son plus bas niveau en mathématiques et en lecture ; en "
+        "CM1, elle est au dernier rang des pays de l'Union ayant participé à "
+        "l'enquête. Ce n'est donc pas d'abord "
+        "une question de montant : c'est une question de qui décide, de qui "
+        "rend des comptes, et de qui peut partir quand rien ne change.</p>"
         f'<p class="actions"><a class="bouton" href="{g.lien("proposition")}">'
         "Lire la proposition</a>"
         f'<a class="bouton second" href="{g.lien("resultats")}">Voir d\'abord '
@@ -74,7 +77,8 @@ def index() -> str:
     corps += g.points((
         ("Le problème n'est pas le montant, c'est la répartition",
          "Sur le périmètre comparable de l'OCDE, l'effort français est "
-         f"ordinaire : {v('ocde_pib_comparable')}. Mais la France dépense "
+         f"supérieur à la moyenne : {v('ocde_pib_comparable')}, contre "
+         f"{v('ocde_pib_comparable_ocde')}. Mais la France dépense "
          f"{v('ocde_elementaire_fr')} par écolier quand la moyenne de l'OCDE "
          f"est de {v('ocde_elementaire_ocde')}, et {v('ocde_lycee_fr')} par "
          f"lycéen quand cette moyenne est de {v('ocde_lycee_ocde')}. Nous "
@@ -89,10 +93,11 @@ def index() -> str:
          "tient aucun des leviers."),
         ("L'inégalité est le résultat",
          f"{v('pisa_ecart_social')} séparent en mathématiques les élèves "
-         "français les plus favorisés des plus défavorisés. Le système qui se "
-         "réclame le plus de l'égalité est l'un de ceux où l'origine sociale "
-         "pèse le plus lourd. Ce n'est pas un accident de parcours : c'est "
-         "ce qu'il produit."),
+         "français très favorisés des très défavorisés, contre "
+         f"{v('pisa_ecart_social_ocde')} en moyenne dans l'OCDE. Le système "
+         "qui se réclame le plus de l'égalité est l'un de ceux où l'origine "
+         "sociale pèse le plus lourd. Ce n'est pas un accident de parcours : "
+         "c'est ce qu'il produit."),
     ))
 
     corps += g.engagements((
@@ -109,7 +114,7 @@ def index() -> str:
             "+ 40 %",
             "Un financement majoré pour l'élève défavorisé.",
             "Une pondération sociale du montant versé, et une pondération de "
-            "handicap. C'est la réponse à la seule objection sérieuse faite à "
+            "handicap. C'est la réponse à l'objection la plus sérieuse faite à "
             "la liberté scolaire : un établissement doit avoir intérêt à "
             "accueillir l'élève difficile, et non à l'éviter."),
         g.Engagement(
@@ -118,7 +123,8 @@ def index() -> str:
             "Les familles classent leurs vœux, les établissements ne "
             "sélectionnent pas, et une procédure publique attribue les places "
             "selon des règles écrites — fratrie, proximité, tirage au sort "
-            "en cas de sur-demande. L'adresse cesse d'être un destin."),
+            "en cas de sur-demande. L'adresse compte encore, mais elle ne "
+            "décide plus seule."),
         g.Engagement(
             "1 seul",
             "Un contrat unique pour tout établissement financé.",
@@ -217,9 +223,10 @@ def resultats() -> str:
     corps = g.affiche(
         "Le constat · 1",
         "Ce que les élèves savent, et ce qu'ils ne savent plus.",
-        "Quatre enquêtes indépendantes, trois internationales et une "
-        "française, mesurent la même chose depuis vingt ans : le niveau des "
-        "élèves français baisse, et il baisse d'abord chez les plus faibles.",
+        "Quatre enquêtes, trois internationales et une française, disent la "
+        "même chose : le niveau des élèves français baisse, la part des "
+        "élèves en difficulté augmente, et l'origine sociale pèse plus "
+        "lourd qu'ailleurs.",
     )
 
     corps += g.plan((
@@ -234,42 +241,66 @@ def resultats() -> str:
     corps += g.reperes((
         g.Repere("Mathématiques à 15 ans", v("pisa_maths"),
                  f"Moyenne OCDE : {v('pisa_maths_ocde')}. "
-                 f"Recul de {v('pisa_maths_chute')} depuis 2018."),
+                 f"{v('pisa_maths_chute')} depuis 2022."),
         g.Repere("Élèves en difficulté", v("pisa_faibles"),
                  "sous le niveau 2 en mathématiques, contre "
+                 f"{v('pisa_faibles_2022')} en 2022 et "
                  f"{v('pisa_faibles_2018')} en 2018."),
         g.Repere("Écart social", v("pisa_ecart_social"),
-                 "entre les élèves les plus favorisés et les plus "
-                 "défavorisés."),
+                 "entre les élèves très favorisés et très défavorisés, "
+                 f"contre {v('pisa_ecart_social_ocde')} dans l'OCDE."),
     ))
 
-    corps += "<h2 id=\"pisa\">PISA : la chute de 2022</h2>"
+    corps += "<h2 id=\"pisa\">PISA 2025 : le plus bas niveau jamais mesuré</h2>"
     corps += (
         "<p>PISA mesure tous les trois ans ce que les élèves de quinze ans "
         "savent faire d'un savoir dans une situation qu'on ne leur a pas "
-        "apprise. En 2022, la France obtient "
-        f"{v('pisa_maths')} en mathématiques — techniquement au-dessus de la "
-        f"moyenne de l'OCDE ({v('pisa_maths_ocde')}), et en recul de "
-        f"{v('pisa_maths_chute')} par rapport à 2018. C'est la plus forte "
-        "baisse jamais enregistrée par la France dans cette enquête.</p>"
-        "<p>La moyenne rassure à tort. Ce qui a bougé, ce n'est pas le "
-        f"sommet : c'est le bas. {v('pisa_faibles')} des élèves français sont "
-        "désormais sous le niveau 2 en mathématiques, contre "
-        f"{v('pisa_faibles_2018')} quatre ans "
-        "plus tôt. Le niveau 2 n'est pas l'excellence : c'est le seuil en "
-        "deçà duquel un adulte ne peut pas vérifier une facture, comparer "
-        "deux offres de crédit ou lire un graphique de journal.</p>"
+        f"apprise. En 2025, la France obtient {v('pisa_maths')} en "
+        f"mathématiques et {v('pisa_lecture')} en compréhension de l'écrit : "
+        f"dans la moyenne de l'OCDE ({v('pisa_maths_ocde')} et "
+        f"{v('pisa_lecture_ocde')}), mais à son plus bas niveau depuis sa "
+        "première participation. En mathématiques : "
+        f"{v('pisa_maths_chute')} depuis 2022, après "
+        f"{v('pisa_maths_chute_2022')} entre 2018 et 2022 ("
+        + _source("ocde_pisa_2025") + ").</p>"
+        "<p>Il faut dire aussi ce qui nuance ce constat, parce qu'on nous "
+        "l'opposera : la baisse n'est pas propre à la France. La moyenne de "
+        f"l'OCDE baisse aussi : {v('pisa_maths_chute_ocde')} en "
+        f"mathématiques, {v('pisa_lecture_chute_ocde')} en compréhension de "
+        "l'écrit ; en "
+        "lecture, la France suit depuis 2000 à peu près la tendance de "
+        "l'OCDE, et en mathématiques son score était stable de 2006 à 2018 ("
+        + _source("depp_pisa_tendance") + "). Ce qui la distingue, c'est "
+        "l'ampleur de sa chute en mathématiques depuis 2018, et le point où "
+        "elle la conduit.</p>"
+        "<p>La moyenne rassure à tort. Le bas s'élargit : "
+        f"{v('pisa_faibles')} des élèves sont sous le niveau 2 en "
+        f"mathématiques, contre {v('pisa_faibles_2022')} en 2022 et "
+        f"{v('pisa_faibles_2018')} en 2018 ; en compréhension de l'écrit, "
+        f"{v('pisa_faibles_lecture')}, contre {v('pisa_faibles_lecture_2000')} "
+        "en 2000. Et le haut fond : "
+        f"{v('pisa_tres_bons')} d'élèves très performants en mathématiques, "
+        f"contre {v('pisa_tres_bons_2003')} en 2003 et "
+        f"{v('pisa_tres_bons_ocde')} en moyenne dans l'OCDE. Le niveau 2 "
+        "n'est pas l'excellence : c'est le seuil à partir duquel un élève "
+        "sait reconnaître comment une situation simple se traduit en "
+        "mathématiques — comparer la longueur de deux itinéraires, convertir "
+        "un prix dans une autre devise.</p>"
     )
     corps += g.tableau(
-        "PISA 2022 : les scores français et la moyenne de l'OCDE",
-        ("Domaine", "France", "Moyenne OCDE", "Depuis 2018"),
+        "PISA 2025 : les scores français et la moyenne de l'OCDE",
+        ("Domaine", "France", "Moyenne OCDE", "France depuis 2022",
+         "Élèves sous le niveau 2"),
         (
             ("Mathématiques", v("pisa_maths"), v("pisa_maths_ocde"),
-             v("pisa_maths_chute")),
+             v("pisa_maths_chute"),
+             f"{v('pisa_faibles')} (OCDE : {v('pisa_faibles_ocde')})"),
             ("Compréhension de l'écrit", v("pisa_lecture"),
-             v("pisa_lecture_ocde"), v("pisa_lecture_chute")),
+             v("pisa_lecture_ocde"), v("pisa_lecture_chute"),
+             f"{v('pisa_faibles_lecture')} (OCDE : "
+             f"{v('pisa_faibles_lecture_ocde')})"),
             ("Culture scientifique", v("pisa_sciences"),
-             v("pisa_sciences_ocde"), "stable"),
+             v("pisa_sciences_ocde"), "stable", "—"),
         ),
     )
 
@@ -306,9 +337,11 @@ def resultats() -> str:
         "quinze années de baisse continue, et l'écart avec l'Europe s'est "
         "réduit — les autres pays ayant reculé davantage.</p>"
         "<p>Un palier après quinze ans de baisse n'est pas un redressement. "
-        "C'est un arrêt de la chute, obtenu au prix d'un effort considérable "
-        "sur les premières années — dédoublement des classes, recentrage sur "
-        "les fondamentaux —, et il n'a pas d'équivalent au collège.</p>"
+        "C'est un arrêt de la chute, contemporain d'un effort considérable "
+        "sur les premières années — dédoublement des classes en éducation "
+        "prioritaire, recentrage sur les fondamentaux —, sans qu'aucune "
+        "évaluation permette de le lui attribuer ; et il n'a pas "
+        "d'équivalent au collège.</p>"
     )
 
     corps += "<h2 id=\"jdc\">À la sortie : un jeune sur huit</h2>"
@@ -333,19 +366,28 @@ def resultats() -> str:
         "statistique</h3>"
         f"<p>{v('jdc_illettrisme')} des {v('jdc_testes')} jeunes testés en "
         "2024, cela fait <strong class=\"cle-texte\">plus de cinquante "
-        "mille jeunes par an</strong> qui sortent de treize années de "
+        "mille jeunes par an</strong> qui sortent d'au moins dix années de "
         "scolarité obligatoire sans savoir lire un mode d'emploi. À "
         "l'échelle d'un quinquennat, un quart de million. Aucun chiffre de "
         "dépense ne pèse contre celui-là.</p>"
     )
 
-    corps += "<h2 id=\"inegalites\">L'école la plus inégalitaire d'Europe</h2>"
+    corps += ("<h2 id=\"inegalites\">L'une des écoles les plus inégalitaires "
+              "de l'OCDE</h2>")
     corps += (
         f"<p>{v('pisa_ecart_social')} séparent en mathématiques les élèves "
-        "français les plus favorisés des plus défavorisés. La France figure "
-        "parmi les pays de l'OCDE où l'origine sociale prédit le mieux les "
-        "résultats scolaires — c'est-à-dire parmi ceux où l'école corrige le "
-        "moins ce qu'elle reçoit.</p>"
+        "français très favorisés des très défavorisés, contre "
+        f"{v('pisa_ecart_social_ocde')} en moyenne dans l'OCDE ; en "
+        f"compréhension de l'écrit, {v('pisa_ecart_lecture')} contre "
+        f"{v('pisa_ecart_lecture_ocde')} ; en sciences, "
+        f"{v('pisa_ecart_sciences')} contre {v('pisa_ecart_sciences_ocde')}. "
+        "La France figure parmi les pays de l'OCDE où l'origine sociale "
+        "prédit le mieux les résultats scolaires — c'est-à-dire parmi ceux "
+        "où l'école corrige le moins ce qu'elle reçoit.</p>"
+        "<p>Et quand l'écart se réduit, ce n'est pas pour une bonne raison. "
+        "Entre 2015 et 2025, il s'est resserré en sciences parce que les "
+        "élèves favorisés ont baissé, les défavorisés restant au même niveau "
+        "— un rapprochement par le bas (" + _source("ocde_pisa_2025") + ").</p>"
         "<p>Ce constat est le plus embarrassant pour tout le monde. Il l'est "
         "pour ceux qui défendent le système tel quel, puisque l'égalité est "
         "sa justification première. Il l'est aussi pour nous : une réforme "
@@ -366,8 +408,15 @@ def resultats() -> str:
         "les écarts entre pays.</p>"
         "<p>Ce qu'elles établissent en revanche solidement, parce que trois "
         "enquêtes indépendantes le disent ensemble : le niveau moyen a "
-        "baissé, la base a décroché, et l'écart social n'a pas été réduit. "
-        "Aucune de ces trois affirmations n'est sérieusement contestée.</p>",
+        "baissé, la base a décroché, et l'écart social reste parmi les plus "
+        "marqués de l'OCDE. Aucune de ces trois affirmations n'est "
+        "sérieusement contestée.</p>"
+        "<p>Ce qu'elles n'établissent pas, c'est la cause. La baisse de 2025 "
+        "touche presque toute l'OCDE, y compris les pays dont nous citons "
+        f'l\'organisation en exemple (<a href="{g.lien("comparaisons")}">'
+        "Ailleurs en Europe</a>). Le lien entre la manière dont l'école "
+        "française est gouvernée et ses résultats est notre thèse ; nous la "
+        "défendons, mais ce n'est pas un constat.</p>",
         "vigilance",
     )
     return corps
@@ -403,7 +452,8 @@ def depense() -> str:
                  "le premier budget de l'État."),
     ))
 
-    corps += "<h2 id=\"combien\">Un effort ordinaire, réparti à contretemps</h2>"
+    corps += ("<h2 id=\"combien\">Un effort supérieur à la moyenne, réparti à "
+              "contretemps</h2>")
     corps += (
         f"<p>La dépense intérieure d'éducation atteint {v('die_montant')} en "
         f"2024, soit {v('die_pib')}. Ce chiffre est un agrégat français : il "
@@ -412,8 +462,9 @@ def depense() -> str:
         "se compare donc pas aux moyennes internationales, et nous ne le "
         "comparons pas.</strong> Sur le périmètre retenu par l'OCDE — les "
         "seuls établissements d'enseignement —, la France consacre "
-        f"{v('ocde_pib_comparable')} à son école et à son supérieur, ce qui "
-        "la situe dans la moyenne des pays comparables.</p>"
+        f"{v('ocde_pib_comparable')} à son école et à son supérieur, contre "
+        f"{v('ocde_pib_comparable_ocde')} en moyenne dans l'OCDE : un effort "
+        "supérieur à la moyenne.</p>"
         "<p>Rapportée à l'élève, cette dépense dit quelque chose de plus "
         "précis, et de plus embarrassant, qu'un total.</p>"
     )
@@ -433,11 +484,11 @@ def depense() -> str:
     )
     corps += (
         "<p>Le fait central de ce site est là, et il est plus précis que le "
-        "slogan qu'on entend des deux côtés. <strong class=\"cle-texte\">La "
-        "France n'est pas un pays qui dépense trop pour son école : c'est un "
-        "pays qui dépense à contretemps</strong> — en dessous de la moyenne "
-        "de l'OCDE à l'école élémentaire, où tout se joue, et d'un quart "
-        "au-dessus au lycée, où il est déjà tard.</p>"
+        "slogan qu'on entend des deux côtés. <strong class=\"cle-texte\">Le "
+        "problème de la France n'est pas d'abord ce qu'elle dépense pour son "
+        "école : c'est qu'elle dépense à contretemps</strong> — en dessous "
+        "de la moyenne de l'OCDE à l'école élémentaire, où tout se joue, et "
+        "d'un quart au-dessus au lycée, où il est déjà tard.</p>"
         "<p>Cela retire sa force à la réponse habituelle — « il faut des "
         "moyens » — prise comme réponse unique, sans la rendre absurde : au "
         "primaire, le niveau de dépense est réellement bas, et nous "
@@ -464,13 +515,17 @@ def depense() -> str:
         "<p>Un écolier reçoit "
         f"{v('die_premier_degre')} par an ; un élève de classe préparatoire, "
         f"{v('die_cpge')}. <strong class=\"cle-texte\">Le rapport est de un à "
-        "deux, au bénéfice de ceux qui ont déjà réussi.</strong> La France "
-        "est, parmi les grands pays européens, l'un de ceux où la dépense "
-        "penche le plus vers le second degré et le supérieur.</p>"
-        "<p>Cette pente est l'inverse de celle que suggère la comparaison "
-        "internationale du haut de cette page, où la France est en dessous "
-        "de la moyenne de l'OCDE à l'élémentaire et très au-dessus au "
-        "lycée.</p>"
+        "deux.</strong> Mais le surcoût du second degré ne va pas d'abord à "
+        f"ceux qui ont déjà réussi : le lycéen professionnel ({v('die_lycee_pro')}) "
+        f"coûte plus que le lycéen général ({v('die_lycee_general')}), et une "
+        "part de l'écart tient à la diversité des filières et des options, "
+        "et aux services annexes — transports scolaires, internats, "
+        f"cantines, médecine scolaire —, qui pèsent {v('services_annexes')} "
+        f"de la dépense d'éducation en France contre "
+        f"{v('services_annexes_ocde')} dans l'OCDE.</p>"
+        "<p>Cette pente, du primaire vers le lycée, existe partout. Ce qui "
+        "distingue la France, c'est son ampleur : en dessous de la moyenne "
+        "de l'OCDE à l'élémentaire, très au-dessus au lycée.</p>"
         "<p>Un mot sur ce que nous ne tirons pas de la littérature. Le "
         "Conseil d'analyse économique a proposé en 2025 de lire la dépense "
         "scolaire à travers le <strong>rendement social net</strong> de "
@@ -483,6 +538,15 @@ def depense() -> str:
         "comparable produisent des résultats très inégaux — ce qui est un "
         "argument sur la répartition, non sur l'âge des élèves ("
         + _source("cae_rendement") + ").</p>"
+        "<p>Il faut dire aussi ce qu'il conclut, et qui ne va pas dans notre "
+        "sens : il range la réduction de la taille des classes au primaire "
+        "parmi les politiques qui se remboursent d'elles-mêmes, et recommande "
+        "de consacrer la baisse démographique à l'amplifier, en éducation "
+        "prioritaire d'abord (" + _source("cae_taille_classes") + "). Notre "
+        "programme fait un autre choix — la rémunération des enseignants — "
+        "et laisse chaque établissement décider de ses dédoublements sur sa "
+        "dotation. C'est un désaccord, et nous le signalons plutôt que de le "
+        "taire.</p>"
     )
 
     corps += "<h2 id=\"qui-paie\">Qui paie, et pour qui</h2>"
@@ -507,30 +571,39 @@ def depense() -> str:
         "niveaux à la fois</strong>, faute de quoi il ne financerait que les "
         "salaires et laisserait les murs hors du dispositif.</p>"
         f"<p>Les ménages, eux, paient {v('die_menages')} de la dépense "
-        "d'éducation : fournitures, cantine, transport, et un marché du "
-        "soutien scolaire privé qui prospère exactement là où l'école "
-        "échoue. Ce chiffre est une mesure de la défiance.</p>"
+        "d'éducation : fournitures, cantine, transport, soutien scolaire. "
+        "C'est moins qu'ailleurs : de l'élémentaire au post-secondaire, les "
+        f"pouvoirs publics assurent en France {v('part_publique')} du "
+        f"financement, contre {v('part_publique_ocde')} en moyenne dans "
+        "l'OCDE.</p>"
     )
 
     corps += "<h2 id=\"rendement\">Ce que les grandes réformes ont rendu</h2>"
     corps += (
         "<p>Deux réformes récentes ont engagé des moyens considérables. "
-        "Toutes deux ont été évaluées. Aucune n'a tenu ses promesses, et il "
-        "faut le dire même quand on approuvait leur intention.</p>"
+        "Toutes deux ont été évaluées, et leur bilan est en deçà de ce "
+        "qu'elles annonçaient. Il faut le dire même quand on approuvait leur "
+        "intention — et dire aussi ce qui, dans ces évaluations, gêne notre "
+        "argumentation.</p>"
     )
     corps += g.sections_depliables((
         ("Le dédoublement des classes de CP et CE1 en éducation prioritaire",
          "<p>Engagé en 2017, le dédoublement a ramené les classes de CP puis "
-         "de CE1 en REP et REP+ à une douzaine d'élèves. Son coût annuel est "
-         f"estimé à {v('dedoublement_cout')} par la Cour des comptes, pour "
+         "de CE1 en REP et REP+ à une douzaine d'élèves, avant d'être étendu "
+         "à la grande section. Son coût est estimé à "
+         f"{v('dedoublement_cout')} par la Cour des comptes, pour "
          f"{v('dedoublement_etp')} équivalents temps plein.</p>"
-         "<p>Les évaluations de la DEPP montrent des effets positifs "
-         "mesurables à la fin du CP, <strong>qui ne persistent pas</strong> : "
-         "au-delà de la première année, l'effet supplémentaire n'est plus "
-         "significatif. Réduire la taille des classes fonctionne, mais "
-         "beaucoup moins que son coût ne le laissait espérer — et le facteur "
-         "décisif, dans toute la littérature, reste ce que l'enseignant fait "
-         "de ces élèves, non leur nombre.</p>"),
+         "<p>L'évaluation de la DEPP mesure un effet positif en CP, surtout "
+         "en mathématiques ; <strong>au CE1, la progression des élèves ne se "
+         "distingue plus</strong> de celle d'élèves comparables ("
+         + _source("dedoublement_depp") + "). Ce bilan divise les "
+         "économistes : le Conseil d'analyse économique, s'appuyant sur "
+         "l'effet mesuré en CP et sur les gains de long terme observés à "
+         "l'étranger, juge la réduction de la taille des classes au primaire "
+         "rentable pour la collectivité. Nous "
+         "en tirons une leçon plus étroite : une mesure uniforme, attachée à "
+         "un zonage et décidée au centre, coûte cher pour un effet modeste, "
+         "et serait mieux décidée par chaque école, là où elle sert.</p>"),
         ("Les groupes de niveau puis de besoins au collège",
          "<p>Annoncés en 2023 sous le nom de « choc des savoirs », mis en "
          "place à la rentrée 2024 en sixième et cinquième, les groupes de "
@@ -559,7 +632,7 @@ def depense() -> str:
          "peut pas produire autre chose qu'une moyenne nulle.</p>"),
     ))
 
-    corps += "<h2 id=\"demographie\">La marge de manœuvre arrive toute seule</h2>"
+    corps += "<h2 id=\"demographie\">La marge de manœuvre qui vient</h2>"
     corps += (
         f"<p>Les projections du ministère annoncent {v('demographie')} d'ici "
         "2035. À dépense constante, cela signifie mécaniquement un "
@@ -567,6 +640,13 @@ def depense() -> str:
         "un euro de plus — ou, si l'on garde la dépense par élève, "
         f"{ch.euros(-ch.montant(ch.poste('dividende')))} d'économie par an "
         "pour l'État.</p>"
+        "<p>Cette économie n'a rien d'automatique : elle suppose que les "
+        "emplois suivent les élèves. À taux d'encadrement constant, c'est "
+        f"environ {ch.milliers(ch.postes_non_remplaces())} postes "
+        "d'enseignants de moins qu'aujourd'hui en 2035, par départs non "
+        "remplacés. Le précédent le plus récent dit la difficulté : en "
+        "janvier 2025, le gouvernement a renoncé à la suppression de "
+        f"{v('postes_2025')} d'enseignants prévue au budget.</p>"
         "<p>Cette baisse est une occasion, et elle ne se représentera pas. "
         "Deux usages en sont possibles. Le premier est de ne rien décider et "
         "de laisser l'économie se faire silencieusement, poste par poste, au "
@@ -586,7 +666,11 @@ def depense() -> str:
         "la revalorisation des enseignants. La majoration sociale est prise "
         "sur les autres élèves, et l'écart de financement entre le privé et "
         "le public n'est comblé qu'au cinquième. Solde en 2035 : "
-        f"{ch.euros(ch.solde(), True)} par an. Le détail, poste par poste, "
+        f"{ch.euros(ch.solde(), True)} par an ; revalorisé de l'inflation "
+        "depuis 2021, "
+        f"{ch.euros(ch.solde() + ch.surcout_inflation(), True)}, et c'est "
+        "alors la règle de sauvegarde qui tient l'enveloppe. Le détail, "
+        "poste par poste, "
         f'et le nom de ceux qui paient, sont sur la page <a href="'
         f'{g.lien("chiffrage")}">Chiffrage</a>.</p>',
         "vigilance",
@@ -623,7 +707,8 @@ def gouvernance() -> str:
                  f"{v('estonie_recrutement')} en Estonie."),
     ))
 
-    corps += "<h2 id=\"centralisation\">Le pays le plus centralisé de l'OCDE</h2>"
+    corps += ("<h2 id=\"centralisation\">L'un des systèmes les plus centralisés "
+              "de l'OCDE</h2>")
     corps += (
         f"<p>{v('decisions_central')} des décisions qui concernent un collège "
         "public français se prennent au niveau de l'État central. La moyenne "
@@ -631,7 +716,9 @@ def gouvernance() -> str:
         f"la chaîne, {v('decisions_etablissement')} des décisions se prennent "
         "dans l'établissement — et sur ces dix points, deux seulement "
         "s'exercent en pleine autonomie ; le reste s'applique dans un cadre "
-        "fixé plus haut.</p>"
+        "fixé plus haut. Ce n'est pas un record : l'Espagne, la Suisse, la "
+        "Grèce, la Turquie et la Finlande laissent moins encore à leurs "
+        "établissements (" + _source("ocde_decentralisation") + ").</p>"
         "<p>Ce n'est pas une anomalie administrative : c'est le principe "
         "d'organisation. Les programmes, les horaires, les méthodes "
         "recommandées, le recrutement, l'affectation, l'avancement, la "
@@ -642,6 +729,11 @@ def gouvernance() -> str:
         "uniformité des <em>moyens d'agir</em> — quand un établissement va "
         "mal, ceux qui y travaillent ne disposent d'aucun des leviers qui "
         "permettraient d'y remédier.</p>"
+        "<p>Nous ne lui faisons pas porter la chute récente des résultats en "
+        "mathématiques à quinze ans : la centralisation est ancienne, et "
+        "cette chute date de 2018. Ce qu'elle "
+        "explique, c'est qu'un établissement qui décroche n'a aucun moyen de "
+        "se redresser par lui-même.</p>"
     )
 
     corps += "<h2 id=\"recrutement\">Un chef d'établissement qui ne choisit personne</h2>"
@@ -649,8 +741,8 @@ def gouvernance() -> str:
         f"<p>En France, {v('recrutement_france')} des élèves fréquentent un "
         "établissement dont le chef a la responsabilité principale du "
         f"recrutement des enseignants. La moyenne de l'OCDE est de "
-        f"{v('recrutement_ocde')}. En Estonie, premier pays européen aux "
-        f"épreuves PISA, c'est {v('estonie_recrutement')}.</p>"
+        f"{v('recrutement_ocde')}. En Estonie, en tête de l'Europe aux "
+        f"épreuves PISA avec la Suisse, c'est {v('estonie_recrutement')}.</p>"
         "<p>Les enseignants français sont affectés par un barème national "
         "fondé sur l'ancienneté et la situation familiale. Le barème est "
         "impartial, et c'est sa vertu. Sa conséquence est qu'un collège "
@@ -707,6 +799,14 @@ def gouvernance() -> str:
         "pédagogiquement différente, n'a pratiquement aucune chance d'être "
         "financée. La liberté d'enseignement existe ; la liberté de la "
         "financer, non.</p>"
+        "<p>Le privé sous contrat est aussi de plus en plus marqué "
+        "socialement : la part des élèves de familles très favorisées y "
+        f"est passée de {v('prive_tres_favorises_2000')} en 2000 à "
+        f"{v('prive_tres_favorises')} en 2021, selon la Cour des comptes. "
+        "Financer davantage le privé sans rien exiger en retour aggraverait "
+        "ce tri ; c'est pourquoi notre programme conditionne tout "
+        "financement à l'accueil sans sélection, le rend gratuit pour les "
+        "familles modestes et majore la dotation de l'élève défavorisé.</p>"
     )
 
     corps += "<h2 id=\"enseignants\">Un métier qu'on n'a pas les moyens de rendre attractif</h2>"
@@ -717,18 +817,25 @@ def gouvernance() -> str:
         "à celui des autres diplômés dans l'élémentaire et de "
         f"{v('salaire_ecart_college')} au collège, contre respectivement "
         f"{v('salaire_ecart_elementaire_ocde')} et "
-        f"{v('salaire_ecart_college_ocde')} en moyenne dans l'OCDE.</p>"
-        "<p>Dans le même temps, ils enseignent davantage d'heures que leurs "
-        f"collègues : {v('heures_elementaire')} d'enseignement obligatoire "
-        f"par an dans l'élémentaire contre {v('heures_elementaire_ocde')} "
-        f"en moyenne, {v('heures_college')} au collège contre "
-        f"{v('heures_college_ocde')}. Et la taille moyenne "
-        f"d'une classe élémentaire française, {v('taille_classe')}, est "
-        "au-dessus de la moyenne de l'OCDE.</p>"
-        "<p>Plus d'heures, des classes un peu plus chargées, un salaire "
-        "relatif plus bas : la crise de recrutement n'a rien de mystérieux. "
-        "Aucune réforme de l'école ne réussira contre ses enseignants, et "
-        "aucune ne réussira sans les payer.</p>"
+        f"{v('salaire_ecart_college_ocde')} en moyenne dans l'OCDE. Et "
+        "le retard s'accroît : entre 2015 et 2024, les salaires de début de "
+        f"carrière ont augmenté de {v('salaire_debut_hausse')} en France, "
+        f"contre {v('salaire_debut_hausse_ocde')} en moyenne dans l'OCDE à "
+        "l'école élémentaire.</p>"
+        "<p>Leurs élèves, eux, passent plus d'heures en classe qu'ailleurs : "
+        f"{v('heures_elementaire')} d'instruction obligatoire par an dans "
+        f"l'élémentaire contre {v('heures_elementaire_ocde')} en moyenne, "
+        f"{v('heures_college')} au collège contre {v('heures_college_ocde')}. "
+        "Et les classes sont plus chargées : "
+        f"{v('taille_classe')} en moyenne à l'école élémentaire, un peu plus "
+        f"que la moyenne de l'OCDE ; {v('taille_classe_college')} au collège, "
+        "contre "
+        f"{v('taille_classe_college_ue')} dans les autres pays de "
+        "l'Union.</p>"
+        "<p>Des classes plus chargées, un salaire relatif plus bas, et qui "
+        "progresse moins qu'ailleurs : la crise de recrutement n'a rien de "
+        "mystérieux. Aucune réforme de l'école ne réussira contre ses "
+        "enseignants, et aucune ne réussira sans les payer.</p>"
     )
     corps += g.encadre(
         "<h3 class=\"serif\">Le nœud de tout le reste</h3>"
@@ -791,10 +898,13 @@ def proposition() -> str:
         "soit son statut, dès lors qu'il respecte le contrat unique "
         "(réforme 4).</p>"
         "<p>Le montant de base est celui qui existe déjà : la dépense "
-        "moyenne par élève du niveau considéré — de l'ordre de "
-        f"{v('die_premier_degre')} dans le premier degré et "
-        f"{v('die_college')} au collège. Pour l'élève du public, il n'y a "
-        "pas d'argent nouveau : il y a un destinataire nouveau.</p>"
+        "publique moyenne par élève du niveau considéré, État et "
+        f"collectivités compris — de l'ordre de {v('public_eleve_1d')} dans "
+        f"le premier degré et {v('public_eleve_2d')} dans le second. Pour "
+        "l'élève du public, il n'y a pas d'argent nouveau : il y a un "
+        "destinataire nouveau. Ce montant reprend la répartition actuelle "
+        "entre les niveaux ; à lui seul, il ne déplace rien du lycée vers "
+        "l'école.</p>"
         "<p>L'élève du privé sous contrat reçoit aujourd'hui "
         f"{v('prive_eleve_1d')} d'argent public à l'école contre "
         f"{v('public_eleve_1d')} dans le public. Combler tout l'écart "
@@ -853,8 +963,8 @@ def proposition() -> str:
         "<strong>Recrutement.</strong> Le chef d'établissement recrute ses "
         "enseignants sur des postes ouverts, parmi les candidats titulaires "
         f"du concours. Nous passons de {v('recrutement_france')} des élèves "
-        f"concernés à la totalité — la norme dans l'OCDE, où la moyenne est "
-        f"de {v('recrutement_ocde')}.",
+        "concernés à la totalité, quand la moyenne de l'OCDE est de "
+        f"{v('recrutement_ocde')} et l'Estonie à {v('estonie_recrutement')}.",
         "<strong>Budget.</strong> La dotation est globale et fongible, avec "
         "publication annuelle des comptes de l'établissement.",
         "<strong>Pédagogie.</strong> Les programmes nationaux fixent ce qui "
@@ -870,6 +980,11 @@ def proposition() -> str:
         "la pédagogie, <em>et</em> qu'elle s'accompagne d'une évaluation "
         "externe. Une autonomie purement budgétaire ne produit rien. C'est "
         "pourquoi les réformes 3 et 5 ne se séparent pas.</p>"
+        "<p>Le recrutement par l'établissement, lui, reste un pari : la "
+        "recherche ne converge pas sur l'efficacité des politiques de "
+        "recrutement des enseignants (" + _source("cae_recrutement") + "). "
+        "C'est pourquoi il commence dans des académies volontaires, et qu'il "
+        "est évalué avant d'être étendu.</p>"
     )
 
     corps += "<h2 id=\"contrat\">4. Un contrat unique, ouvert à tous</h2>"
@@ -921,7 +1036,10 @@ def proposition() -> str:
         "progression de ses élèves entre deux évaluations nationales, à "
         "caractéristiques d'entrée comparables. C'est la seule mesure qui "
         "récompense l'école qui fait progresser plutôt que celle qui "
-        "sélectionne.",
+        "sélectionne. Elle existe déjà pour les lycées et les collèges, "
+        "calculée sur le baccalauréat et le brevet ("
+        + _source("ivac") + ") ; il s'agit de l'étendre aux écoles et aux "
+        "évaluations nationales.",
         "<strong>Les moyens</strong> : dotation reçue, taux d'encadrement, "
         "ancienneté moyenne de l'équipe, taux de rotation des enseignants.",
         "<strong>Les comptes</strong>, en données ouvertes et réutilisables.",
@@ -949,7 +1067,7 @@ def proposition() -> str:
     )
     corps += g.leviers((
         "<strong>Une revalorisation financée par la démographie.</strong> Le "
-        f"système scolaire doit perdre {v('demographie')} d'ici 2035. Nous "
+        f"système scolaire comptera {v('demographie')} d'ici 2035. Nous "
         "proposons d'affecter l'essentiel de la dépense ainsi libérée à la "
         "rémunération, au lieu de la laisser s'évaporer en économies "
         "budgétaires annuelles.",
@@ -985,12 +1103,17 @@ def proposition() -> str:
         "compter, et se repérer dans le temps et l'espace</strong>, avec un "
         "niveau attendu défini année par année et vérifié par les "
         "évaluations nationales.</p>"
-        f"<p>Ce n'est pas une question d'heures : la France enseigne déjà "
+        "<p>Ce n'est ni une question d'heures, ni une question de place "
+        "faite aux fondamentaux : la France enseigne déjà "
         f"{v('heures_elementaire')} par an dans l'élémentaire, contre "
-        f"{v('heures_elementaire_ocde')} en moyenne dans l'OCDE. Nous enseignons plus longtemps, sur un "
-        "programme plus large, et nous obtenons "
+        f"{v('heures_elementaire_ocde')} en moyenne dans l'OCDE, et en "
+        f"consacre {v('fondamentaux')} à la lecture, à l'écriture, à la "
+        f"littérature et aux mathématiques, contre {v('fondamentaux_ocde')}. "
+        "Nous y passons "
+        "plus de temps que la moyenne, et nous obtenons "
         f"{v('timss_cm1_maths')} en mathématiques en CM1. La contrainte n'est "
-        "pas le temps disponible : c'est ce qu'on y met.</p>"
+        "pas le temps disponible : c'est ce que les élèves en retirent — "
+        "d'où un niveau attendu, défini et vérifié chaque année.</p>"
     )
 
     corps += "<h2 id=\"calendrier\">En quel ordre</h2>"
@@ -1009,9 +1132,11 @@ def proposition() -> str:
         "<strong>Quatrième année — le contrat unique</strong> et la "
         "pondération sociale du financement, appliqués ensemble : l'un sans "
         "l'autre serait la faute suédoise.",
-        "<strong>En continu — la rémunération.</strong> Chaque euro libéré "
-        "par la baisse démographique est affecté au salaire des enseignants, "
-        "et la loi de finances le documente. Si la démographie déçoit, la "
+        "<strong>En continu — la rémunération.</strong> La baisse "
+        "démographique paie d'abord la revalorisation des enseignants ; ce "
+        "qu'elle libère au-delà finance le rapprochement du privé et "
+        "l'autonomie, et la loi de finances le documente. Si la démographie "
+        "déçoit, la "
         "revalorisation et le rapprochement du privé ralentissent d'autant : "
         "le calendrier ne s'endette pas.",
     ))
@@ -1059,9 +1184,10 @@ def comparaisons() -> str:
         "La proposition · le précédent",
         "Ce que la liberté scolaire donne, en bien et en mal.",
         "Quatre pays européens ont, chacun à sa manière, séparé le "
-        "financement de l'école de sa propriété. Deux l'ont bien fait. Un "
-        "l'a fait autrement. Un l'a mal fait — et c'est de celui-là que nous "
-        "avons le plus appris.",
+        "financement de l'école de sa propriété, ou rendu l'école autonome. "
+        "Aucun n'est un modèle à recopier, et la dernière enquête PISA l'a "
+        "rappelé. Mais chacun dit quelque chose de précis sur ce qui marche "
+        "et ce qui échoue — et c'est la Suède qui nous a le plus appris.",
     )
 
     corps += g.plan((
@@ -1073,22 +1199,28 @@ def comparaisons() -> str:
     ))
 
     corps += g.tableau(
-        "Quatre systèmes, et ce qu'ils font de l'argent public",
+        "Quatre systèmes, ce qu'ils font de l'argent public, et où ils en "
+        "sont à PISA 2025",
         ("Pays", "Financement du non-public", "Sélection à l'entrée",
          "Résultat"),
         (
             ("Pays-Bas", "Intégral, constitutionnel depuis "
-             + v("paysbas_article23"), "Interdite pour les écoles financées",
-             "Au-dessus de la moyenne OCDE, stable"),
+             + v("paysbas_article23"),
+             "Une école confessionnelle peut exiger l'adhésion à ses "
+             "convictions",
+             "Au-dessus de la moyenne OCDE en mathématiques, en dessous en "
+             "lecture ; écart social aussi marqué qu'en France"),
             ("Danemark", v("danemark_prive") + " des élèves, financés à "
              + v("danemark_financement"), "Encadrée",
-             "Au-dessus de la moyenne OCDE"),
+             "Au niveau de la France en lecture"),
             ("Estonie", "Écoles publiques très autonomes",
-             "Interdite", v("estonie_pisa") + " en mathématiques, premier "
-             "rang européen"),
+             "Concours d'entrée dans les lycées les plus demandés",
+             "En tête de l'Europe avec la Suisse ; " + v("estonie_sciences")
+             + " en sciences"),
             ("Suède", "Intégral depuis " + v("suede_reforme") + ", y compris "
              "à but lucratif", "Files d'attente, de fait sélectives",
-             "Ségrégation en hausse, notes gonflées, résultats en recul"),
+             "Ségrégation en hausse, notes gonflées ; au niveau de la France "
+             "en mathématiques"),
         ),
         ("texte", "long", "long", "long"),
     )
@@ -1101,12 +1233,27 @@ def comparaisons() -> str:
         "La majorité des élèves néerlandais fréquentent une école non "
         "publique — confessionnelle, Montessori, Dalton, Jenaplan — "
         "entièrement financée par l'impôt.</p>"
-        "<p>Ce système n'a pas produit d'école à deux vitesses : les écoles "
-        "financées ne peuvent pas sélectionner, l'inspection publie ses "
-        "rapports établissement par établissement, et les Pays-Bas restent "
-        "au-dessus de la moyenne de l'OCDE. C'est le précédent le plus "
-        "proche de notre proposition, et le plus long — plus d'un siècle, "
-        "dans un pays qui n'a jamais cessé d'être un État social.</p>"
+        "<p>C'est le précédent le plus proche de notre proposition, et le "
+        "plus long — plus d'un siècle, dans un pays qui n'a jamais cessé "
+        "d'être un État social, où l'inspection publie ses rapports "
+        "établissement par établissement. Il faut pourtant le décrire "
+        "exactement, parce qu'on nous le rappellera. Une école "
+        "confessionnelle néerlandaise peut exiger de ses élèves qu'ils "
+        "adhèrent à ses convictions (" + _source("paysbas_admission") + "). "
+        "Et ses résultats ne sont pas ceux d'un modèle : en 2025, les "
+        "Pays-Bas sont au-dessus de la moyenne de l'OCDE en mathématiques, "
+        "en dessous en compréhension de l'écrit, et à l'un de leurs plus bas "
+        "niveaux historiques dans les trois domaines ("
+        + _source("ocde_pisa_2025_paysbas") + ") ; l'écart entre élèves "
+        f"favorisés et défavorisés y atteint {v('paysbas_ecart_sciences')} "
+        f"en sciences — autant qu'en France ({v('pisa_ecart_sciences')}), "
+        f"bien plus que la moyenne de l'OCDE ({v('pisa_ecart_sciences_ocde')})."
+        "</p>"
+        "<p>Ce que les Pays-Bas montrent, c'est qu'une liberté scolaire "
+        "financée peut durer un siècle dans un État social. Ce qu'ils ne "
+        "montrent pas, c'est qu'elle suffise à faire réussir les élèves, ni "
+        "à réduire les inégalités. C'est pourquoi notre proposition ne leur "
+        "emprunte pas le droit de choisir ses élèves.</p>"
     )
 
     corps += "<h2 id=\"danemark\">Danemark : l'école qu'on fonde soi-même</h2>"
@@ -1125,32 +1272,44 @@ def comparaisons() -> str:
         "<strong class=\"cle-texte\">La contribution est nulle pour les "
         "familles modestes, et plafonnée pour les autres</strong> : le choix "
         "ne dépend plus du revenu pour ceux qui n'en ont pas.</p>"
+        "<p>Le Danemark n'est pas pour autant un modèle de résultats : en "
+        "2025, son score en compréhension de l'écrit est au niveau de celui "
+        "de la France (" + _source("depp_pisa_voisins") + ").</p>"
     )
 
     corps += "<h2 id=\"estonie\">Estonie : l'autonomie sans le marché</h2>"
     corps += (
-        f"<p>L'Estonie obtient {v('estonie_pisa')} en mathématiques aux "
-        "épreuves PISA 2022 : le premier rang européen, et le troisième rang "
-        "des pays de l'OCDE derrière le Japon et la Corée — avec une dépense "
-        "par élève inférieure à la française. Son école est pourtant très "
-        "majoritairement publique.</p>"
-        "<p>Un mot sur ce « premier rang européen », parce que nous nous "
-        "sommes imposé une règle et qu'elle vaut aussi contre nous : "
-        "l'Estonie devance la Suisse de deux points, <strong>un écart "
-        "inférieur à la marge d'erreur de l'enquête</strong>. Les deux pays "
-        "ne sont pas départagés, et c'est le niveau estonien qui nous "
-        "intéresse ici, non sa place sur un podium.</p>"
+        f"<p>L'Estonie obtenait {v('estonie_pisa')} en mathématiques aux "
+        "épreuves PISA 2022, au troisième rang des pays de l'OCDE derrière "
+        "le Japon et la Corée ; en 2025, elle reste, avec la Suisse, en tête "
+        "de l'Europe en mathématiques (" + _source("depp_pisa_voisins")
+        + "), et obtient " + v("estonie_sciences") + " en sciences, le "
+        "deuxième score de l'OCDE. Sa dépense par élève est inférieure à la "
+        "française, et son école très majoritairement publique.</p>"
+        "<p>Un mot sur ce rang, parce que nous nous sommes imposé une règle "
+        "et qu'elle vaut aussi contre nous : en 2022, l'Estonie devançait la "
+        "Suisse de deux points, <strong>un écart inférieur à la marge "
+        "d'erreur de l'enquête</strong>. Les deux pays ne sont pas "
+        "départagés, et c'est le niveau estonien qui nous intéresse ici, "
+        "non sa place sur un podium.</p>"
         f"<p>Ce qu'elle a, et que nous n'avons pas : {v('estonie_recrutement')} "
         "des élèves sont dans un établissement dont le directeur recrute "
         "lui-même son équipe et répartit lui-même son enveloppe. Le cadre "
         "national dit ce qui doit être appris ; l'école décide comment, et "
-        "répond des résultats.</p>"
-        "<p>C'est le contre-exemple utile à notre propre camp : <strong>"
-        "l'essentiel du gain estonien ne vient pas de la concurrence entre "
-        "écoles, mais de l'autonomie et de la responsabilité de chacune</strong>. "
-        "La réforme 3 de notre proposition compte davantage que la "
-        "réforme 1, et c'est elle qui pourrait commencer dès l'an "
-        "prochain.</p>"
+        "répond des résultats. Elle n'ignore pas pour autant la sélection : "
+        "les lycées les plus demandés de Tallinn recrutent sur concours "
+        "d'entrée, à la fin de l'école de base ("
+        + _source("tallinn_concours") + ").</p>"
+        "<p>C'est le contre-exemple utile à notre propre camp. Rien n'isole "
+        "la part de l'autonomie dans les résultats estoniens, et nous ne "
+        "prétendons pas le faire ; mais <strong>l'Estonie obtient, avec la "
+        "Suisse, les meilleurs résultats d'Europe avec une école presque "
+        "entièrement "
+        "publique, où chaque établissement recrute et répond de ses "
+        "résultats</strong>. C'est pourquoi la réforme 3 de notre "
+        "proposition compte, à nos yeux, davantage que la réforme 1 — et "
+        "c'est elle que le calendrier engage en premier, après la "
+        "transparence.</p>"
     )
 
     corps += "<h2 id=\"suede\">Suède : le précédent dont nous tirons nos règles</h2>"
@@ -1182,7 +1341,9 @@ def comparaisons() -> str:
         "choix sur les résultats a été faiblement positif à court terme, "
         "quasi nul à long terme. La chute suédoise aux enquêtes "
         "internationales est donc réelle ; son attribution à la réforme "
-        "scolaire, elle, reste discutée.",
+        "scolaire, elle, reste discutée. En 2025, la Suède obtient en "
+        "mathématiques un score comparable à celui de la France ("
+        + _source("depp_pisa_voisins") + ").",
     ))
     corps += g.encadre(
         "<h3 class=\"serif\">Ce que nous en retenons, littéralement</h3>"
@@ -1200,17 +1361,22 @@ def comparaisons() -> str:
     corps += "<h2 id=\"lecons\">Trois leçons, et une réserve</h2>"
     corps += g.points((
         ("L'autonomie avant la concurrence",
-         "L'Estonie obtient les meilleurs résultats d'Europe avec une école "
-         "presque entièrement publique, mais très autonome. C'est le levier "
-         "le plus sûr, et le moins coûteux politiquement."),
-        ("La liberté sans le tri",
+         "L'Estonie figure, avec la Suisse, en tête de l'Europe avec une "
+         "école presque entièrement publique, mais très autonome. C'est le "
+         "levier le moins coûteux politiquement, et celui que nous engageons "
+         "en premier."),
+        ("La liberté exige des règles contre le tri",
          "Pays-Bas et Danemark financent largement le non-public depuis des "
-         "décennies sans produire d'école à deux vitesses, parce que les "
-         "écoles financées ne choisissent pas leurs élèves."),
-        ("Le financement décide du reste",
-         "La différence entre le modèle néerlandais et le modèle suédois "
-         "n'est pas l'ampleur de la liberté : c'est la manière dont l'argent "
-         "est attaché à l'élève, et ce qu'on exige en échange."),
+         "décennies ; mais l'un laisse les écoles confessionnelles exiger "
+         "l'adhésion à leurs convictions, l'autre laisse un reste à charge "
+         "aux familles. D'où notre contrat unique : aucune sélection, et la "
+         "gratuité pour les familles modestes."),
+        ("La liberté ne suffit pas",
+         "Ce qui distingue la liberté néerlandaise de la liberté suédoise, "
+         "c'est ce qu'on exige en échange de l'argent public. Mais ni l'une "
+         "ni l'autre n'a empêché la baisse de 2025, qui touche presque toute "
+         "l'OCDE. La liberté scolaire est un cadre ; elle ne dispense pas "
+         "de savoir ce qui fait apprendre."),
     ))
     corps += g.note(
         "<p><strong>La réserve.</strong> Aucun de ces pays n'a la taille, la "
@@ -1276,8 +1442,9 @@ def chiffrage() -> str:
         f"{e(-ch.montant(ch.poste('dividende')))} par an, et trois "
         "engagements pesaient davantage — aligner entièrement le financement "
         "public de l'élève du privé sur celui du public, majorer de 40 % "
-        "celui de l'élève défavorisé, et ramener le salaire des enseignants "
-        "à la moyenne de l'OCDE. Nous avons gardé les deux derniers, et "
+        "celui de l'élève défavorisé, et ramener l'écart entre le salaire "
+        "des enseignants et celui des autres diplômés à la moyenne de "
+        "l'OCDE. Nous avons gardé les deux derniers, et "
         "réduit le premier. <strong class=\"cle-texte\">La majoration "
         "sociale est prise sur les autres élèves ; l'écart entre le privé "
         "et le public n'est comblé qu'au cinquième.</strong> Le détail et "
@@ -1299,7 +1466,9 @@ def chiffrage() -> str:
         "site, avec leur source : le calcul les lit, il ne les recopie pas. "
         "Les montants sont dans les euros de leurs années — 2021 pour la "
         "dépense par élève, 2026 pour le budget. Rien n'est revalorisé, ce "
-        "qui sous-estime plutôt les coûts.",
+        "qui sous-estime les coûts d'environ "
+        f"{e(ch.surcout_inflation())} par an : le détail est "
+        '<a href="#limites-chiffrage">plus bas</a>.',
         "<strong>Ce qui n'est pas constaté est une hypothèse</strong>, "
         "donnée avec une valeur favorable, centrale et défavorable, et sa "
         "raison. Le chiffre principal est celui du scénario central ; la "
@@ -1419,6 +1588,21 @@ def chiffrage() -> str:
         "d'argent nouveau, mais il demande de renoncer à une économie. "
         "C'est un choix, et nous l'assumons : la baisse des effectifs est "
         "l'occasion de payer enfin les enseignants.</p>"
+        "<p>Ce choix a une traduction en emplois, et nous la donnons. Le "
+        "dividende démographique n'existe que si les postes suivent les "
+        "élèves : enseignants du public et du privé sous contrat × baisse "
+        "des effectifs × part de la dépense qui suit les effectifs, soit "
+        f"<strong>environ {ch.milliers(ch.postes_non_remplaces())} postes "
+        "d'enseignants de moins qu'aujourd'hui en 2035</strong> (de "
+        f"{ch.milliers(ch.postes_non_remplaces('defavorable'))} à "
+        f"{ch.milliers(ch.postes_non_remplaces('favorable'))} selon "
+        "l'hypothèse), par départs non remplacés. Le taux d'encadrement ne "
+        "baisse pas, mais il ne s'améliore pas non plus : le programme "
+        "préfère payer mieux des enseignants moins nombreux plutôt "
+        "qu'alléger les classes — l'inverse de ce que recommande le Conseil "
+        "d'analyse économique (" + _source("cae_taille_classes") + "). Et "
+        "la difficulté politique est réelle : en janvier 2025, le "
+        f"gouvernement a renoncé à la suppression de {v('postes_2025')}.</p>"
     )
 
     corps += "<h2 id=\"plus-moins\">Les + et les − de chaque réforme</h2>"
@@ -1467,9 +1651,10 @@ def chiffrage() -> str:
              "collectivités, faute de quoi le choix resterait réservé aux "
              "familles motorisées."),
             ("6. Le métier d'enseignant",
-             "Un salaire au niveau de la moyenne de l'OCDE : "
-             f"{ch._HAUSSE_1D} à l'école, {ch._HAUSSE_2D} au collège et au "
-             "lycée ; un recrutement sur projet.",
+             "Un écart de salaire avec les autres diplômés ramené à la "
+             f"moyenne de l'OCDE : {ch._HAUSSE_1D} à l'école, "
+             f"{ch._HAUSSE_2D} au collège et au lycée ; un recrutement sur "
+             "projet.",
              f"{e(ch.montant(ch.poste('revalorisation')))} par an, à comparer aux "
              f"{v('mesures_salariales')} de toutes les mesures salariales "
              "décidées depuis 2022 ; c'est la baisse démographique qui la "
@@ -1507,9 +1692,12 @@ def chiffrage() -> str:
              "Le transport des élèves qui choisissent plus loin, et une part "
              "des coûts fixes des établissements quittés."),
             ("Le contribuable", "=",
-             f"Pas un euro de plus qu'aujourd'hui ({e(central, True)} par an "
-             "dans le scénario central), mais "
-             f"{e(ch.solde_tendanciel())} de moins d'économies que sans le "
+             "Pas un euro de plus qu'aujourd'hui : "
+             f"{e(central, True)} par an dans le scénario central, et, une "
+             "fois l'inflation prise en compte, "
+             f"{e(central + ch.surcout_inflation(), True)} que la règle de "
+             "sauvegarde ramène à zéro. Mais c'est "
+             f"{e(ch.solde_tendanciel())} d'économies de moins que sans le "
              "programme."),
             ("Les établissements qui accueillent peu d'élèves défavorisés",
              "−",
@@ -1572,11 +1760,11 @@ def chiffrage() -> str:
         f"par an ; nous en finançons {e(ch.montant(ch.poste('alignement_prive')))}. "
         "Le reste peut être demandé aux familles, sous un plafond, et jamais "
         "aux familles modestes. C'est le renoncement que nous jugeons le "
-        "moins grave, et ce site en donne la raison : l'Estonie obtient les "
-        "meilleurs résultats d'Europe avec une école presque entièrement "
-        "publique mais très autonome — l'autonomie compte davantage que le "
-        f'libre choix (<a href="{g.lien("comparaisons")}#estonie">Ailleurs en '
-        "Europe</a>).",
+        "moins grave, et ce site en donne la raison : l'Estonie, en tête de "
+        "l'Europe avec la Suisse, a une école presque entièrement publique "
+        "mais très autonome — ce qui suggère que l'autonomie compte "
+        f'davantage que le libre choix (<a href="{g.lien("comparaisons")}'
+        '#estonie">Ailleurs en Europe</a>).',
     ))
     corps += g.encadre(
         "<h3 class=\"serif\">La règle de sauvegarde</h3>"
@@ -1667,8 +1855,18 @@ def chiffrage() -> str:
         "calcul de rentabilité.</p>"
         "<p><strong>Il mêle des années.</strong> La dépense par élève du "
         "public et du privé date de 2021 ; le budget, de 2026. Rien n'est "
-        "revalorisé de l'inflation : les coûts de l'alignement du privé et "
-        "de la majoration sociale sont donc plutôt sous-estimés.</p>"
+        "revalorisé de l'inflation, et cela compte : les prix ont augmenté "
+        f"de {v('inflation_2022')} en 2022, {v('inflation_2023')} en 2023, "
+        f"{v('inflation_2024')} en 2024 et {v('inflation_2025')} en 2025, "
+        f"soit {ch.pourcent(ch.inflation_depuis_2021())} en quatre ans. "
+        "Revalorisés d'autant, le rapprochement du privé et le financement "
+        f"du hors contrat coûteraient {e(ch.surcout_inflation())} de plus "
+        f"par an, et le solde central passerait de {e(central, True)} à "
+        f"{e(central + ch.surcout_inflation(), True)}. L'enveloppe tiendrait "
+        "alors par la règle de sauvegarde, au prix d'un rapprochement un "
+        "peu plus lent, et non par le calcul. La majoration sociale, "
+        "revalorisée, déplacerait davantage entre élèves, sans changer le "
+        "solde.</p>"
         "<p><strong>Il ne suit pas les comportements.</strong> Si le "
         "rapprochement du financement attire vers le privé plus d'élèves "
         "qu'il n'en compte aujourd'hui, le coût du rapprochement augmente "
@@ -1692,15 +1890,15 @@ def objections() -> str:
         "La confiance · 1",
         "Les objections, y compris celles qui ont raison.",
         "Dix objections sérieuses à ce programme. Nous les formulons dans "
-        "leur version la plus forte, et non dans leur caricature — trois "
-        "d'entre elles, à notre avis, touchent juste.",
+        "leur version la plus forte, et non dans leur caricature — cinq "
+        "d'entre elles, à notre avis, touchent juste, en tout ou en partie.",
     )
 
     corps += g.note(
         "<p>Une proposition politique qui ne publie pas ses points faibles "
         "demande qu'on lui fasse confiance sur parole. Celle-ci les publie. "
-        "Les objections 3, 8 et 10 nous paraissent fondées, en tout ou en "
-        "partie, et nous le disons à l'endroit où on les lit.</p>",
+        "Les objections 3, 4, 7, 8 et 10 nous paraissent fondées, en tout "
+        "ou en partie, et nous le disons à l'endroit où on les lit.</p>",
         "resume",
     )
 
@@ -1751,27 +1949,38 @@ def objections() -> str:
         "composition sociale de chaque établissement, et l'attribution des "
         "places par procédure publique — et nous considérons ce risque comme "
         "le principal de la réforme, à surveiller et à corriger en cours de "
-        "route.",
+        "route. La France en a déjà fait l'expérience : l'assouplissement de "
+        "la carte scolaire, en 2007, a fait perdre aux collèges de "
+        "l'éducation prioritaire une part significative de leurs entrées en "
+        "sixième (" + _source("carte_scolaire_2007") + ") — par des "
+        "dérogations, sans pondération ni procédure publique, c'est-à-dire "
+        "sans aucune des trois atténuations.",
     )
 
     corps += g.section_cle(
         "moyens",
         "Il faudrait surtout donner plus de moyens.",
-        "<strong>Objection partiellement fondée — et nous avons corrigé "
-        "notre propre argument sur ce point.</strong> Nous écrivions que la "
-        "France dépense plus que ses voisins. C'est faux là où cela compte "
-        f"le plus : par écolier, elle dépense {v('ocde_elementaire_fr')} "
-        f"contre {v('ocde_elementaire_ocde')} en moyenne dans l'OCDE. À ce "
-        "niveau, la demande de moyens est fondée — et c'est précisément là "
-        "que notre proposition redirige l'argent. Ce qui ne tient pas, c'est "
-        "la demande de moyens <em>en général</em> : au lycée, la France "
-        f"dépense {v('ocde_lycee_fr')} par élève contre "
+        "<strong>Objection partiellement fondée — et notre programme n'y "
+        "répond qu'en partie.</strong> La France consacre à son école une "
+        "part de sa richesse supérieure à la moyenne de l'OCDE, mais pas là "
+        f"où cela compte le plus : par écolier, elle dépense "
+        f"{v('ocde_elementaire_fr')} contre {v('ocde_elementaire_ocde')} en "
+        "moyenne dans l'OCDE. À ce niveau, la demande de moyens est fondée. "
+        "Notre programme ne redirige pas l'argent du lycée vers l'école : le "
+        "montant par élève reprend la répartition actuelle, et seule la "
+        "revalorisation, plus forte à l'école qu'au collège, penche vers le "
+        "primaire. Il ne crée pas non plus de postes : la baisse "
+        "démographique paie la revalorisation, ce qui suppose environ "
+        f"{ch.milliers(ch.postes_non_remplaces())} postes d'enseignants de "
+        "moins qu'aujourd'hui en 2035, à taux d'encadrement constant — là "
+        "où le Conseil d'analyse économique recommande d'employer cette "
+        "baisse à réduire la taille des classes. Ce qui ne tient pas, en "
+        "revanche, c'est la demande de moyens <em>en général</em> : au "
+        f"lycée, la France dépense {v('ocde_lycee_fr')} par élève contre "
         f"{v('ocde_lycee_ocde')} dans l'OCDE, un quart de plus, pour des "
         "résultats qui ne le sont pas. Et le dédoublement des classes, qui "
         f"coûte {v('dedoublement_cout')}, a produit des effets réels mais "
-        "qui ne persistent pas. Les moyens comptent, et ils manquent au "
-        "primaire ; ailleurs, ils ne compensent pas une organisation qui "
-        "empêche quiconque d'agir.",
+        "modestes, dont la rentabilité divise les économistes.",
         "Voir la page « Dépense ».",
     )
 
@@ -1804,7 +2013,8 @@ def objections() -> str:
     corps += g.section_cle(
         "ruralite",
         "Dans un village avec une seule école, le choix est fictif.",
-        "C'est vrai, et c'est pourquoi la réforme 1 n'est pas la première du "
+        "<strong>Objection fondée.</strong> C'est vrai, et c'est pourquoi la "
+        "réforme 1 n'est pas la première du "
         "programme. Pour la majorité des communes rurales, ce qui change "
         "utilement est l'autonomie de l'école existante — son équipe, son "
         "organisation, ses moyens propres — et non la possibilité théorique "
@@ -1839,8 +2049,12 @@ def objections() -> str:
         "deux évaluations, à niveau d'entrée comparable. Cette mesure "
         "récompense l'école d'un quartier difficile qui fait progresser ses "
         "élèves, et ne récompense pas l'école favorisée qui se contente de "
-        "recevoir de bons élèves. La presse publiera de toute façon des "
-        "classements : autant qu'ils reposent sur la bonne grandeur.",
+        "recevoir de bons élèves. Elle a une limite, que nous écrivons : "
+        "dans une petite école, calculée sur quelques élèves, sa marge "
+        "d'erreur est large, et deux écoles proches ne se départagent pas "
+        "davantage que deux pays séparés de trois points. La presse "
+        "publiera de toute façon des classements : autant qu'ils reposent "
+        "sur la bonne grandeur.",
     )
 
     corps += g.section_cle(
@@ -1935,8 +2149,8 @@ def sources_page() -> str:
     corps += g.leviers((
         "<strong>Les années diffèrent.</strong> Les enquêtes internationales "
         "sont triennales ou quadriennales ; les données financières sont "
-        "annuelles. Un tableau qui met côte à côte un score de 2022 et une "
-        "dépense de 2024 rapproche deux instants différents, et il faut le "
+        "annuelles. Un tableau qui met côte à côte un score de 2025 et une "
+        "dépense de 2022 rapproche deux instants différents, et il faut le "
         "savoir.",
         "<strong>Les comparaisons internationales sont fragiles.</strong> "
         "Les pays ne scolarisent ni les mêmes élèves, ni au même âge, ni avec "
